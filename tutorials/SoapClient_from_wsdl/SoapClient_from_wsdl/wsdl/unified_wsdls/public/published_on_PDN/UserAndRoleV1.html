@@ -1,0 +1,176 @@
+<div xmlns="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>UserAndRole - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+	    The UserAndRole Service provides the following operations:
+        <ul><li>Login to the System Manager</li><li>Logout of the System Manager</li></ul></div><div class="page"><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:UserAndRole:1</div>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.UserLogin">UserLogin</a></h2><div class="value">
+</div><div class="value">
+                Logs into the System Manager
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:UserAndRole:1#UserLogin</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [UserLogin]<ul type="square"><li><b>user</b> [User]<ul type="square"><li><b>name</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the user name
+							</div></li><li><b>dbId</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+                                Represents the user's unique identifier in the database
+							</div></li> </ul></li><li><b>pswd</b> [Pswd]<ul type="square"><li><b>type</b> [PASSWORD-TYPES]<div style="color:#1E3E66;">
+                                Represents a PASSWORD-TYPES data type
+					        </div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                UNDEFINED
+							<br/>
+		- 1:
+		  
+                                DMPT_PRIMARY
+							<br/>
+		- 2:
+		  
+                                DMPT_PIN_NUM
+							<br/></div></li><li><b>data</b> [string]<div style="color:#1E3E66;">
+                                Represents the actual value of the pasword.  250 max character count
+							</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [UserLoginResponse]<ul type="square"><li><b>loginId</b> [int]</li> </ul></div></li><li><h2><a name="op.UserLogout">UserLogout</a></h2><div class="value">
+</div><div class="value">
+                Logs out of the System Manager
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:UserAndRole:1#UserLogout</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [UserLogout]<ul type="square"><li><b>loginId</b> [int]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [UserLogoutResponse]<ul type="square"> </ul></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

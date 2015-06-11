@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<Camera Model="D5220" Name="D5220">
+	<Specs>
+		<!-- Values not listed here are obtained from API.  If Defined, they will override API -->
+    <CanZoom>true</CanZoom>
+    <Name>1080p</Name>
+		<Position>
+      <x>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </x>
+      <!--<y>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </y>-->
+		</Position>
+		<Velocity>
+      <!--<x>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </x>
+      <y>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </y>
+      <Timeout Unit="ms">10000</Timeout>-->
+		</Velocity>
+    <Zoom>
+      <Min>100</Min>
+    </Zoom>		
+		<!-- PanTimeDelay Represents the amount of time between velocity checks when checking velocity.  Should be the amount of time to get as close to a full pan revolution at full velocity, but not a complete one. -->
+		<TestGlobals>
+      <PanTimeDelay Unit="ms">2500</PanTimeDelay>
+      <PanTiltAccuracy Unit="cdeg">10</PanTiltAccuracy>
+      <ZoomAccuracy>30</ZoomAccuracy>
+      <ShowDisabledTests>true</ShowDisabledTests>
+		</TestGlobals>
+	</Specs>
+  <Tests>
+    <AutoFlip>
+      <Standard Trials="10" MaxFlipDuration="1300">dEnabled</Standard>
+      <WithLimits>dEnabled</WithLimits>
+      <CheckPostFlipControl Trials="10">dEnabled</CheckPostFlipControl>
+    </AutoFlip>
+    <Position>
+      <RandomSeek Trials="100">dEnabled</RandomSeek>
+      <RandomSeekWithLimits Trials="100">dEnabled</RandomSeekWithLimits>
+    </Position>
+    <Preset>
+      <SetAndCheck Trials="10">Enabled</SetAndCheck>
+      <SetAndTargetCheck Trials="200">dEnabled</SetAndTargetCheck>
+      <WithLimits>dEnabled</WithLimits>
+    </Preset>
+  </Tests>
+</Camera>

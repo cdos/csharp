@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:MenuControl:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:MenuControl:1">
+	
+	<!-- Types -->
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:MenuControl:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<!-- EnterMenu -->
+			<xsd:element name="EnterMenu">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the EnterMenu action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="EnterMenuResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a EnterMenu request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- Escape -->
+			<xsd:element name="Escape">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the Escape action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="EscapeResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a Escape request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- ExitMenu -->
+			<xsd:element name="ExitMenu">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the ExitMenu action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="ExitMenuResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a ExitMenu request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- HScroll -->
+			<xsd:element name="HScroll">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the HScroll action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="rightLeft" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This represents the current position on the
+									horizontal scroll bar, which ranges from 0
+									to 100. 0 represents the leftmost position,
+									while 100 represents the rightmost position.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="HScrollResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a HScroll request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- Select -->
+			<xsd:element name="Select">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the Select action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="SelectResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a Select request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- VScroll -->
+			
+			<xsd:element name="VScroll">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the VScroll action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="upDown" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This represents the current position on the
+									vertical scroll bar, which ranges from 0
+									to 100. 0 represents the topmost position,
+									while 100 represents the bottommost position.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="VScrollResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a VScroll request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- AutoFocus -->	
+	<wsdl:message name="EnterMenu">
+		<wsdl:part name="parameters" element="tns:EnterMenu"/>
+	</wsdl:message>
+	<wsdl:message name="EnterMenuResponse">
+		<wsdl:part name="parameters" element="tns:EnterMenuResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="Escape">
+		<wsdl:part name="parameters" element="tns:Escape"/>
+	</wsdl:message>
+	<wsdl:message name="EscapeResponse">
+		<wsdl:part name="parameters" element="tns:EscapeResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ExitMenu">
+		<wsdl:part name="parameters" element="tns:ExitMenu"/>
+	</wsdl:message>
+	<wsdl:message name="ExitMenuResponse">
+		<wsdl:part name="parameters" element="tns:ExitMenuResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="HScroll">
+		<wsdl:part name="parameters" element="tns:HScroll"/>
+	</wsdl:message>
+	<wsdl:message name="HScrollResponse">
+		<wsdl:part name="parameters" element="tns:HScrollResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Select">
+		<wsdl:part name="parameters" element="tns:Select"/>
+	</wsdl:message>
+	<wsdl:message name="SelectResponse">
+		<wsdl:part name="parameters" element="tns:SelectResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="VScroll">
+		<wsdl:part name="parameters" element="tns:VScroll"/>
+	</wsdl:message>
+	<wsdl:message name="VScrollResponse">
+		<wsdl:part name="parameters" element="tns:VScrollResponse"/>
+	</wsdl:message>
+
+	<!-- Ports -->
+
+	<wsdl:portType name="MenuControlPortType">
+		<wsdl:operation name="EnterMenu">
+			<wsdl:documentation>
+				Enters a particular menu.
+			</wsdl:documentation>
+			<wsdl:input message="tns:EnterMenu"></wsdl:input>
+			<wsdl:output message="tns:EnterMenuResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Escape">
+			<wsdl:documentation>
+				Escapes from the current UI context.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Escape"></wsdl:input>
+			<wsdl:output message="tns:EscapeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ExitMenu">
+			<wsdl:documentation>
+				Exits a particular menu.
+			</wsdl:documentation>
+			<wsdl:input message="tns:ExitMenu"></wsdl:input>
+			<wsdl:output message="tns:ExitMenuResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="HScroll">
+			<wsdl:documentation>
+				Executes either a left or right scrolling action.
+			</wsdl:documentation>
+			<wsdl:input message="tns:HScroll"></wsdl:input>
+			<wsdl:output message="tns:HScrollResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Select">
+			<wsdl:documentation>
+				Selects a UI element.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Select"></wsdl:input>
+			<wsdl:output message="tns:SelectResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="VScroll">
+			<wsdl:documentation>
+				Executes either an up or down scrolling action.
+			</wsdl:documentation>
+			<wsdl:input message="tns:VScroll"></wsdl:input>
+			<wsdl:output message="tns:VScrollResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="MenuControl" type="tns:MenuControlPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="EnterMenu">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#EnterMenu" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Escape">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#Escape" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ExitMenu">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#ExitMenu" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="HScroll">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#HScroll" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Select">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#Select" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="VScroll">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MenuControl:1#VScroll" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Services -->
+
+	<wsdl:service name="MenuControl">
+		<wsdl:documentation>
+			This service allows clients to control UI menu elements.
+		</wsdl:documentation>
+		<wsdl:port binding="tns:MenuControl" name="MenuControl">
+			<soap:address
+				location="http://localhost:49152/control/MenuControl-1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

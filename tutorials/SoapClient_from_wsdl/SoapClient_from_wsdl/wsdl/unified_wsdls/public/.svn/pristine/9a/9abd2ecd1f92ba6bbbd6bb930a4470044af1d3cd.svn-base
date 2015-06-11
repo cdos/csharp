@@ -1,0 +1,1087 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+  xmlns:tns="urn:schemas-pelco-com:service:StreamConfiguration:1"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="urn:schemas-pelco-com:service:StreamConfiguration:1">
+  <wsdl:documentation> $Id: StreamConfigurationV1.wsdl 433 2010-11-23 01:18:25Z
+    $ </wsdl:documentation>
+
+  <wsdl:service name="StreamConfiguration">
+    <wsdl:documentation><p>This service is used to configure the properties of
+        streams available from a device.</p><p>In order to make this service
+        flexible and applicable to different devices, configuration settings are
+        not explicitly specified. Instead, this service will return the
+        available settings and their possible values. To specify a device's
+        configuration, you need to define one setting at a time. This iterative
+        approach is required because each setting choice can affect the possible
+        values and availability for other settings.</p></wsdl:documentation>
+    <wsdl:port binding="tns:StreamConfiguration" name="StreamConfiguration">
+      <soap:address
+        location="http://localhost:49152/control/StreamConfiguration-1"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:types>
+    <xsd:schema
+      targetNamespace="urn:schemas-pelco-com:service:StreamConfiguration:1">
+      <xsd:complexType name="StreamID">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The stream's unique identifier. Each
+            device can output a certain number of streams. These streams are
+            identified by an integer value: streamID.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="type" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The type of
+                stream.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">An integer value assigned by
+                order of priority. The first stream is assigned the id 0.
+                Subsequent streams are assigned consecutive values (1, 2, ...)
+                in order of priority. 0 is the "primary" stream, 1 is the
+                "secondary" stream, and so on.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ResourceUtilization">
+        <xsd:all>
+          <xsd:element name="resource" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The name of a
+                resource.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="utilizationPct" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The percentage of utilization of
+                the previously mentioned resource.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="Resolution">
+        <!-- frame size? -->
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The viewable size of a
+            stream.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="width" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The horizontal size of the
+                image.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="height" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The vertical size of the
+                image.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ResolutionEnumeration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A list of Resolution data
+            elements.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="value" type="tns:Resolution" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of Resolution data
+                elements.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Setting">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This type is essentially a name-value
+            pair that can contain different types of values. This is used in
+            conjunction with SettingOptions.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The name of the
+                setting.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:choice>
+            <xsd:element name="decimalValue" type="xsd:decimal">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A decimal value used for
+                  specifying setting values such as
+                  framerate.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="stringValue" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A string value used for
+                  specifying setting values such as
+                  encoding.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="resolutionValue" type="tns:Resolution">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A Resolution data element used
+                  for specifying resolution values.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="intValue" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">An integer value used for
+                  specifying setting values such as gop, bitrate, and
+                  quality.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="booleanValue" type="xsd:boolean">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A boolean value used for
+                  flags.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StringEnumeration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A list of string
+            values.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="value" type="xsd:string" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of string
+                values.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FreeFormString">
+        <xsd:sequence>
+          <xsd:element name="maxLength" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DecimalEnumeration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A list of decimal
+            values.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="value" type="xsd:decimal" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of decimal
+                values.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntRange">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A range of integer
+            values.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="minValue" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The smallest allowed integer
+                value.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maxValue" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The largest allowed integer
+                value.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="default" type="xsd:int" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">(optional) the default integer
+                value.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BooleanOption">
+        <xsd:sequence>
+          <xsd:element name="default" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">(optional) the default boolean
+                value.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SettingOptions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This describes a configuration option
+            (its name) and possible acceptable values for this configuration
+            option.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">(optional) the name of the
+                setting whose possible value(s) is being described
+                here.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:choice>
+            <xsd:element name="stringEnumeration" type="tns:StringEnumeration">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StringEnumeration data
+                  element which typically represents possible encoding
+                  values</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="freeFormString" type="tns:FreeFormString">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A FreeFormString data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="decimalEnumeration" type="tns:DecimalEnumeration">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A DecimalEnumeration data
+                  element which typically represents possible frame rate
+                  values</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="resolutionEnumeration"
+              type="tns:ResolutionEnumeration">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A ResolutionEnumeration data
+                  elements which typically represents possible resolution values
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="intRange" type="tns:IntRange">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A IntRange data elements which
+                  typically represents possible gop, bitrate, and quality
+                  values</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="boolean" type="tns:BooleanOption">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A boolean
+                  value</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StreamSettings">
+        <xsd:sequence>
+          <xsd:element name="setting" type="tns:Setting" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of Setting data
+                elements.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="QueryResult">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Encapsulates the results of a query
+            for streams.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="setting" type="tns:Setting" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of Setting data
+                elements</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="settingOptions" type="tns:SettingOptions"
+            minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of SettingOptions data
+                elements</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StreamConfigurationInfo">
+        <xsd:sequence>
+          <xsd:element name="stream" type="tns:StreamID">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A StreamID data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="result" type="tns:QueryResult">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A QueryResult data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfigurationInfo">
+        <xsd:sequence>
+          <xsd:element name="resourceUtilization" type="tns:ResourceUtilization"
+            minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A ResourceUtilization data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="streamInfo" type="tns:StreamConfigurationInfo"
+            minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A StreamConfigurationInfo data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StreamIDSettings">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"/>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="stream" type="tns:StreamID">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A StreamID data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="settings" type="tns:StreamSettings">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A StreamSettings data
+                element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StreamIDSettingsList">
+        <xsd:sequence>
+          <xsd:element name="streamIDSettings" type="tns:StreamIDSettings"
+            minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A list of StreamIDSettings data
+                elements</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Preset">
+        <xsd:all>
+          <xsd:element name="descriptiveName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A preset's friendly
+                name.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="valid" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">True if valid, false
+                otherwise.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="streamSettings" type="tns:StreamIDSettingsList">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A StreamIDSettingsList data
+                element.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="PresetList">
+        <xsd:sequence>
+          <xsd:element name="preset" type="tns:Preset" minOccurs="0"
+            maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A Preset data
+                element.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <!--GetStreamCount-->
+      <xsd:element name="GetStreamCount">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Returns the number of distinct stream configurations supported by the device.
+            This is the number of distinct stream configurations that could be returned by multiple calls to
+            the GetCurrentConfiguration action.
+            Therefore, the value returned by GetStreamCount is the number of
+            distinct stream configurations, regardless of the current configuration.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetStreamCountResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            GetStreamCount action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamCount" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Number of distinct stream configurations.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--GetCurrentConfiguration-->
+      <xsd:element name="GetCurrentConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            GetCurrentConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="stream" type="tns:StreamID">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamID data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetCurrentConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            GetCurrentConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="tns:QueryResult">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A QueryResult data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--QueryOptions-->
+      <xsd:element name="QueryOptions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            QueryOptions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="stream" type="tns:StreamID">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamID data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="filter" type="tns:StreamSettings">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamSettings data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryOptionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            QueryOptions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="tns:QueryResult">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A QueryResult data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--SaveSettings-->
+      <xsd:element name="SaveSettings">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            SaveSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="stream" type="tns:StreamID">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamID data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="settings" type="tns:StreamSettings">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A list of StreamSettings data
+                  elements. <div class="notice">This must contian the full
+                    configuration, all of the settings and their respective
+                    values; even for settings that are not being
+                  changed.</div></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SaveSettingsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            SaveSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+      <!--GetAllSettings-->
+      <xsd:element name="GetAllSettings">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            GetAllSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Describes the stream (audio,
+                  video, and so on)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetAllSettingsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            GetAllSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamSettingsList"
+              type="tns:StreamIDSettingsList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamIDSettingsList data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--GetAllCurrentConfiguration-->
+      <xsd:element name="GetAllCurrentConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            GetAllCurrentConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Describes the stream (audio,
+                  video, etc.)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetAllCurrentConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            GetAllCurrentConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="tns:ConfigurationInfo">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A ConfigurationInfo data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--QueryAllOptions-->
+      <xsd:element name="QueryAllOptions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            QueryAllOptions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Describes the stream (audio,
+                  video, etc.)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="streamSettingsList"
+              type="tns:StreamIDSettingsList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamIDSettingsList data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryAllOptionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            QueryAllOptions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="tns:ConfigurationInfo">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A ConfigurationInfo data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--SaveAllSettings-->
+      <xsd:element name="SaveAllSettings">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the
+            SaveAllSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Describes the stream (audio,
+                  video, etc.)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="streamSettingsList"
+              type="tns:StreamIDSettingsList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A StreamIDSettingsList data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SaveAllSettingsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            SaveAllSettings action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+      <!--ApplyDynamicSettings Definition-->
+      <xsd:element name="ApplyDynamicSettings">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to temporarily
+            and dynamically apply one or more settings without restarting the
+            stream.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="streamType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">describes the stream (audio,
+                  video, etc.)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="streamSettingsList"
+              type="tns:StreamIDSettingsList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">a StreamIDSettingsList data
+                  element</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ApplyDynamicSettingsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the
+            ApplyDynamicSettings action</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+
+      <!--GetPresets-->
+      <xsd:element name="GetPresets">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This represents a request for to the
+            GetPresets action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetPresetsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This represents a response from the
+            GetPresets action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="tns:PresetList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A PresetList data
+                  element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--GetCurrentPresetName-->
+      <xsd:element name="GetCurrentPresetName">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This represents a request for to the
+            GetCurrentPresetName action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetCurrentPresetNameResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This represents a response from the
+            GetCurrentPresetName action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="presetName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The name of a
+                  preset</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <!--GetStreamCount-->
+  <wsdl:message name="GetStreamCount">
+    <wsdl:part name="parameters" element="tns:GetStreamCount"/>
+  </wsdl:message>
+  <wsdl:message name="GetStreamCountResponse">
+    <wsdl:part name="parameters" element="tns:GetStreamCountResponse"/>
+  </wsdl:message>
+  <!--GetCurrentConfiguration-->
+  <wsdl:message name="GetCurrentConfiguration">
+    <wsdl:part name="parameters" element="tns:GetCurrentConfiguration"/>
+  </wsdl:message>
+  <wsdl:message name="GetCurrentConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:GetCurrentConfigurationResponse"/>
+  </wsdl:message>
+  <!--QueryOptions-->
+  <wsdl:message name="QueryOptions">
+    <wsdl:part name="parameters" element="tns:QueryOptions"/>
+  </wsdl:message>
+  <wsdl:message name="QueryOptionsResponse">
+    <wsdl:part name="parameters" element="tns:QueryOptionsResponse"/>
+  </wsdl:message>
+  <!--SaveSettings-->
+  <wsdl:message name="SaveSettings">
+    <wsdl:part name="parameters" element="tns:SaveSettings"/>
+  </wsdl:message>
+  <wsdl:message name="SaveSettingsResponse">
+    <wsdl:part name="parameters" element="tns:SaveSettingsResponse"/>
+  </wsdl:message>
+  <!--GetAllSettings-->
+  <wsdl:message name="GetAllSettings">
+    <wsdl:part name="parameters" element="tns:GetAllSettings"/>
+  </wsdl:message>
+  <wsdl:message name="GetAllSettingsResponse">
+    <wsdl:part name="parameters" element="tns:GetAllSettingsResponse"/>
+  </wsdl:message>
+  <!--GetAllCurrentConfiguration-->
+  <wsdl:message name="GetAllCurrentConfiguration">
+    <wsdl:part name="parameters" element="tns:GetAllCurrentConfiguration"/>
+  </wsdl:message>
+  <wsdl:message name="GetAllCurrentConfigurationResponse">
+    <wsdl:part name="parameters"
+      element="tns:GetAllCurrentConfigurationResponse"/>
+  </wsdl:message>
+  <!--QueryAllOptions-->
+  <wsdl:message name="QueryAllOptions">
+    <wsdl:part name="parameters" element="tns:QueryAllOptions"/>
+  </wsdl:message>
+  <wsdl:message name="QueryAllOptionsResponse">
+    <wsdl:part name="parameters" element="tns:QueryAllOptionsResponse"/>
+  </wsdl:message>
+  <!--SaveAllSettings-->
+  <wsdl:message name="SaveAllSettings">
+    <wsdl:part name="parameters" element="tns:SaveAllSettings"/>
+  </wsdl:message>
+  <wsdl:message name="SaveAllSettingsResponse">
+    <wsdl:part name="parameters" element="tns:SaveAllSettingsResponse"/>
+  </wsdl:message>
+  <!--ApplyDynamicSettings Message-->
+  <wsdl:message name="ApplyDynamicSettings">
+    <wsdl:part name="parameters" element="tns:ApplyDynamicSettings"/>
+  </wsdl:message>
+  <wsdl:message name="ApplyDynamicSettingsResponse">
+    <wsdl:part name="parameters" element="tns:ApplyDynamicSettingsResponse"/>
+  </wsdl:message>
+  <!--GetPresets-->
+  <wsdl:message name="GetPresets">
+    <wsdl:part name="parameters" element="tns:GetPresets"/>
+  </wsdl:message>
+  <wsdl:message name="GetPresetsResponse">
+    <wsdl:part name="parameters" element="tns:GetPresetsResponse"/>
+  </wsdl:message>
+  <!--GetCurrentPresetName-->
+  <wsdl:message name="GetCurrentPresetName">
+    <wsdl:part name="parameters" element="tns:GetCurrentPresetName"/>
+  </wsdl:message>
+  <wsdl:message name="GetCurrentPresetNameResponse">
+    <wsdl:part name="parameters" element="tns:GetCurrentPresetNameResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="StreamConfigurationPortType">
+    <wsdl:operation name="GetStreamCount">
+      <wsdl:documentation>Returns the number of streams supported by the
+        device.</wsdl:documentation>
+      <wsdl:input message="tns:GetStreamCount"/>
+      <wsdl:output message="tns:GetStreamCountResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentConfiguration">
+      <wsdl:documentation><div class="caution">This action has been deprecated.
+          Please use the GetAllCurrentConfiguration action
+          instead.</div><p>Returns the current settings for a particular stream,
+          along with available options for those
+        settings.</p></wsdl:documentation>
+      <wsdl:input message="tns:GetCurrentConfiguration"/>
+      <wsdl:output message="tns:GetCurrentConfigurationResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="QueryOptions">
+      <wsdl:documentation><div class="caution">This action is now deprecated.
+          Please use the QueryAllOptions action instead.</div><p>This operation
+          will return the available values for settings. The client can specify
+          a "filter" of setting values. If this filter is specified, the options
+          returned are only those available in combination with the settings
+          specified as part of the filter. For convenience, the specified
+          settings are also returned as part of the response.</p><div
+          class="notice">Available settings may change depending on the filter
+          specified (for example, gop only applies when encoding is MPEG4 or
+          H264, and quality only applies when encoding is JPEG. If encoding is
+          not specified, none of these settings are
+        returned.)</div></wsdl:documentation>
+      <wsdl:input message="tns:QueryOptions"/>
+      <wsdl:output message="tns:QueryOptionsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSettings">
+      <wsdl:documentation><div class="caution">This action is now deprecated.
+          Please use the SaveAllSettings action instead.</div><p>This is the
+          only operation that actually modifies the state of the camera. Once a
+          configuration has been constructed, it can be passed to this operation
+          to change the actual stream configuration on the camera. Users must
+          pass in a full configuration and NOT a partial configuration, which
+          includes all of the settings and their respective values; even for
+          settings that are not being changed. Passing in only a partial
+          configuration will result in an error.</p><p>If the configuration is
+          invalid or missing settings, it is rejected and an error is returned
+          without modifying the state of the camera. Please refer to the
+          SaveSettings in the StreamConfiguration Issues section for
+          details.</p></wsdl:documentation>
+      <wsdl:input message="tns:SaveSettings"/>
+      <wsdl:output message="tns:SaveSettingsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllSettings">
+      <wsdl:documentation><p>Returns the current settings for all streams on the
+          camera.</p><div class="notice">This does not return available
+          settings, only their actual values. Use GetAllCurrentConfiguration
+          instead for that purpose.</div></wsdl:documentation>
+      <wsdl:input message="tns:GetAllSettings"/>
+      <wsdl:output message="tns:GetAllSettingsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCurrentConfiguration">
+      <wsdl:documentation><p>Returns the current settings and resource
+          utilization levels for all streams at once, along with additional
+          options for each setting. This is the same thing as calling
+          QueryAllOptions(GetAllSettings()). This action assumes you are only
+          changing one setting at a time.</p><div class="notice">If you are only
+          interested in the values of the settings, call GetAllSettings
+          instead.</div></wsdl:documentation>
+      <wsdl:input message="tns:GetAllCurrentConfiguration"/>
+      <wsdl:output message="tns:GetAllCurrentConfigurationResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="QueryAllOptions">
+      <wsdl:documentation><p>This operation will return the available values for
+          settings. The client can specify a "filter" of setting values. If this
+          filter is specified, the options returned are only those available in
+          combination with the settings specified as part of the filter. It is
+          mainly used for users to incrementally build and verify a valid
+          configuration for a Sarix IP camera. For convenience, the specified
+          settings are also returned as part of the response. </p><div
+          class="notice">Available settings may change depending on the filter
+          specified (for example, gop only applies when encoding is MPEG4 or
+          H264, and quality only applies when encoding is JPEG. If encoding is
+          not specified, none of these settings are
+        returned.)</div></wsdl:documentation>
+      <wsdl:input message="tns:QueryAllOptions"/>
+      <wsdl:output message="tns:QueryAllOptionsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAllSettings">
+      <wsdl:documentation>Updates the stream configuration with the settings
+        passed in. Please refer to the SaveAllSettings in the
+        StreamConfiguration Issues section for details.</wsdl:documentation>
+      <wsdl:input message="tns:SaveAllSettings"/>
+      <wsdl:output message="tns:SaveAllSettingsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="ApplyDynamicSettings">
+      <wsdl:documentation>This operation enables setting of various parameters,
+        e.g. the bit rate and frame rate, temporarily and dynamically without
+        recalculating resources. This function will only be allowed to use a
+        subset of the already identified maximum in order to reserve/allocate
+        enough space without resetting the stream. It will be tied specifically
+        to single video stream.</wsdl:documentation>
+      <wsdl:input message="tns:ApplyDynamicSettings"/>
+      <wsdl:output message="tns:ApplyDynamicSettingsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresets">
+      <wsdl:documentation>Returns all existing presets.</wsdl:documentation>
+      <wsdl:input message="tns:GetPresets"/>
+      <wsdl:output message="tns:GetPresetsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentPresetName">
+      <wsdl:documentation>Returns the string identifier of the currently active
+        preset.</wsdl:documentation>
+      <wsdl:input message="tns:GetCurrentPresetName"/>
+      <wsdl:output message="tns:GetCurrentPresetNameResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StreamConfiguration"
+    type="tns:StreamConfigurationPortType">
+    <soap:binding style="document"
+      transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetStreamCount">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetStreamCount"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentConfiguration">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetCurrentConfiguration"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryOptions">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#QueryOptions"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSettings">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#SaveSettings"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllSettings">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetAllSettings"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCurrentConfiguration">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetAllCurrentConfiguration"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryAllOptions">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#QueryAllOptions"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAllSettings">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#SaveAllSettings"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--ApplyDynamicSettings Operation-->
+    <wsdl:operation name="ApplyDynamicSettings">
+      <wsdl:documentation>This operation will set one or more configuration
+        parameters, e.g. the bit rate and frame rate, temporarily and
+        dynamically without recalculating resources. This new operation should
+        be a subset of the already identified maximum configurations in order to
+        reserve/allocate enough space without resetting the stream. It will be
+        tied specifically to single video stream.</wsdl:documentation>
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#ApplyDynamicSettings"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresets">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetPresets"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentPresetName">
+      <soap:operation
+        soapAction="urn:schemas-pelco-com:service:StreamConfiguration:1#GetCurrentPresetName"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+</wsdl:definitions>

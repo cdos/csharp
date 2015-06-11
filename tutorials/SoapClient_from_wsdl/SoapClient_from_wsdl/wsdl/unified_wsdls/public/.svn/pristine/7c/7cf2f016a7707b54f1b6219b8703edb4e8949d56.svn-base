@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="StreamControl"
+	targetNamespace="urn:schemas-pelco-com:service:StreamControl:1"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:schemas-pelco-com:service:StreamControl:1">
+
+	<wsdl:documentation>
+		$Id: StreamControlV1.wsdl 433 2010-11-23 01:18:25Z $
+	</wsdl:documentation>
+	
+	<!-- Services -->
+	
+	<wsdl:service name="StreamControl">
+		<wsdl:documentation><p>This service allows clients to control a currently active video stream.</p><p> The StreamControl service is provided by several different devices, specifically IP cameras, Encoders, and DVRs / NVRs. The context of the StreamControl's actions change based on the device providing it. Details will be given per action.</p></wsdl:documentation>
+		<wsdl:port binding="tns:StreamControl" name="StreamControl">
+			<soap:address
+				location="http://localhost:49152/control/StreamControl-1" />
+		</wsdl:port>
+	</wsdl:service>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema attributeFormDefault="unqualified"
+			elementFormDefault="unqualified"
+			targetNamespace="urn:schemas-pelco-com:service:StreamControl:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+			<!-- FrameAdvance -->
+			<xsd:element name="FrameAdvance">
+				<xsd:annotation><xsd:documentation xml:lang="en">
+					<p>This encapsulates FrameAdvance action request data.</p>
+					<div class="notice">This action is only applicable for DVR / NVR devices.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="FrameAdvanceResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates FrameAdvance action response data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamPos" type="xsd:int" minOccurs="0">
+							<xsd:annotation><xsd:documentation xml:lang="en">Returns a index that represents a position in the stream.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- FrameReverse -->
+			<xsd:element name="FrameReverse">
+				<xsd:annotation><xsd:documentation xml:lang="en">
+					<p>This encapsulates FrameReverse action request data.</p>
+					<div class="notice">This action is only applicable for DVR / NVR devices.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="FrameReverseResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates FrameReverse action response data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamPos" type="xsd:int" minOccurs="0">
+							<xsd:annotation><xsd:documentation xml:lang="en">Returns an index that represents a position in the stream.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- MarkEvent -->
+			<xsd:element name="MarkEvent">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates MarkEvent action request data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="mark" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">An alphanumeric value used to tag and recall a specific video frame.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="timeStamp" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The date time value of when the event occurred in datetime.tz format.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="MarkEventResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates MarkEvent action response data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- Play -->
+
+      <xsd:element name="Play">
+      	<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates Play action request data.</xsd:documentation></xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="sessionId" type="xsd:string">
+            	<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+            <xsd:element name="speed" type="xsd:float">
+            	<xsd:annotation><xsd:documentation xml:lang="en">Stream playback speed.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+            <xsd:element name="maxBytes" type="xsd:int">
+            	<xsd:annotation><xsd:documentation xml:lang="en">The max stream file size per second.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionVersion" type="xsd:string">
+            	<xsd:annotation><xsd:documentation xml:lang="en">Not used.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+            <xsd:element name="asyncId" type="xsd:int">
+            	<xsd:annotation><xsd:documentation xml:lang="en">Not used.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+			<xsd:element name="PlayResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">
+					<p>This encapsulates Play action response data.</p>
+					<div class="notice">In some cases, IP110 cameras may omit a response for the Play action.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamPos" type="xsd:int" minOccurs="0">
+							<xsd:annotation><xsd:documentation xml:lang="en">Returns a index that represents a position in the stream.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+                        <xsd:element name="asyncId" type="xsd:int" minOccurs="0"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- Pause -->
+			<xsd:element name="Pause">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates Pause action request data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+                        <xsd:element name="asyncId" type="xsd:int" minOccurs="0"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="PauseResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates Pause action response data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="asyncId" type="xsd:int" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>                    
+			</xsd:element>
+
+			<!-- Reverse -->
+			<xsd:element name="Reverse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates Pause action request data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="speed" type="xsd:float">
+							<xsd:annotation><xsd:documentation xml:lang="en">Stream playback speed.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="maxBytes" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en">The max stream file size per second.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="actionVersion" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Not used.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+            			<xsd:element name="asyncId" type="xsd:int">
+            				<xsd:annotation><xsd:documentation xml:lang="en">Not used.</xsd:documentation></xsd:annotation>
+            			</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ReverseResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en"><p>This encapsulates Reverse action response data.</p><div class="notice">This action is only applicable for DVR / NVR devices.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamPos" type="xsd:int" minOccurs="0">
+							<xsd:annotation><xsd:documentation xml:lang="en">Returns a index that represents a position in the stream.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- Seek -->
+			<xsd:element name="Seek">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates Seek action request data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="startTime" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The date time value of when the event occurred in datetime.tz format.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SeekResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en"><p>This encapsulates Seek action response data.</p><div class="notice">This action is only applicable for DVR / NVR devices.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="seekTime" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The amount of time it takes to find the correct position on a stream so that it can being reading the data.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SeekEvent -->
+			<xsd:element name="SeekEvent">
+				<xsd:annotation><xsd:documentation xml:lang="en">This encapsulates MarkEvent action request data.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents the unique identifier for a stream session.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="mark" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">an alphanumeric value used to tag and recall a specific video frame</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="timeStamp" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The date time value of when the event occurred in datetime.tz format.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="next" type="xsd:boolean">
+							<xsd:annotation><xsd:documentation xml:lang="en">If true this will return the next occuring event, false otherwise</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SeekEventResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en"><p>This encapsulates MarkEvent action response data.</p><div class="notice">This action is only applicable for DVR / NVR devices.</div></xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="seekTime" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The date time value of when the result was found in datetime.tz format.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- FrameAdvance -->
+	<wsdl:message name="FrameAdvance">
+		<wsdl:part name="parameters" element="tns:FrameAdvance" />
+	</wsdl:message>
+
+	<wsdl:message name="FrameAdvanceResponse">
+		<wsdl:part name="parameters" element="tns:FrameAdvanceResponse"/>
+	</wsdl:message>
+
+	<!-- FrameReverse -->
+	<wsdl:message name="FrameReverse">
+		<wsdl:part name="parameters" element="tns:FrameReverse" />
+	</wsdl:message>
+
+	<wsdl:message name="FrameReverseResponse">
+		<wsdl:part name="parameters" element="tns:FrameReverseResponse"/>
+	</wsdl:message>
+
+	<!-- MarkEvent -->
+	<wsdl:message name="MarkEvent">
+		<wsdl:part name="parameters" element="tns:MarkEvent" />
+	</wsdl:message>
+
+	<wsdl:message name="MarkEventResponse">
+		<wsdl:part name="parameters" element="tns:MarkEventResponse"/>
+	</wsdl:message>
+
+	<!-- Play -->
+	<wsdl:message name="Play">
+		<wsdl:part name="parameters" element="tns:Play"/>
+	</wsdl:message>
+
+	<wsdl:message name="PlayResponse">
+		<wsdl:part name="parameters" element="tns:PlayResponse"/>
+	</wsdl:message>
+
+	<!-- Pause -->
+	<wsdl:message name="Pause">
+		<wsdl:part name="parameters" element="tns:Pause" />
+	</wsdl:message>
+
+	<wsdl:message name="PauseResponse">
+		<wsdl:part name="parameters" element="tns:PauseResponse"/>
+	</wsdl:message>
+
+	<!-- Reverse -->
+	<wsdl:message name="Reverse">
+		<wsdl:part name="parameters" element="tns:Reverse" />
+	</wsdl:message>
+
+	<wsdl:message name="ReverseResponse">
+		<wsdl:part name="parameters" element="tns:ReverseResponse"/>
+	</wsdl:message>
+
+	<!-- Seek -->
+	<wsdl:message name="Seek">
+		<wsdl:part name="parameters" element="tns:Seek" />
+	</wsdl:message>
+
+	<wsdl:message name="SeekResponse">
+		<wsdl:part name="parameters" element="tns:SeekResponse"/>
+	</wsdl:message>
+
+	<!-- SeekEvent -->
+	<wsdl:message name="SeekEvent">
+		<wsdl:part name="parameters" element="tns:SeekEvent" />
+	</wsdl:message>
+
+	<wsdl:message name="SeekEventResponse">
+		<wsdl:part name="parameters" element="tns:SeekEventResponse"/>
+	</wsdl:message>
+  
+	<!-- Ports -->
+	<wsdl:portType name="StreamControlPortType">
+		<wsdl:operation name="FrameAdvance">
+			<wsdl:documentation>Displays the next frame in the queue assuming that you have paused the stream.</wsdl:documentation>
+			<wsdl:input message="tns:FrameAdvance" />
+			<wsdl:output message="tns:FrameAdvanceResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="FrameReverse">
+			<wsdl:documentation>Displays the previous frame in the queue assuming that you have paused the stream.</wsdl:documentation>
+			<wsdl:input message="tns:FrameReverse" />
+			<wsdl:output message="tns:FrameReverseResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="MarkEvent">
+			<wsdl:documentation>Stores an alphanumeric mark that you define onto an NVR's hard drive that is mapped to a specific video frame within the session that you are viewing. This is used to recall that location in the session with a tag name.</wsdl:documentation>
+			<wsdl:input message="tns:MarkEvent" />
+			<wsdl:output message="tns:MarkEventResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="Play">
+			<wsdl:documentation>Initiates forward playback of the data stream identified by sessionId.</wsdl:documentation>
+			<wsdl:input message="tns:Play" />
+			<wsdl:output message="tns:PlayResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="Pause">
+			<wsdl:documentation>Halts playback associated with sessionId, leaving the data stream in the PAUSED state. However, if the stream is a shared stream, i.e. multicast, Pause will halt the stream if there is only 1 client connected to it.</wsdl:documentation>
+			<wsdl:input message="tns:Pause" />
+			<wsdl:output message="tns:PauseResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="Reverse">
+			<wsdl:documentation>Plays the stream backwards continuously.</wsdl:documentation>
+			<wsdl:input message="tns:Reverse" />
+			<wsdl:output message="tns:ReverseResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="Seek">
+			<wsdl:documentation>Starts a stream session at a specific location within the stream other than at the beginning of the stream session. It uses a time within the session time range to move to the frame.</wsdl:documentation>
+			<wsdl:input message="tns:Seek" />
+			<wsdl:output message="tns:SeekResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="SeekEvent">
+			<wsdl:documentation>Works the same as seek except that it uses a Event tag to move to a location rather than time.</wsdl:documentation>
+			<wsdl:input message="tns:SeekEvent" />
+			<wsdl:output message="tns:SeekEventResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="StreamControl" type="tns:StreamControlPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="FrameAdvance">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#FrameAdvance" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FrameReverse">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#FrameReverse" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="MarkEvent">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#MarkEvent" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Play">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#Play" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Pause">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#Pause" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Reverse">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#Reverse" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Seek">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#Seek" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SeekEvent">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamControl:1#SeekEvent" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+</wsdl:definitions>

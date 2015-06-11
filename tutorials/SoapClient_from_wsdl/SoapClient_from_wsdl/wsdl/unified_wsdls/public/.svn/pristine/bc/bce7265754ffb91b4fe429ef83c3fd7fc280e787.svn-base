@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:tt="http://www.pelco.com/api/Pelco/1" 
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://www.pelco.com/api/Pelco/1"
+           elementFormDefault="qualified">
+  
+  <xsd:simpleType name="Guid">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        The representation of a GUID/UUID.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+   
+  <xsd:simpleType name="Name">
+    <xsd:restriction base="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Represents Name for the Profiles. The name cannot be more than 65 characters long and should be a minimum of 5 characters.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:maxLength value="65"/>
+      <xsd:minLength value="5"/>
+    </xsd:restriction>
+  </xsd:simpleType>  
+            	
+</xsd:schema>

@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:tns="urn:schemas-pelco-com:service:AudioInput:1"
+targetNamespace="urn:schemas-pelco-com:service:AudioInput:1">
+
+	<wsdl:documentation>
+	This web service allows clients to do the following:
+		<ul>
+			<li>query available and active audio streams and to request connections to those streams</li>
+			<li>play audio from a network audio source for devices with the capability</li>
+			<li>add full duplex audio capabilities to the audio driver</li>
+		</ul>
+	</wsdl:documentation>
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:AudioInput:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:complexType name="StreamSession">
+				<xsd:sequence>
+					<xsd:element name="sourceURI" minOccurs="0" type="xsd:anyURI">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The URI of the original source of the audio data.
+
+							e.g. uuid:EnduraEncoder-CU6350-5/urn:pelco-com:serviceId:AudioInput-1
+							e.g. uuid:ca522d4a-d26f-446a-8e7e-ccdb6127fd2d/urn:pelco-com:serviceId:AudioInput-16
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="outputURI" minOccurs="0" type="xsd:anyURI">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The URI to which the audio will be streamed.
+
+							e.g. uuid:EnduraDecoder-CU6350-5/urn:pelco-com:serviceId:StreamControl-1
+							e.g. uuid:713119bb-401c-4c3e-bd1f-3443a45e28bc/urn:schemas-pelco-com:serviceId:AudioInput:1
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="controlURI" minOccurs="0" type="xsd:anyURI">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The URI of the urn:schemas-pelco-com:StreamControl
+							service to be used to control the indicated stream.
+
+							e.g. uuid:EnduraDecoder-CU6350-5/urn:pelco-com:serviceId:StreamControl-1
+							e.g. uuid:713119bb-401c-4c3e-bd1f-3443a45e28bc/urn:schemas-pelco-com:serviceId:AudioInput:1
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="transportURL" minOccurs="0" type="xsd:anyURI">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The URL to which the selected video data will be transmitted.
+							By default, audio streams are multicast unless this value is
+							filled. The device port is optional; the server response will
+							include this if it is not specified in the request.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="streamState" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The current transmission state of the stream.
+								<ul>
+									<li>Play</li>
+									<li>Reverse</li>
+									<li>Pause</li>
+									<li>Seek</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="displayName" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							This denotes what identifying text to display onscreen
+							with the stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="sessionId" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The unique identifier of an audio stream session.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="iFrameOnly" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							True if only iframes should be outputed, false otherwise.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="secsPerIFrame" minOccurs="0" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The interval between each iframe insertion in the stream, counted in seconds.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="startTime" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The start time of the interval being played back.
+							The format of start time is dateTime.tz.
+							ex 1988-04-07T18:39:09-08:00
+							NOW is also valid to denote a live stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="endTime" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The end time of the interval being played back.
+							The format of the end time is dateTime.tz. ex 1988-04-07T18:39:09-08:00
+							INFINITE is also valid to denote a live stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="clients" minOccurs="0" type="xsd:unsignedInt">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The number of clients currently associated to this session.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="refreshInterval" type="xsd:unsignedInt">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The interval in seconds to be used in the RefreshSession
+							action in the StreamControl service
+							indicated by controlURI. If the camera does not receive
+							any calls to the RefreshSession action within the specified
+							interval, the audio stream session identified by sessionId
+							will be disconnected. Units are in seconds. The minimum
+							value is 30 and the maximum value is 900.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="StreamParameters">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+					Settings for connecting to a stream.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="displayName" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							This denotes what identifying text to display onscreen
+							with the stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="preAlarmDurationInManualRecord" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							This specifies the amount of time, in seconds,
+							prior to the current time that the recording
+							should begin. Typically this is used when
+							manual recording is initiated. This has little
+							to do with alarms.
+
+							30 (seconds) is common value.
+
+							This feature is based on the premise that the
+							recording device has cached some amount of
+							video prior to the current time.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="streamSession" type="tns:StreamSession"/>
+					<xsd:element name="samplerate" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+							The number of samples per second.
+
+							Valid values are the following:
+								<ul>
+									<li>For a high rate use: 32 Kbps</li>
+									<li>For a medium rate use: 16 Kbps</li>
+									<li>For a low rate use: 8 Kbps</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+		<!-- Query -->
+
+			<xsd:simpleType name="EVENT-URN">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+					This contains available event types:
+						<ul>
+							<li>
+							AlarmRecord - represents important triggered
+							violations
+							</li>
+							<li>
+							MotionRecord - represents a triggered motion
+							detection related event
+							</li>
+							<li>
+							TimedRecord - represents an event triggered by
+							time duration
+							</li>
+							<li>
+							MarkRecord - represents an event triggered by a
+							user initiated marking of a specific frame
+							</li>
+							<li>
+							AllRecord - represents all events
+							</li>
+						</ul>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="AlarmRecord" />
+					<xsd:enumeration value="MotionRecord" />
+					<xsd:enumeration value="TimedRecord" />
+					<xsd:enumeration value="MarkRecord" />
+					<xsd:enumeration value="AllRecord" />
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="StreamQuery">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This contains criteria used for filtering audio stream
+						query results.
+
+						Some important points regarding the form of the search
+						criteria (StreamQuery data element):
+						<ul>
+							<li>
+								The search criteria only need contain those
+								elements needed to filter the returned catalog,
+								or used to specify which elements should be
+								included in the response.
+							</li>
+							<li>
+								Those elements that should be included in the
+								response should contain a "select" attribute.
+								If a "select" attribute is associated with the
+								rootcstreamQuery element, all sub-elements
+								will be returned.
+							</li>
+							<li>
+								Those elements whose existence is required
+								should contain a required attribute. As with the
+								select attribute, if a "required" attribute is
+								associated with the root streamQuery element,
+								then all sub-elements are required.
+							</li>
+						</ul>
+
+						<div class="notice">
+							A direct transformation exists between the search
+							criteria and an SQL statement of the form
+							SELECT [syseng:Fields] FROM [syseng:Table] WHERE
+							[syseng:Conditions] where [syseng:Fields] includes
+							those elements with an associated "select" attribute
+							(or is considered to be * if the streamQuery
+							element has a "select" attribute), [syseng:Table] is
+							empty, and [syseng:Conditions] is the logical and of
+							the included search criteria.
+						</div>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="sourceURI" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The URL from which the search results may be downloaded.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="sourceId" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique identifier of the AudioInput service
+								that was original source of the video data.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="outputUDN" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique device name where this service will
+								direct its output.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="outputId" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique identifier of the instance where this
+								service will direct its output.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="eventUDN" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique device name where the service will
+								direct its events.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="eventId" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique identifier of a specific event.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="eventURN" minOccurs="0" type="tns:EVENT-URN"/>
+					<xsd:element name="serviceId" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The service's unique identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="formats" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A list of acceptable formats to be used in the
+								search criteria.
+
+								Valid values are the following:
+								<ul>
+									<li>G764</li>
+									<li>G711</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="selected" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The audio stream related attributes to return.
+								(Akin to SQL's SELECT statement.)
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="minBitrate" minOccurs="0" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A minimum bit-rate to be used in the search
+								criteria, in bps.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="maxBitrate" minOccurs="0" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A maximum bit-rate to be used in the search
+								criteria, in bps.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="startTime" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The start time of the interval being played back.
+								The format of start time is dateTime.tz.
+								e.g. 1988-04-07T18:39:09-08:00
+								NOW is also valid to denote a live stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="endTime" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The end time of the interval being played back.
+								The format of the end time is dateTime.tz.
+								e.g. 1988-04-07T18:39:09-08:00
+								INFINITE is also valid to denote a live stream.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pageHeader" minOccurs="0" type="tns:PageHeader"/>
+					<xsd:element name="deletionPriority" minOccurs="0" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The deletion order designation during DVR / NVR / NSM
+								garbage collection.
+
+								This is restricted to the following values (from
+								lowest to highest):
+								<ul>
+									<li>0 for DISCARD</li>
+									<li>1 for LOW</li>
+									<li>2 for MEDIUM</li>
+									<li>3 for HIGH</li>
+									<li>4 for LOCK - this is the highest priority</li>
+									<li>5 for UNDEFINED</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="Query">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamQuery" type="tns:StreamQuery"/>
+						<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This is only relevant to Endura and is
+									related to multi-cast messages from Pelco
+									GUI client software.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="Sessions">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A list of session IDs.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="session" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A session's unique identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+		<!-- QueryResponse -->
+
+			<xsd:complexType name="Entries">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A list of StreamParameters.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element  name="streamParameters" type="tns:StreamParameters" maxOccurs="unbounded" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="QueryId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A query's unique identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attribute name="ttl" type="xsd:unsignedInt">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The query's time to live, before the results
+									of the query are no longer stored.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+
+			<xsd:complexType name="PageHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Contains information used for paging through a result
+						set with more than one page of results.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="queryId" type="tns:QueryId" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A query's unique identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="nextEntry" type="xsd:unsignedInt" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								An index bookmarking the next entry that signifies
+								the next page of results.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="totalEntries" type="xsd:unsignedInt" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The total number of entries that the device can
+								support.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="maxEntries" type="xsd:unsignedInt" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The maximum number of results to return.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="resultURI" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The URL from which the search results may be
+								downloaded. This may be used in conjuntion with
+								entry paging to improve performance.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="StreamCatalog">
+				<xsd:sequence>
+					<xsd:element name="pageHeader" type="tns:PageHeader" minOccurs="0"/>
+					<xsd:element name="entries" type="tns:Entries" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								An Entries data type.
+
+								<div class="notice">
+									.NET cannot handle a maxOccurs of unbounded for this
+									element.
+								</div>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+					<xsd:element name="QueryResponse">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="streamCatalog" type="tns:StreamCatalog"/>
+								<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											This is only relevant to Endura and is
+											related to multicast messages from Pelco
+											GUI client software
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- Connect -->
+
+					<xsd:element name="Connect">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A request to the Connect action.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="streamParameters" type="tns:StreamParameters"/>
+								<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											This is only relevant to Endura and is
+											related to multicast messages from Pelco
+											GUI client software
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- ConnectResponse -->
+
+					<xsd:element name="ConnectResponse">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+					A response to a Connect request.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="streamParameters" type="tns:StreamParameters"/>
+								<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											This is only relevant to Endura and is
+											related to multicast messages from Pelco
+											GUI client software
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- Disconnect -->
+					<xsd:element name="Disconnect">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A request to the Disconnect action.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="sessionId" type="xsd:string">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											A session's unique identifier.
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											This is only relevant to Endura and is
+											related to multicast messages from Pelco
+											GUI client software
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- DisconnectResponse -->
+					<xsd:element name="DisconnectResponse">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A response to a Disconnect request.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="asyncId" type="xsd:int" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											This is only relevant to Endura and is
+											related to multicast messages from Pelco
+											GUI client software
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- GetActiveSetssions -->
+					<xsd:element name="GetActiveSessions">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A request to the GetActiveSessions action.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType/>
+					</xsd:element>
+
+					<xsd:element name="GetActiveSessionsResponse">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A response to a GetActiveSessions request.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="activeSessions" type="xsd:int">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											The number of currently active sessions.
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="maxSessions" type="xsd:int">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											The maximum possible number of active sessions.
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- GetActiveSessionIds -->
+					<xsd:element name="GetActiveSessionIds">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A request to the GetActiveSessionIds action.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType/>
+					</xsd:element>
+
+					<xsd:element name="GetActiveSessionIdsResponse">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A response to a GetActiveSessionIds request.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="sessionIds" type="tns:Sessions"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+		<!-- GetSessionParameters -->
+					<xsd:element name="GetSessionParameters">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A request to the GetSessionParameters action.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="sessionId" type="xsd:string">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="en">
+											A session's unique identifier.
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+					<xsd:element name="GetSessionParametersResponse">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A response to a GetSessionParameters request.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="streamParameters" type="tns:StreamParameters"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+	</xsd:schema>
+</wsdl:types>
+
+<!-- Messages -->
+
+<!-- Query -->
+			<wsdl:message name="QueryRequest">
+				<wsdl:part name="parameters" element="tns:Query"/>
+			</wsdl:message>
+
+			<wsdl:message name="QueryResponse">
+				<wsdl:part name="parameters" element="tns:QueryResponse"/>
+			</wsdl:message>
+
+<!-- Connect -->
+			<wsdl:message name="ConnectRequest">
+				<wsdl:part name="parameters" element="tns:Connect"/>
+			</wsdl:message>
+
+			<wsdl:message name="ConnectResponse">
+				<wsdl:part name="parameters" element="tns:ConnectResponse"/>
+			</wsdl:message>
+
+<!-- Disconnect -->
+			<wsdl:message name="DisconnectRequest">
+				<wsdl:part name="parameters" element="tns:Disconnect"/>
+			</wsdl:message>
+
+			<wsdl:message name="DisconnectResponse">
+				<wsdl:part name="parameters" element="tns:DisconnectResponse"/>
+			</wsdl:message>
+
+<!-- GetActiveSessions -->
+			<wsdl:message name="GetActiveSessionsRequest">
+				<wsdl:part name="parameters" element="tns:GetActiveSessions"/>
+			</wsdl:message>
+
+			<wsdl:message name="GetActiveSessionsResponse">
+				<wsdl:part name="parameters" element="tns:GetActiveSessionsResponse"/>
+			</wsdl:message>
+
+<!-- GetActiveSessionIds -->
+			<wsdl:message name="GetActiveSessionIdsRequest">
+				<wsdl:part name="parameters" element="tns:GetActiveSessionIds"/>
+			</wsdl:message>
+
+			<wsdl:message name="GetActiveSessionIdsResponse">
+				<wsdl:part name="parameters" element="tns:GetActiveSessionIdsResponse"/>
+			</wsdl:message>
+
+<!-- GetSessionParameters -->
+			<wsdl:message name="GetSessionParametersRequest">
+				<wsdl:part name="parameters" element="tns:GetSessionParameters"/>
+			</wsdl:message>
+
+			<wsdl:message name="GetSessionParametersResponse">
+				<wsdl:part name="parameters" element="tns:GetSessionParametersResponse"/>
+			</wsdl:message>
+
+<!-- Ports -->
+
+			<wsdl:portType name="AudioInputPortType">
+				<wsdl:operation name="Query">
+					<wsdl:documentation>
+						Returns a catalog listing of audio data managed by the 
+						service instance that is available for streaming and
+						matches the search criteria specified by streamQuery.
+					</wsdl:documentation>
+					<wsdl:input message="tns:QueryRequest"/>
+					<wsdl:output message="tns:QueryResponse"/>
+				</wsdl:operation>
+
+				<wsdl:operation name="Connect">
+					<wsdl:documentation>
+						Initiates a streaming session with the
+						urn:schemas-pelco-com:service:AudioOuput service indicated by
+						outputURI containing the audio data indicated by streamParameters.
+						The returned streamParameters will include URI of the
+						urn:schemas-pelco-com:service:StreamControl service that should
+						be used to control the session, the sessionId to be used when
+						addressing the urn:schemas-pelco-com:service:StreamControl
+						service, the URL to which the audio data will be streamed, the
+						transport state of the stream, and the number of clients
+						currently attached to this session.
+					</wsdl:documentation>
+					<wsdl:input message="tns:ConnectRequest"/>
+					<wsdl:output message="tns:ConnectResponse"/>
+				</wsdl:operation>
+
+				<wsdl:operation name="Disconnect">
+					<wsdl:documentation>
+						Terminates the streaming session indicated by sessionId.
+					</wsdl:documentation>
+					<wsdl:input message="tns:DisconnectRequest"/>
+					<wsdl:output message="tns:DisconnectResponse"/>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetActiveSessions">
+					<wsdl:documentation>
+						Returns the number of active sessions currently managed by the
+						service instance as well as the maximum number of simultaneous
+						sessions supported by the service instance.
+					</wsdl:documentation>
+					<wsdl:input message="tns:GetActiveSessionsRequest"/>
+					<wsdl:output message="tns:GetActiveSessionsResponse"/>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetActiveSessionIds">
+					<wsdl:documentation>
+						Returns a list of sessionIds for currently active sessions
+						associated with the service instance.
+					</wsdl:documentation>
+					<wsdl:input message="tns:GetActiveSessionIdsRequest"/>
+					<wsdl:output message="tns:GetActiveSessionIdsResponse"/>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetSessionParameters">
+					<wsdl:documentation>
+						Returns the parameters associated with the session indicated
+						by sessionId.
+					</wsdl:documentation>
+					<wsdl:input message="tns:GetSessionParametersRequest"/>
+					<wsdl:output message="tns:GetSessionParametersResponse"/>
+				</wsdl:operation>
+
+			</wsdl:portType>
+
+<!-- Bindings -->
+
+			<wsdl:binding name="AudioInput" type="tns:AudioInputPortType">
+				<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+				<wsdl:operation name="Query">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#Query" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+				<wsdl:operation name="Connect">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#Connect" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+				<wsdl:operation name="Disconnect">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#Disconnect" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetActiveSessions">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#GetActiveSessions" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetActiveSessionIds">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#GetActiveSessionIds" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+				<wsdl:operation name="GetSessionParameters">
+					<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInput:1#GetSessionParameters" />
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+				</wsdl:operation>
+
+			</wsdl:binding>
+
+<!-- Services -->
+
+			<wsdl:service name="AudioInput">
+				<wsdl:documentation>
+					This service allows a client to query available and incoming audio
+					streams and to request connections to those streams.
+				</wsdl:documentation>
+				<wsdl:port binding="tns:AudioInput" name="AudioInput">
+					<soap:address location="http://localhost:49152/control/AudioInput-1" />
+				</wsdl:port>
+			</wsdl:service>
+
+		</wsdl:definitions>

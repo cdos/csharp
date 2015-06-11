@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml"><head><title>ScriptControl - Web Service</title><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta http-equiv="content-script-type" content="text/javascript"/><meta http-equiv="content-style-type" content="text/css"/><meta name="Generator" content="http://tomi.vanek.sk/xml/wsdl-viewer.xsl"/><meta http-equiv="imagetoolbar" content="false"/><meta name="MSSmartTagsPreventParsing" content="true"/><style type="text/css">
+
+/**
+	wsdl-viewer.css
+*/
+
+/**
+=========================================
+	Body
+=========================================
+*/
+html {
+	background-color: #FFFFFF;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: auto;
+	color: white;
+	background-color: #FFFFFF;
+	font-family:Tahoma,Arial,Helvetica;
+	font-size:9pt;
+	text-decoration:none;
+}
+
+#outer_box {
+	padding: 3px 3px 3px 194px;
+}
+
+#inner_box {
+	width: auto;
+	background-color: white;
+	color: black;
+	border: 1px solid #009530;
+}
+
+/**
+=========================================
+	Fixed box with links
+=========================================
+*/
+#outer_links { 
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	margin: 3px;
+	padding: 1px;
+	z-index: 200; 
+	width: 180px;
+	height: auto;
+	background-color: gainsboro;
+	padding-top: 2px;
+	border: 1px solid #009530;
+}
+
+* html #outer_links /* Override above rule for IE */ 
+{ 
+	position: absolute; 
+	width: 188px;
+	top: expression(offsetParent.scrollTop + 0); 
+} 
+
+#links {
+	margin: 1px;
+	padding: 3px;
+	background-color: white;
+	height: 350px;
+	overflow: auto;
+	border: 1px solid #0063BE;
+}
+
+#links ul {
+	left: -999em;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	z-index: 100;
+}
+
+#links li {
+	margin: 0;
+	padding: 2px 4px;
+	width: auto;
+	z-index: 100;
+}
+
+#links ul li {
+	margin: 0;
+	padding: 2px 4px;
+	width: auto;
+	z-index: 100;
+}
+
+#links a {
+	display: block;
+	padding: 0 2px;
+	color: #42B4E6;
+	width: auto;
+	border: 1px solid white;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+#links a:hover {
+	color: white;
+	background-color: gray;
+	border: 1px solid gray;
+} 
+
+
+/**
+=========================================
+	Navigation tabs
+=========================================
+*/
+
+#outer_nav {
+	background-color: yellow;
+	padding: 0;
+	margin: 0;
+}
+
+#nav {
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+	background-color: gainsboro;
+	border-top: 1px solid gray;
+	border-bottom: 3px solid gray;
+	z-index: 100;
+	font: bold 90%/120% Arial, Helvetica, sans-serif;
+	letter-spacing: 2px;
+} 
+
+#nav ul { 
+	background-color: gainsboro;
+	height: auto;
+	width: auto;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	z-index: 100;
+
+	border: 1px solid silver; 
+	border-top-color: black; 
+	border-width: 1px 0 9px; 
+} 
+
+#nav li { 
+	display: inline; 
+	padding: 0;
+	margin: 0;
+} 
+
+#nav a { 
+	position: relative;
+	top: 3px;
+	float:left; 
+	width:auto; 
+	padding: 8px 10px 6px 10px;
+	margin: 3px 3px 0;
+	border: 1px solid gray; 
+	border-width: 2px 2px 3px 2px;
+
+	color: black; 
+	background-color: silver; 
+	text-decoration:none; 
+	text-transform: uppercase;
+}
+
+#nav a:hover { 
+	margin-top: 1px;
+	padding-top: 9px;
+	padding-bottom: 7px;
+	color: #42B4E6;
+	background-color: gainsboro;
+} 
+
+#nav a.current:link,
+#nav a.current:visited,
+#nav a.current:hover {
+	background: white; 
+	color: black; 
+	text-shadow:none; 
+	margin-top: 0;
+	padding-top: 11px;
+	padding-bottom: 9px;
+	border-bottom-width: 0;
+	border-color: #87D300; 
+}
+
+#nav a:active { 
+	background-color: silver; 
+	color: white;
+} 
+
+
+
+/**
+=========================================
+	Content
+=========================================
+*/
+#header {
+	margin: 0;
+	padding: .5em 4em 3.5em .5em;
+	background-color: #FFFFFF;
+	border: 1px solid #009530;
+}
+
+#content {
+	margin: 0;
+	padding: 0 2em .5em;
+}
+
+#footer {
+	clear: both;
+	margin: 0;
+	padding: .5em 2em;
+	color: gray;
+	background-color: gainsboro;
+	font-size: 80%;
+	border-top: 1px dotted gray;
+}
+
+.single_column {
+	padding: 10px 10px 10px 10px;
+	/*margin: 0px 33% 0px 0px; */
+	margin: 3px 0;
+}
+
+#flexi_column {
+	padding: 10px 10px 10px 10px;
+	/*margin: 0px 33% 0px 0px; */
+	margin: 0px 212px 0px 0px;
+}
+
+#fix_column {
+	float: right;
+	padding: 10px 10px 10px 10px;
+	margin: 0px;
+	width: 205px;
+	/*width: 30%; */
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	/* width: 30%; */
+	width: 205px;
+}
+html>body #rightColumn {
+	width: 205px; /* ie5win fudge ends */
+} /* Opera5.02 shows a 2px gap between. N6.01Win sometimes does.
+	Depends on amount of fill and window size and wind direction. */
+
+/**
+=========================================
+	Label / value
+=========================================
+*/
+
+.page {
+	border-bottom: 3px dotted #009530;
+	margin: 0;
+	padding: 10px 0 20px 0;
+}
+
+.value, .label {
+	margin: 0;
+	padding: 0;
+	max-width: 70em;
+}
+
+.label {
+/*	float: left;*/
+	width: 100%;
+	text-align: left;
+	font-weight: bold;
+	padding-bottom: .5em;
+	margin-right: 0;
+	color: #0081c5;
+}
+
+.value {
+	color: #1E3E66;
+	padding-bottom: .5em;
+}
+
+strong, strong a {
+	color: #1E3E66;
+	font-weight: bold;
+	letter-spacing: 1px;
+	margin-left: 2px;
+}
+
+
+/**
+=========================================
+	Links
+=========================================
+*/
+
+a.local:link,
+a.local:visited {
+	color: #42B4E6; 
+	margin-left: 10px;
+	border-bottom: 1px dotted #42B4E6;
+	text-decoration: none;
+/*	font-style: italic;*/
+}
+
+a.local:hover {
+	background-color: gainsboro; 
+	color: #1E3E66;
+	padding-bottom: 1px;
+	border-bottom: 1px solid #1E3E66;
+}
+
+a.target:link,
+a.target:visited,
+a.target:hover
+{
+	text-decoration: none;
+	background-color: transparent;
+	border-bottom-type: none;
+}
+
+/**
+=========================================
+	Box, Shadow
+=========================================
+*/
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEEF7;
+border-bottom-color:#7994CB;
+border-bottom-style:solid;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:#7994CB;
+border-top-style:solid;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}
+
+.shadow {
+	background: silver;
+	position: relative;
+	top: 5px;
+	left: 4px;
+}
+
+.shadow div {
+	position: relative;
+	top: -5px;
+	left: -4px;
+}
+
+/**
+=========================================
+	Floatcontainer
+=========================================
+*/
+
+.spacer
+{
+	display: block;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	clear: both; 
+	visibility:hidden;
+}
+
+.floatcontainer:after {
+	content: ".";
+	display: block;
+	height: 0;
+	font-size:0; 
+	clear: both;
+	visibility:hidden;
+}
+.floatcontainer{
+	display: inline-table;
+} /* Mark Hadley's fix for IE Mac */ /* Hides from IE Mac \*/ * 
+html .floatcontainer {
+	height: 1%;
+}
+.floatcontainer{
+	display:block;
+} /* End Hack 
+*/ 
+
+/**
+=========================================
+	Source code
+=========================================
+*/
+
+.indent {
+	margin: 2px 0 2px 20px;
+}
+
+.xml-element, .xml-proc, .xml-comment {
+	margin: 2px 0;
+	padding: 2px 0 2px 0;
+}
+
+.xml-element {
+	word-spacing: 3px;
+	color: #1E3E66;
+	font-weight: bold;
+	font-style:normal;
+	border-left: 1px dotted silver;
+}
+
+.xml-element div {
+	margin: 2px 0 2px 40px;
+}
+
+.xml-att {
+color: #447FC9;
+	font-weight: bold;
+}
+
+.xml-att-val {
+color: #447FC9;
+	font-weight: normal;
+}
+
+.xml-proc {
+color: #3F55A5;
+	font-weight: normal;
+/*	font-style: italic;*/
+}
+
+.xml-comment {
+/*color: #3F55A5;*/
+color: #008000;
+	font-weight: normal;
+/*	font-style: italic;*/
+}
+
+.xml-text {
+color: #3F55A5;
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+/**
+=========================================
+	Heading
+=========================================
+*/
+h1, h2, h3 {
+	margin: 10px 10px 2px;
+	font-family: Georgia, Times New Roman, Times, Serif;
+	font-weight: normal;
+	}
+
+h1 {
+	font-weight: bold;
+	letter-spacing: 3px;
+	font-size: 220%;
+	line-height: 100%;
+}
+
+h2 {
+	font-weight: bold;
+	font-size: 175%;
+	line-height: 200%;
+}
+
+h3 {
+	font-size: 175%;
+	line-height: 175%;
+/*	font-style: italic; */
+}
+
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed gray;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed gray;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid 
+#aaa;
+color: 
+black;
+border-left: 10px solid 
+#aaa;
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('../images/notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px;
+border: 1px solid 
+#aaa;
+color: 
+black;
+border-left: 10px solid 
+#aaa;
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('../images/caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('../images/warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('../images/danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+/* --------------------------------------------------------
+	Printing
+*/
+
+/*
+@media print
+{
+	#outer_links, #outer_nav { 
+		display: none;
+	}
+*/
+
+	#outer_box {
+		padding: 3px;
+	}
+/* END print media definition
+}
+*/
+
+</style><script src="wsdl-viewer.js" type="text/javascript" language="javascript"><!--
+	// --></script></head><body id="operations"><div id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>ScriptControl - Web Service</h1><br/></div><div id="content"><div class="page"><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1</div><div class="label">Description:</div><div class="value">
+			This service allows clients to control scripts, presets, and patterns.
+		</div><div class="label">Transport protocol:</div><div class="value">SOAP over HTTP</div><div class="label">Operations:</div><div class="value">
+<ol style="line-height: 180%;"><li><big><i>BeginScript</i></big><a class="local" href="#op.d0e270">Detail</a></li><li><big><i>CancelScript</i></big><a class="local" href="#op.d0e282">Detail</a></li><li><big><i>DeleteScript</i></big><a class="local" href="#op.d0e287">Detail</a></li><li><big><i>EndScript</i></big><a class="local" href="#op.d0e277">Detail</a></li><li><big><i>ExecuteScript</i></big><a class="local" href="#op.d0e297">Detail</a></li><li><big><i>HaltScript</i></big><a class="local" href="#op.d0e302">Detail</a></li><li><big><i>QueryScripts</i></big><a class="local" href="#op.d0e292">Detail</a></li></ol></div></div></div><div class="page"><a class="target" name="page.operations"><h2>Operations</h2></a><ul><div><ol><li class="operation"><big><b><a name="op.BeginScript">BeginScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+        Causes the service instance to begin "recording" or "programming"
+        the script. The name of the script is set in scriptName.
+
+        <div class="notice">
+          Only D-Protocol devices behave properly with BeginScript.
+          
+          Currently there is a known issue with EXCOAXITRON:
+          If the preset name does not end in a number that starts with 1
+          OR
+          if other presets already exist and the 
+          the preset name does not end in a consecutive number
+          continuing from the last preset number, then the new
+          preset will fail (for example, if the last preset
+          name ended with 3, then the next preset name must end with 4).
+
+          Also, the BeginScript action only applies to devices that
+          support recording and programming. For example, dome
+          positioning systems have a feature called pattern recording, which allows
+          the user to record a specific set of movement
+          commands into a movement pattern (this is also known as a script). The BeginScript
+          action starts the recording process.
+        </div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#BeginScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [BeginScript]<div style="color:#1E3E66;">
+            A request to the BeginScript action.
+          </div><ul type="square"><li><b>scriptName</b> [string]<div style="color:#1E3E66;">
+                  The name of the preset or pattern to begin 'recording'.
+                </div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [BeginScriptResponse]<div style="color:#1E3E66;">
+            A response to a BeginScript request.
+          </div></div></li><li class="operation"><big><b><a name="op.CancelScript">CancelScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+        Causes the service instance to cancel the "recording" or
+        "programming" of the script indicated by scriptName. Nothing is saved.
+      </div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#CancelScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [CancelScript]<div style="color:#1E3E66;">
+            A request to the CancelScript action.
+          </div><ul type="square"><li><b>scriptName</b> [string]<div style="color:#1E3E66;">
+                  The name of the script to cancel 'recording'.
+                </div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [CancelScriptResponse]<div style="color:#1E3E66;">
+            A response to a CancelScript request.
+          </div></div></li><li class="operation"><big><b><a name="op.DeleteScript">DeleteScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+        Causes the service instance to delete from its list of scripts the script indicated by scriptName.
+      </div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#DeleteScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [DeleteScript]<div style="color:#1E3E66;">
+            A request to the DeleteScript action.
+          </div><ul type="square"><li><b>scriptName</b> [string]<div style="color:#1E3E66;">
+                  The name of the script to delete.
+                </div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [DeleteScriptResponse]<div style="color:#1E3E66;">
+            A response to a DeleteScript request.
+          </div></div></li><li class="operation"><big><b><a name="op.EndScript">EndScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+        Causes the service instance to end the "recording" or
+        "programming" of a specific script and save it using a given scriptName.
+      </div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#EndScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [EndScript]<div style="color:#1E3E66;">
+            A request to the EndScript action.
+          </div><ul type="square"><li><b>scriptName</b> [string]<div style="color:#1E3E66;">
+                  The name of the preset or pattern to end 'recording'.
+                </div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [EndScriptResponse]<div style="color:#1E3E66;">
+            A response to a EndScript request.
+          </div></div></li><li class="operation"><big><b><a name="op.ExecuteScript">ExecuteScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+				Causes the locally stored script indicated by scriptName to be executed.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#ExecuteScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ExecuteScript]<div style="color:#1E3E66;">
+						A request to the ExecuteScript action.
+					</div><ul type="square"><li><b>scriptName</b> [string]<div style="color:#1E3E66;">
+									The name of the script to run.
+								</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ExecuteScriptResponse]<div style="color:#1E3E66;">
+						A response to a ExecuteScript request.
+					</div><ul type="square"><li><b>pid</b> [int]<div style="color:#1E3E66;">
+									A process ID related to the currently running script.
+								</div></li> </ul></div></li><li class="operation"><big><b><a name="op.HaltScript">HaltScript</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+				Causes an instance of a script indicated by pid to 
+				be stopped, if currently running. 
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#HaltScript</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [HaltScript]<div style="color:#1E3E66;">
+						A request to the HaltScript action.
+					</div><ul type="square"><li><b>scriptName</b> - optional;  [string]<div style="color:#1E3E66;">
+									The name of the script to stop running.
+								</div></li><li><b>pid</b> - optional;  [int]<div style="color:#1E3E66;">
+									A process ID related to the currently running script.
+								</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [HaltScriptResponse]<div style="color:#1E3E66;">
+						A response to a HaltScript request.
+					</div></div></li><li><big><b><a name="op.QueryScripts">QueryScripts</a></b></big><div class="value">
+</div><div class="label">Description:</div><div class="value">
+        Retrieves a list of names of locally stored scripts from the service instance.
+      </div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:ScriptControl:1#QueryScripts</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [QueryScripts]<div style="color:#1E3E66;">
+            A request to the QueryScripts action.
+          </div><ul type="square"><li><b>scriptQuery</b> [ScriptQuery]
+            Defines a query to return a list of scripts.
+          <ul type="square"><li><b>name</b> - optional;  [string]<div style="color:#1E3E66;">
+                The script's name. It has a 40 max character length.
+                e.g. scriptname1.xml
+              </div></li><li><b>description</b> - optional;  [string]<div style="color:#1E3E66;">
+                Information regarding the script in question.
+                It has a 250 max character length.
+              </div></li><li><b>id</b> - optional;  [int]<div style="color:#1E3E66;">
+                The script"s unique identifier.
+              </div></li><li><b>owner</b> - optional;  [int]<div style="color:#1E3E66;">
+                The script's owner.
+              </div></li><li><b>executing</b> - optional;  [boolean]<div style="color:#1E3E66;">
+                Set to 1 (true) for scripts that are currently
+                running. Set to 0 (false) otherwise.
+              </div></li><li><b>queryId</b> - optional;  [string]<div style="color:#1E3E66;">
+                A unique identifier for the query related to these
+                results. This is in UUID format.
+              </div></li><li><b>nextEntry</b> - optional;  [int]<div style="color:#1E3E66;">
+                The index that marks where the next page of
+                results begins, for results that span more than
+                one page.
+              </div></li><li><b>maxEntries</b> - optional;  [int]<div style="color:#1E3E66;">
+                The maximum number of results to return
+                (total returned result set).
+              </div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [QueryScriptsResponse]<div style="color:#1E3E66;">
+            A response to a QueryScripts request.
+          </div><ul type="square"><li><b>scriptList</b> [ScriptList]<ul type="square"><li><b>scripts</b> - optional;  [Scripts]
+            A list of scripts.
+          <ul type="square"><li><b>script</b> - optional, unbounded;  [Script]
+            Contains data related to a script, pattern, or preset.
+          <ul type="square"><li><b>name</b> [string]<div style="color:#1E3E66;">
+                The script's name. It has a 40 max character length.
+                e.g. scriptname1.xml
+              </div></li><li><b>description</b> - optional;  [string]<div style="color:#1E3E66;">
+                Information regarding the script in question.
+                It has a 250 max character length.
+              </div></li><li><b>id</b> [int]<div style="color:#1E3E66;">
+                The script"s unique identifier.
+              </div></li><li><b>owner</b> [string]<div style="color:#1E3E66;">
+                The script's owner.
+              </div></li><li><b>pids</b> - optional;  [Pids]
+            A list of process IDs.
+          <ul type="square"><li><b>pid</b> - optional, unbounded;  [string]<div style="color:#1E3E66;">
+                An identifier for a process running a script.
+              </div></li> </ul></li> </ul></li> </ul></li><li><b>queryId</b> - optional; <div style="color:#1E3E66;">
+                A unique identifier for the query related to these
+                results. This is in UUID format.
+              </div></li><li><b>nextEntry</b> - optional;  [int]<div style="color:#1E3E66;">
+                An index bookmarking the next entry that signifies
+                the next page of results.
+              </div></li><li><b>maxEntries</b> - optional;  [int]<div style="color:#1E3E66;">
+                The maximum number of results to return.
+              </div></li><li><b>maxPresets</b> - optional;  [int]<div style="color:#1E3E66;">
+                The maximum number of presets, saved device
+                states, supported by the device.
+              </div></li><li><b>maxPatterns</b> - optional;  [int]<div style="color:#1E3E66;">
+                The maximum number of patterns, a group of
+                commands run over a time frame that can be
+                saved and played back, supported by the device.
+              </div></li><li><b>totalEntries</b> - optional;  [int]<div style="color:#1E3E66;">
+                The total number of entries that the device can
+                support.
+              </div></li><li><b>resultURI</b> - optional;  [string]<div style="color:#1E3E66;">
+                The URL from which the search results may be
+                downloaded. This may be used in conjuntion with
+                entry paging to improve performance.
+              </div></li> </ul></li> </ul></div></li></ol></div></ul></div></div><div id="footer">
+	This page was generated by wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div></body></html>

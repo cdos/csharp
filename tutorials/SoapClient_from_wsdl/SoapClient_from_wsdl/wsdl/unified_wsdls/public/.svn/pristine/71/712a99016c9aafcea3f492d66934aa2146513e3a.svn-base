@@ -1,0 +1,1059 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="MonitorConfiguration"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:MonitorConfiguration:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:MonitorConfiguration:1">
+
+	<wsdl:documentation>
+		$Id: MonitorConfigurationV1.wsdl 474 2010-12-22 19:25:11Z  $
+	</wsdl:documentation>
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:MonitorConfiguration:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:complexType name="MonitorConfig">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a monitor's current configuration.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="0" name="displayType" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The display type of the monitor. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for NTSC</li>
+									<li>1 for PAL</li>
+									<li>2 for VGA</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="borderColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The color of the border separating channels in a 
+								non-singular layout. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="activeBorderColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The color of the border surrounding the currently 
+								active channel. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="textColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The color of any displayed text. Use color code 
+								values without the pound sign (#) e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="textBackgroundColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The color of the background of any displayed text. 
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="alertTextColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The current color of text related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="alertTextBackgroundColor" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The color of backgrounds related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="alertTextBlinkFrequency" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The number of times alert text blinks within a
+								set time. Use color code values without the 
+								pound sign (#) e.g. 00ffffff
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="timeDisplayMode" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The display mode for any displayed time stamps. Must be one of the following:
+								<ul>
+									<li>0 for the local workstation's time</li>
+									<li>1 for the camera's time</li>
+									<li>2 for universal time (UTC)</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="zoomIndicator" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="statusIndicator" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="audioEnable" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Set to 1 to enable audio, and set to 0 to disable audio.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="layouts" nillable="true" type="tns:Layouts"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Layouts">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is list of layouts.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="1" name="layout" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A type of arrangement for channels on a screen. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for one viewable channel per monitor</li>
+									<li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li>
+									<li>2 for nine viewable channels per monitor(s)</li>
+									<li>3 for sixteen viewable channels per two monitor; four per monitor</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ChannelConfig">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The current configuration state of a channel associated 
+						with the monitor. By channel, we are referring to 
+						essential video feeds associated with exactly one video 
+						stream. 
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="1" name="channelId" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The unique identifier of the channel.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="nameStamping" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The position where which any label text associated 
+								with the video should be displayed. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for none</li>
+									<li>1 for top left</li>
+									<li>2 for top right</li>
+									<li>3 for bottom left</li>
+									<li>4 for bottom right</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="timeStamping" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The position where which the time stamp associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for none</li>
+									<li>1 for top left</li>
+									<li>2 for top right</li>
+									<li>3 for bottom left</li>
+									<li>4 for bottom right</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="motionDetection" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Set to 1 to display motion detection data 
+								associated with the video; set to 0 otherwise.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="alertTextLocation" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The position where the alert text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for none</li>
+									<li>1 for top left</li>
+									<li>2 for top right</li>
+									<li>3 for bottom left</li>
+									<li>4 for bottom right</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="nameFontSize" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The size of the channel name's font.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="dateTimeFontSize" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The size of the channel's date timestamp's font.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="alertFontSize" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The size of the channel's alert text's font.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="outputURI" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The channel's destination.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="sourceURI" nillable="true" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The channel's source.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="recordingStatusLocation" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The position where the recording status's text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for none</li>
+									<li>1 for top left</li>
+									<li>2 for top right</li>
+									<li>3 for bottom left</li>
+									<li>4 for bottom right</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="metadataTextLocation" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The position where meta-data text, associated 
+								with the channel, should be displayed. 
+								
+								Valid values are the following:
+								<ul>
+									<li>0 for none</li>
+									<li>1 for top left</li>
+									<li>2 for top right</li>
+									<li>3 for bottom left</li>
+									<li>4 for bottom right</li>
+								</ul>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="showAnalyticsOverlay" nillable="true" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Set to 1 to display analytics related data 
+								associated with the video; set to 0 otherwise.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<!-- GetMonitorConfiguration -->
+			<xsd:element name="GetMonitorConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the GetMonitorConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMonitorConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a GetMonitorConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="monitorConfig" type="tns:MonitorConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetMonitorConfiguration -->
+			<xsd:element name="SetMonitorConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetMonitorConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="monitorConfig" type="tns:MonitorConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetMonitorConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a SetMonitorConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetChannelConfiguration -->
+			<xsd:element name="GetChannelConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the GetChannelConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="1" minOccurs="0" name="channelConfig" nillable="true" type="tns:ChannelConfig" />
+                    </xsd:sequence>
+                </xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetChannelConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a GetChannelConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelConfig" type="tns:ChannelConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetChannelConfiguration -->
+			<xsd:element name="SetChannelConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetChannelConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelConfig" type="tns:ChannelConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetChannelConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a SetChannelConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- ResetConfiguration -->
+			<xsd:element name="ResetConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the ResetConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="ResetConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a ResetConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetActiveChannel -->
+			<xsd:element name="GetActiveChannel">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the GetActiveChannel action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetActiveChannelResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a GetActiveChannel request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="activeChannel" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A number that represents the currently active channel.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetActiveChannel -->
+			<xsd:element name="SetActiveChannel">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetActiveChannel action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="activeChannel" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A number that represents the desired channel to make active.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetActiveChannelResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetActiveChannel action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- GetLayoutRequest -->
+			<xsd:element name="GetLayout">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the GetLayout action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetLayoutResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a GetLayout request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="layout" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A type of arrangement for channels on a screen. 
+									
+									Valid values are the following:
+									<ul>
+										<li>0 for one viewable channel per monitor</li>
+										<li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li>
+										<li>2 for nine viewable channels per monitor(s)</li>
+										<li>3 for sixteen viewable channels per two monitor; four per monitor</li>
+									</ul>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetLayout -->
+			<xsd:element name="SetLayout">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetLayout action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="layout" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A type of arrangement for channels on a screen. 
+									
+									Valid values are the following:
+									<ul>
+										<li>0 for one viewable channel per monitor</li>
+										<li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li>
+										<li>2 for nine viewable channels per monitor(s)</li>
+										<li>3 for sixteen viewable channels per two monitor; four per monitor</li>
+									</ul>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetLayoutResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a SetLayout request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- GetVolume -->
+			<xsd:element name="GetVolume">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the GetVolume action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetVolumeResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a GetVolume request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="volume" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The channel's current level of sound.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetVolume -->
+			<xsd:element name="SetVolume">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetVolume action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="volume" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The channel's desired level of sound to set.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetVolumeResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a SetMonitorConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- ClearAlert -->
+			<xsd:element name="ClearAlert">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the ClearAlert action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The unique identifier of the channel.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ClearAlertResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a ClearAlert request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- Identify -->
+			<xsd:element name="Identify">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the Identify action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="IdentifyResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a Identify request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="displayName" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A channel's name to be displayed on a screen.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- GetMonitorConfiguration -->
+	<wsdl:message name="GetMonitorConfiguration">
+		<wsdl:part name="parameters" element="tns:GetMonitorConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetMonitorConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetMonitorConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- SetMonitorConfiguration -->
+	<wsdl:message name="SetMonitorConfiguration">
+		<wsdl:part name="parameters" element="tns:SetMonitorConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetMonitorConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:SetMonitorConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- GetChannelConfiguration -->
+	<wsdl:message name="GetChannelConfiguration">
+		<wsdl:part name="parameters" element="tns:GetChannelConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetChannelConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetChannelConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- SetChannelConfiguration -->
+	<wsdl:message name="SetChannelConfiguration">
+		<wsdl:part name="parameters" element="tns:SetChannelConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetChannelConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:SetChannelConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- ResetConfiguration -->
+	<wsdl:message name="ResetConfiguration">
+		<wsdl:part name="parameters" element="tns:ResetConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="ResetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:ResetConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- GetActiveChannel -->
+	<wsdl:message name="GetActiveChannel">
+		<wsdl:part name="parameters" element="tns:GetActiveChannel"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetActiveChannelResponse">
+		<wsdl:part name="parameters" element="tns:GetActiveChannelResponse"/>
+	</wsdl:message>
+
+	<!-- SetActiveChannel -->
+	<wsdl:message name="SetActiveChannel">
+		<wsdl:part name="parameters" element="tns:SetActiveChannel"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetActiveChannelResponse">
+		<wsdl:part name="parameters" element="tns:SetActiveChannelResponse"/>
+	</wsdl:message>
+
+	<!-- GetLayout -->
+	<wsdl:message name="GetLayout">
+		<wsdl:part name="parameters" element="tns:GetLayout"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetLayoutResponse">
+		<wsdl:part name="parameters" element="tns:GetLayoutResponse"/>
+	</wsdl:message>
+
+	<!-- SetMonitorConfiguration -->
+	<wsdl:message name="SetLayout">
+		<wsdl:part name="parameters" element="tns:SetLayout"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetLayoutResponse">
+		<wsdl:part name="parameters" element="tns:SetLayoutResponse"/>
+	</wsdl:message>
+
+	<!-- GetVolume -->
+	<wsdl:message name="GetVolume">
+		<wsdl:part name="parameters" element="tns:GetVolume"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetVolumeResponse">
+		<wsdl:part name="parameters" element="tns:GetVolumeResponse"/>
+	</wsdl:message>
+
+	<!-- SetVolume -->
+	<wsdl:message name="SetVolume">
+		<wsdl:part name="parameters" element="tns:SetVolume"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetVolumeResponse">
+		<wsdl:part name="parameters" element="tns:SetVolumeResponse"/>
+	</wsdl:message>
+
+	<!-- ClearAlert -->
+	<wsdl:message name="ClearAlert">
+		<wsdl:part name="parameters" element="tns:ClearAlert"/>
+	</wsdl:message>
+
+	<wsdl:message name="ClearAlertResponse">
+		<wsdl:part name="parameters" element="tns:ClearAlertResponse"/>
+	</wsdl:message>
+
+	<!-- Identify -->
+	<wsdl:message name="Identify">
+		<wsdl:part name="parameters" element="tns:Identify"/>
+	</wsdl:message>
+
+	<wsdl:message name="IdentifyResponse">
+		<wsdl:part name="parameters" element="tns:IdentifyResponse"/>
+	</wsdl:message>
+	
+	<!-- Ports -->
+	<wsdl:portType name="MonitorConfigurationPortType">
+		<wsdl:operation name="GetMonitorConfiguration">
+			<wsdl:documentation>
+				Returns a given monitors's current configuration.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetMonitorConfiguration" />
+			<wsdl:output message="tns:GetMonitorConfigurationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetMonitorConfiguration">
+			<wsdl:documentation>
+				Sets a given monitor's configuration.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetMonitorConfiguration" />
+			<wsdl:output message="tns:SetMonitorConfigurationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="GetChannelConfiguration">
+			<wsdl:documentation>
+				Returns a given channel's current configuration.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetChannelConfiguration" />
+			<wsdl:output message="tns:GetChannelConfigurationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetChannelConfiguration">
+			<wsdl:documentation>
+				Updates a given channel's configuration.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetChannelConfiguration" />
+			<wsdl:output message="tns:SetChannelConfigurationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="ResetConfiguration">
+			<wsdl:documentation>
+				Returns a given monitor's configuration to factory defaults.
+			</wsdl:documentation>
+			<wsdl:input message="tns:ResetConfiguration" />
+			<wsdl:output message="tns:ResetConfigurationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveChannel">
+			<wsdl:documentation>
+				Returns the currently active channel number.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetActiveChannel" />
+			<wsdl:output message="tns:GetActiveChannelResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetActiveChannel">
+			<wsdl:documentation>
+				Makes a desired channel active.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetActiveChannel" />
+			<wsdl:output message="tns:SetActiveChannelResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="GetLayout">
+			<wsdl:documentation>
+				Returns the current monitor layout.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetLayout" />
+			<wsdl:output message="tns:GetLayoutResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetLayout">
+			<wsdl:documentation>
+				Sets the desired monitor layout.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetLayout" />
+			<wsdl:output message="tns:SetLayoutResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="GetVolume">
+			<wsdl:documentation>
+				Returns the current volume.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetVolume" />
+			<wsdl:output message="tns:GetVolumeResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetVolume">
+			<wsdl:documentation>
+				Sets the desired volume.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetVolume" />
+			<wsdl:output message="tns:SetVolumeResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="ClearAlert">
+			<wsdl:documentation>
+				Clears any alert text associated with the channel identified by channelId.
+			</wsdl:documentation>
+			<wsdl:input message="tns:ClearAlert" />
+			<wsdl:output message="tns:ClearAlertResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="Identify">
+			<wsdl:documentation>
+				Instructs the monitor to visually identify itself on screen
+				for maintenance purposes.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Identify" />
+			<wsdl:output message="tns:IdentifyResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="MonitorConfiguration" type="tns:MonitorConfigurationPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="GetMonitorConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#GetMonitorConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetMonitorConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#SetMonitorConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetChannelConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#GetChannelConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetChannelConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#SetChannelConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ResetConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#ResetConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveChannel">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#GetActiveChannel" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetActiveChannel">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#SetActiveChannel" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetLayout">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#GetLayout" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetLayout">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#SetLayout" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetVolume">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#GetVolume" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetVolume">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#SetVolume" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ClearAlert">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#ClearAlert" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Identify">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:MonitorConfiguration:1#Identify" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Services -->
+
+	<wsdl:service name="MonitorConfiguration">
+		<wsdl:documentation>
+			This service is used to configure user settings for an Endura Monitor device. 
+		</wsdl:documentation>
+		<wsdl:port binding="tns:MonitorConfiguration"
+			name="MonitorConfiguration">
+			<soap:address location="http://localhost:49152/control/MonitorConfiguration-1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

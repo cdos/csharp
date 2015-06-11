@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win_VLC_1-4", "Win_VLC_1-4\Win_VLC_1-4.csproj", "{3DDAC06A-870E-48D8-859F-9D23EC802793}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DDAC06A-870E-48D8-859F-9D23EC802793}.Debug|x86.ActiveCfg = Debug|x86
+		{3DDAC06A-870E-48D8-859F-9D23EC802793}.Debug|x86.Build.0 = Debug|x86
+		{3DDAC06A-870E-48D8-859F-9D23EC802793}.Release|x86.ActiveCfg = Release|x86
+		{3DDAC06A-870E-48D8-859F-9D23EC802793}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

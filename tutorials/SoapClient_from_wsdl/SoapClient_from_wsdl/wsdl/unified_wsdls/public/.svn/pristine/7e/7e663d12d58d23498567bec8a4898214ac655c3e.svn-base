@@ -1,0 +1,415 @@
+<div xmlns="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>DeviceRegistry - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		The DeviceRegistry Service provides the following operations:
+        <ul><li>Get Devices from the System Manager</li><li>Get Device Attributes from the System Manager</li><li>Get Device Service Information from the System Manager</li><li>Get Device Service Attributes from the System Manager</li><li>Get System Configuration Information from the System Manager</li></ul></div><div class="page"><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1</div>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.GetDeviceAttributeValue">GetDeviceAttributeValue</a></h2><div class="value">
+</div><div class="value">
+                Returns a specific attribute value for a specified device
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceAttributeValue</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetDeviceAttributeValue]<ul type="square"><li><b>deviceUdn</b> [string]</li><li><b>attributeName</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetDeviceAttributeValueResponse]<ul type="square"><li><b>found</b> [string]</li><li><b>attributeValue</b> [string]</li> </ul></div></li><li class="operation"><h2><a name="op.GetDeviceAttributes">GetDeviceAttributes</a></h2><div class="value">
+</div><div class="value">
+                Returns all attributes for a specified device
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceAttributes</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetDeviceAttributes]<ul type="square"><li><b>deviceUdn</b> [string]</li><li><b>pageReq</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetDeviceAttributesResponse]<ul type="square"><li><b>page</b> [string]</li> </ul></div></li><li class="operation"><h2><a name="op.GetDeviceServiceAttributeValue">GetDeviceServiceAttributeValue</a></h2><div class="value">
+</div><div class="value">
+                Returns a specific attribute value for a specified device and service
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceServiceAttributeValue</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetDeviceServiceAttributeValue]<ul type="square"><li><b>deviceUdn</b> [string]</li><li><b>serviceId</b> [string]</li><li><b>attributeName</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetDeviceServiceAttributeValueResponse]<ul type="square"><li><b>found</b> [string]</li><li><b>attributeValue</b> [string]</li> </ul></div></li><li class="operation"><h2><a name="op.GetDeviceServiceInfo">GetDeviceServiceInfo</a></h2><div class="value">
+</div><div class="value">
+                Returns specific information for a specified device's service
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceServiceInfo</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetDeviceServiceInfo]<ul type="square"><li><b>deviceUdn</b> [string]</li><li><b>svcInfoFlags</b> [string]</li><li><b>pageReq</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetDeviceServiceInfoResponse]<ul type="square"><li><b>page</b> [ServiceInfoPage]<ul type="square"><li><b>pageResp</b> - optional, nillable;  [PageResp]<div style="color:#1E3E66;">
+                                Represents a response for the next page of results
+							</div><ul type="square"><li><b>queryId</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the query session's unique identification
+							</div></li><li><b>next</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the next page number
+							</div></li><li><b>total</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the total number of results
+							</div></li><li><b>url</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the location of the actual query results
+							</div></li> </ul></li><li><b>item</b> - optional, unbounded, nillable;  [ServiceInfoItem]<div style="color:#1E3E66;">
+                                Represents an item containing information about a Service
+							</div><ul type="square"><li><b>id</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents a Service's unique identification
+							</div></li><li><b>type</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the type of the Service
+							</div></li><li><b>state</b> - optional, nillable;  [State]<div style="color:#1E3E66;">
+                                Represents the state of the Service
+							</div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                Represents device state: None
+							<br/>
+		- 1:
+		  
+                                Represents device state: In Sync
+							<br/>
+		- 2:
+		  
+                                Represents device state: Online
+							<br/>
+		- 3:
+		  
+                                Represents device state: Offline
+							<br/>
+		- 4:
+		  
+                                Represents device state: Out Of Sync
+							<br/>
+		- 5:
+		  
+                                Represents device state: Invalid
+							<br/></div></li> </ul></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetDevices">GetDevices</a></h2><div class="value">
+</div><div class="value">
+                Returns configuration data on all devices with stored information.  The GetDevices action can be a process intensive task. It is highly recommended that you properly filter out off line devices in the search results, with the UpnpDvcQuery instance. Ideally you should also only search for recently updated or added devices to further help performance.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetDevices</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetDevices]<ul type="square"><li><b>upnpDvcQuery</b> [UpnpDvcQuery]<ul type="square"><li><b>queryFlags</b> - optional;  [int]<div style="color:#1E3E66;">
+                                Represents the type of query that will be performed.  This can be treated as a bit field, comprised of the following:
+                                <ul><li>Get Databaseb Ids = 1</li><li>Get Types = 2</li><li>Get States = 4</li><li>Root Only = 8</li><li>All Attributes = 16</li><li>All Service Info = 32</li><li>Get Expire Times = 64</li></ul>
+                               Also see the QueryFlags type
+							</div></li><li><b>upnpStates</b> - unbounded;  [UpnpStates]<div style="color:#1E3E66;">
+                                Represents a list of UPnP state values
+							</div><ul type="square"><li><b>upnpState</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+                                Represents the UPnP State.  Possible values are limited to:
+                                <ul><li>None = 0</li><li>In Sync = 1</li><li>Online = 2</li><li>Offline = 3</li><li> Out Of Sync = 4</li><li>Invalid = 5</li></ul>
+                                Also see the UpnpState type
+							</div></li> </ul></li><li><b>stateDeltaSeqNum</b> - optional;  [string]<div style="color:#1E3E66;">
+                                Represents an attribute which stores the current revision number of a device's local device database.  This allows the device to update its list of operational devices by only retrieving relevant changes, as opposed to returning the entire device database.
+							</div></li><li><b>dvcTypeQueryStrs</b> - optional;  [DvcTypeQueryStrs]<div style="color:#1E3E66;">
+                                Represents a DvcTypeQueryStrs data element
+							</div><ul type="square"><li><b>item</b> [DvcTypeItem]<div style="color:#1E3E66;">
+                                Represents a DvcTypeItem data element
+							</div><ul type="square"><li><b>str</b> - optional;  [string]<div style="color:#1E3E66;">
+                                Represents the device query string.  Only the following items are valid:
+                                <ul><li>urn:schemas-pelco-com:device:Alarm:1</li><li>urn:schemas-pelco-com:device:AlarmArray:1</li><li>urn:schemas-upnp-org:device:Basic:1</li><li>urn:schemas-pelco-com:device:Camera:1</li><li>urn:schemas-pelco-com:device:Decoder:1</li><li>urn:schemas-pelco-com:device:Encoder:1</li><li>urn:schemas-pelco-com:device:EventArbiter:1</li><li>urn:schemas-pelco-com:device:Gateway:1</li><li>urn:schemas-pelco-com:device:MappingUI:1</li><li>urn:schemas-pelco-com:device:MDD:1</li><li>urn:schemas-pelco-com:device:Monitor:1</li><li>urn:schemas-pelco-com:device:MDDMonitor:1</li><li>urn:schemas-pelco-com:device:NSD:1</li><li>urn:schemas-pelco-com:device:NetworkVideoRecorder:1</li><li>urn:schemas-pelco-com:device:NSM:1</li><li>urn:schemas-pelco-com:device:Pelco:1</li><li>urn:schemas-pelco-com:device:Relay:1</li><li>urn:schemas-pelco-com:device:RelayArray:1</li><li>urn:schemas-pelco-com:device:RemoteUI:1</li><li>urn:schemas-pelco-com:device:StorageExpansionBox:1</li><li>urn:schemas-pelco-com:device:SystemManagerLocatorDevice:1</li><li>urn:schemas-pelco-com:device:ScriptManager:1</li><li>urn:schemas-pelco-com:device:SystemManagerDevice:1</li><li>urn:schemas-pelco-com:device:SystemLogDevice:1</li><li>urn:schemas-pelco-com:device:Transcoder:1</li><li>urn:schemas-pelco-com:device:UniversalDeviceInput:1</li><li>urn:schemas-pelco-com:device:VirtualAlarmArray:1</li></ul></div></li> </ul></li> </ul></li><li><b>attrQueryStrs</b> - optional;  [AttrQueryStrs]<div style="color:#1E3E66;">
+                                Represents an AttrQueryStrs data element
+							</div><ul type="square"><li><b>item</b> - optional, unbounded;  [AttrQueryItem]<div style="color:#1E3E66;">
+                                Represents an AttrQueryItem data element
+							</div><ul type="square"><li><b>str</b> - optional;  [string]<div style="color:#1E3E66;">
+                                Represents an attribute item
+							</div></li> </ul></li> </ul></li> </ul></li><li><b>pageReq</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetDevicesResponse]<ul type="square"><li><b>stateDeltaSeqNum</b> [string]</li><li><b>page</b> [Page]<ul type="square"><li><b>pageResp</b> - optional, nillable;  [PageResp]<div style="color:#1E3E66;">
+                                Represents a response for the next page of results
+							</div><ul type="square"><li><b>queryId</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the query session's unique identification
+							</div></li><li><b>next</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the next page number
+							</div></li><li><b>total</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the total number of results
+							</div></li><li><b>url</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the location of the actual query results
+							</div></li> </ul></li><li><b>item</b> - optional, unbounded, nillable; <div style="color:#1E3E66;">
+                                Represents an item containing device data
+							</div><ul type="square"><li><b>dbId</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+                                Represents the item's unique database identification
+							</div></li><li><b>udn</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the item's unique device name
+							</div></li><li><b>type</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the type of the item
+							</div></li><li><b>state</b> - optional, nillable;  [State]<div style="color:#1E3E66;">
+                                Represents the item's state
+							</div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                Represents device state: None
+							<br/>
+		- 1:
+		  
+                                Represents device state: In Sync
+							<br/>
+		- 2:
+		  
+                                Represents device state: Online
+							<br/>
+		- 3:
+		  
+                                Represents device state: Offline
+							<br/>
+		- 4:
+		  
+                                Represents device state: Out Of Sync
+							<br/>
+		- 5:
+		  
+                                Represents device state: Invalid
+							<br/></div></li><li><b>attrs</b> - optional, nillable;  [Attrs]<div style="color:#1E3E66;">
+                                Represents the item's attributes
+							</div><ul type="square"><li><b>item</b> - optional, unbounded, nillable;  [AttrItem]<div style="color:#1E3E66;">
+                                Represents an AttrItem data element
+							</div><ul type="square"><li><b>name</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the name of the attribute.  Restricted to the following values:
+                                <ul><li>SYS_UpnpDevDescUrl - the url to a device's manifest description file</li><li>SYS_UpnpFriendlyName - friendly name ex. "Jim's Camera"</li><li>SYS_UpnpDeviceType - device type ex. camera</li><li>SYS_UpnpSerialNumber - device's serial number</li><li>SYS_UpnpModelNumber - device's model number ex. PT1260EX</li><li>SYS_UpnpModelDesc - description</li><li>SYS_UpnpManufacturerUrl - manufacturer's website</li><li>SYS_UpnpManufacturer - manufacturer name</li><li>SYS_UpnpModelName - model name ex. Espirit</li><li>SYS_UpnpParentDeviceUdn - parent device's unique device name</li><li>SYS_UpnpPelcoDeviceUdn - pelco device's unique device name</li><li>SYS_NvrAssoc - the url to the NVR that is associated with the device</li><li>SYS_UpnpScpdUrl - the url to a device's UPnP description file</li><li>SYS_UpnpControlUrl - not used</li><li>SYS_UpnpEventSubUrl - the url to a device's event service</li></ul></div></li><li><b>value</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents an attribute's value.  250 characters max
+							</div></li> </ul></li> </ul></li><li><b>svcInfo</b> - optional, nillable;  [SvcInfo]<div style="color:#1E3E66;">
+                                Represents Service Information relative to the item
+							</div><ul type="square"><li><b>item</b> - optional, unbounded, nillable;  [ServiceInfoItem]<div style="color:#1E3E66;">
+                                Represents an item containing information about a Service
+							</div><ul type="square"><li><b>id</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents a Service's unique identification
+							</div></li><li><b>type</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the type of the Service
+							</div></li><li><b>state</b> - optional, nillable;  [State]<div style="color:#1E3E66;">
+                                Represents the state of the Service
+							</div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                Represents device state: None
+							<br/>
+		- 1:
+		  
+                                Represents device state: In Sync
+							<br/>
+		- 2:
+		  
+                                Represents device state: Online
+							<br/>
+		- 3:
+		  
+                                Represents device state: Offline
+							<br/>
+		- 4:
+		  
+                                Represents device state: Out Of Sync
+							<br/>
+		- 5:
+		  
+                                Represents device state: Invalid
+							<br/></div></li> </ul></li> </ul></li> </ul><ul style="disc"><li>xsd:all
+		       </li></ul></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetPage">GetPage</a></h2><div class="value">
+</div><div class="value">
+                Returns a set of device results
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#GetPage</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetPage]<ul type="square"><li><b>pageReq</b> [PageReq]<ul type="square"><li><b>queryId</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the query session's unique identification
+							</div></li><li><b>next</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the next page number
+							</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetPageResponse]<ul type="square"><li><b>page</b> [Page]<ul type="square"><li><b>pageResp</b> - optional, nillable;  [PageResp]<div style="color:#1E3E66;">
+                                Represents a response for the next page of results
+							</div><ul type="square"><li><b>queryId</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the query session's unique identification
+							</div></li><li><b>next</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the next page number
+							</div></li><li><b>total</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the total number of results
+							</div></li><li><b>url</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the location of the actual query results
+							</div></li> </ul></li><li><b>item</b> - optional, unbounded, nillable; <div style="color:#1E3E66;">
+                                Represents an item containing device data
+							</div><ul type="square"><li><b>dbId</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+                                Represents the item's unique database identification
+							</div></li><li><b>udn</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the item's unique device name
+							</div></li><li><b>type</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the type of the item
+							</div></li><li><b>state</b> - optional, nillable;  [State]<div style="color:#1E3E66;">
+                                Represents the item's state
+							</div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                Represents device state: None
+							<br/>
+		- 1:
+		  
+                                Represents device state: In Sync
+							<br/>
+		- 2:
+		  
+                                Represents device state: Online
+							<br/>
+		- 3:
+		  
+                                Represents device state: Offline
+							<br/>
+		- 4:
+		  
+                                Represents device state: Out Of Sync
+							<br/>
+		- 5:
+		  
+                                Represents device state: Invalid
+							<br/></div></li><li><b>attrs</b> - optional, nillable;  [Attrs]<div style="color:#1E3E66;">
+                                Represents the item's attributes
+							</div><ul type="square"><li><b>item</b> - optional, unbounded, nillable;  [AttrItem]<div style="color:#1E3E66;">
+                                Represents an AttrItem data element
+							</div><ul type="square"><li><b>name</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the name of the attribute.  Restricted to the following values:
+                                <ul><li>SYS_UpnpDevDescUrl - the url to a device's manifest description file</li><li>SYS_UpnpFriendlyName - friendly name ex. "Jim's Camera"</li><li>SYS_UpnpDeviceType - device type ex. camera</li><li>SYS_UpnpSerialNumber - device's serial number</li><li>SYS_UpnpModelNumber - device's model number ex. PT1260EX</li><li>SYS_UpnpModelDesc - description</li><li>SYS_UpnpManufacturerUrl - manufacturer's website</li><li>SYS_UpnpManufacturer - manufacturer name</li><li>SYS_UpnpModelName - model name ex. Espirit</li><li>SYS_UpnpParentDeviceUdn - parent device's unique device name</li><li>SYS_UpnpPelcoDeviceUdn - pelco device's unique device name</li><li>SYS_NvrAssoc - the url to the NVR that is associated with the device</li><li>SYS_UpnpScpdUrl - the url to a device's UPnP description file</li><li>SYS_UpnpControlUrl - not used</li><li>SYS_UpnpEventSubUrl - the url to a device's event service</li></ul></div></li><li><b>value</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents an attribute's value.  250 characters max
+							</div></li> </ul></li> </ul></li><li><b>svcInfo</b> - optional, nillable;  [SvcInfo]<div style="color:#1E3E66;">
+                                Represents Service Information relative to the item
+							</div><ul type="square"><li><b>item</b> - optional, unbounded, nillable;  [ServiceInfoItem]<div style="color:#1E3E66;">
+                                Represents an item containing information about a Service
+							</div><ul type="square"><li><b>id</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents a Service's unique identification
+							</div></li><li><b>type</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+                                Represents the type of the Service
+							</div></li><li><b>state</b> - optional, nillable;  [State]<div style="color:#1E3E66;">
+                                Represents the state of the Service
+							</div><div style="margin-left: 1em;">
+		- 0:
+		  
+                                Represents device state: None
+							<br/>
+		- 1:
+		  
+                                Represents device state: In Sync
+							<br/>
+		- 2:
+		  
+                                Represents device state: Online
+							<br/>
+		- 3:
+		  
+                                Represents device state: Offline
+							<br/>
+		- 4:
+		  
+                                Represents device state: Out Of Sync
+							<br/>
+		- 5:
+		  
+                                Represents device state: Invalid
+							<br/></div></li> </ul></li> </ul></li> </ul><ul style="disc"><li>xsd:all
+		       </li></ul></li> </ul></li> </ul></div></li><li><h2><a name="op.SysCfgGet">SysCfgGet</a></h2><div class="value">
+</div><div class="value">
+                Returns a system attribute value
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgGet</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SysCfgGet]<ul type="square"><li><b>name</b> [string]</li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SysCfgGetResponse]<ul type="square"><li><b>value</b> [string]</li><li><b>found</b> [string]</li> </ul></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

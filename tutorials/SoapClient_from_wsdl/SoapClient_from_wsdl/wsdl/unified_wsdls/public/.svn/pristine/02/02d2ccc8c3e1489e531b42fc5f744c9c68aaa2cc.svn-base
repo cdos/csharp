@@ -1,0 +1,129 @@
+List of changes _ WSDLS that get published on PDN
+
+Source of wsdls on PDN : https://svn.pelco.org/repos/api/branches/pelco_api_1/public/ 
+Source of Miranda wsdls : https://svn.pelco.org/repos/miranda/trunk/src/routes/pelco/wsdls/
+Wsdls trunk : https://svn.pelco.org/repos/api/trunk/services/public/
+Resulting wsdls are checked in at : https://svn.pelco.org/repos/api/branches/unified_wsdls/
+
+General: 
+Stylesheet was added to all WSDLS
+
+WSDL Specific:
+
+1) AlarmArrayConfiguration: None
+
+2) AudioInput: None
+
+3) AudioInputRtsp: None
+
+4) AudioOutput:
+-> Merged AudioOutput wsdl with that in api/trunk. The actions GetSessionParameters, SetStreamPriority, GetStreamPriority and associated types got added into the GM version.
+
+5) CameraConfiguration: 
+-> Merged with Miranda version of this wsdl; Anonymous complexType pulled from maxUnicast element and moved to a named type. 
+This was required by Miranda because when generating code in gsoap, anonymous types are given a numerical value when defining 
+the c/c++ type, which can change depending on processing order.
+
+6) DeviceCapability: 
+-> Merged pelco_api_1 and Miranda versions. This means that anonymous complexType  was pulled from AdvancedSharpening element 
+and moved to a named type EnabledElement. This was required because when generating code in gsoap, annonymous types are given
+a numerical value when defining the c/c++ type, which can change depending on processing order.
+
+-> I could not find this wsdl in the trunk, so this merge is it.
+
+7) DeviceRegistry:
+-> complexType "UpnpDvcQuery" had 4 elements in trunk, 'queryFlags', 'upnpStates', 'stateDeltaSeqNum', and 'dvcTypeQueryStrs'.
+It had an extra element in pelco_api_1 'attrQueryStrs'. Included this in the GM version.
+
+-> complexType name="Item" has extra element in pelco_api_1 called svcInfo. Added this to GM
+
+-> Many actions defined in the trunk were missing from pelco_api_1. Added all of them to GM.
+
+-> Update: Added style="document" in the <soap:binding line on the request of the Miranda team.
+
+8) ImagingConfiguration: 
+-> Merged with trunk, this means a few lines of documentation were added.
+
+9) LensControl:
+-> Merged LensControl with that in api/trunk which means that SetMaxMag action got added to this wsdl. 
+-> Miranda and PDN versions were identical.
+
+10) MetaData: None
+
+11) MonitorConfiguration:
+-> Incorporated changes for APITEST-772 into GM.
+
+12) MotionDetection: None
+
+13)  PelcoConfiguration:
+-> The trunk had specified a style="document" attribute in the <soap:binding line for <wsdl:binding name="PelcoConfiguration".
+Since this attribute was not there in the pelco_api_1 version, I did not include it in the GM version.
+Update: Added style="document" to both pelco_api/public and private versions on request from the Miranda team.
+
+-> Merged pelco_api_1 with trunk. The documentation is the same, but with different formatting - took in the documentation from the trunk. 
+
+-> The following acions got added as a result of this merge: 
+SetDescription, SetConfiguration, ResetConfiguration, Restart, ResetSecurity, ResetSynched. 
+
+-> Also, in the complexType "Port"; a required="true" was added for the attributes "in", "out" and "search".	
+
+14) PositioningControl: 
+-> Merged with trunk. This means that SetVelocityLimits and SetPositionLimits got added to the GM wsdl.
+
+15) RelayArrayConfiguration: 
+-> Merged with Miranda version of this wsdl which means that 'minOccurs=0' was added to 'enabled' type. 
+Refer [MIR-124] - Relay::SetConfiguration with missing enabled element causes relays to be disabled (workstation does not provided 'enabled' element)
+
+16) ScriptControl: 
+-> Merged with trunk. This means that actions UploadScript, DownloadScript, SetScriptOwner, and QueryActions 
+were added to the GM version. 
+
+-> Also, the documentation of BeginScript operation was taken from pelco_api_1 since the documentation was more
+recent in that version as compared to the trunk.
+
+17) SoftwareUpdate: 
+-> Merged with Miranda and trunk. This means that action Update and associated types was added to the GM wsdl.
+-> moved service definition block from top of file to bottom. 
+
+18) StreamConfiguration: None. 
+The documentation is better in pelco_api_1 as compared to Miranda and trunk so keeping documentation of pelco_api_1 in the GM.
+
+19) StreamControl: 
+-> Merged pelco_api_1 and Miranda versions. This means that element 'asyncId' was added to the elements called 
+'PlayResponse', 'Pause', and 'PauseResponse'. 
+
+-> Some actions were missing in the Miranda version so I retained all the actions defined in the pelco_api_1 version for the GM.
+
+-> Merged with trunk. This means that action GetStreamTime got added to the GM.
+
+20) StreamDiscovery: None
+
+21) SystemManagerLocator: 
+-> Merged with trunk. This means documentation got added.
+
+22) UserAndRole: 
+-> Merged with trunk. wsdl on pelco_api_1 had 2 actions UserLogin and UserLogout.wsdl on trunk had 43 actions. 
+This means that 41 actions were added to the GM version of the WSDL as a result of this merge.
+
+23) VideoInput: 
+-> Merged with trunk. This means Query action and its associated types got added to the GM wsdl. 
+-> Also changed the last documentation in the file to be a mix of what was in the pelco_api_1 and trunk.
+
+24) VideoOutput:
+-> In simpleType RESOLUTIONS, added string restriction enumeration value "" otherwise the schema for requests
+from Endura workstation did not match and soap would generate a fault. (<xsd:enumeration value=""/>, added enumeration). 
+This change was needed by Miranda.
+	   
+-> In complexType 'Compatibility', the element 'resolution' is of type 'string' in the trunk, while it is of 
+type 'tns:Resolution' in pelco_api_1 and Miranda. Changed this to be of type tns:Resolution in the GM wsdl.
+Note: Vishal Aggarwal had reverted this change from the trunk for 'backwards compatibility'. We need to make sure that changing 
+'string' to 'tns:Resolution' is acceptable.
+	   
+-> Add GetStreamPriority and SetStreamPriority and associated types from trunk to GM WSDL. These actions are missing from 
+pelco_api_1 branch and Miranda.
+	   
+25) fault.xsd: Merged with trunk. This means that ProfileAlreadyExistsFaultType and ProfileDoesNotExistFaultType got added.
+
+Suggested changes:
+
+1) DeviceCapability name should be changed to DeviceCapabilityV1.

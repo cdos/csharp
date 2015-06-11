@@ -1,0 +1,36 @@
+﻿------ ChangeLog -------
+
+Version 0.3.4.x (11/x/12)
+- Added Azmuth Zero Test. (11/16)
+
+Version 0.3.3.44 (11/14/12)
+- Added check to break out of max preset test if max is already exceeded. (11/14)
+- Fixed a bug where the system lost track of preset ammount. (11/14)
+
+Version 0.3.2.42 (11/9/12)
+- Added Zoom Set and Check Test with Max Mag.  (11/7)
+- Added Zoom Tele/Wide Verification Test.  (11/9)
+- Enabled all tests by default.  (11/9)
+
+Version 0.3.1.37 (10/26/12)
+- Added Zoom Tests.  (10/26)
+- Added Zoom Set and Check Test.  (10/26)
+
+Version 0.3.0.32 (10/26/12)
+- Added Runaway Check for Velocity Tests.  (10/26)
+
+Version 0.3.0.30 (10/19/12)
+- Fixed issue where disabled tests would not show for Positioning, Preset, and Iris tests.  (10/12)
+- Added Detect Presets.  Will detect max presets and disable preset related test if camera does not support presets.  (10/12)
+- Added Max Preset Test (~25 minutes to run)
+- Disabled iris test group. (10/19)
+- Added Velocity Test Group (10/19): Movement and Relational Verifications.
+
+Version 0.2.0 (10/12/12)
+- Added ability to set log location.
+- Added Logos.
+- Added Ability to save current frame to log.
+- Added Changelog View (10/12)
+
+Version 0.1.0
+- Inital App Version

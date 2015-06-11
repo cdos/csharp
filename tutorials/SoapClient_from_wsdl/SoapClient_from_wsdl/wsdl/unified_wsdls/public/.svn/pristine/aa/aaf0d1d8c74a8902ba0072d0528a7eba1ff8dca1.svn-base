@@ -1,0 +1,182 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>AlarmArrayConfiguration - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		$Id: AlarmArrayConfigurationV1.wsdl 433 2010-11-23 01:18:25Z $
+	</div><div class="page"><div>The AlarmArrayConfiguration service allows multiple alarms to be evented from a single service. Each alarm in the service is individually identified by an alarmID, which in essence is an index into the array. Each AlarmArrayConfiguration service should be wrapped up by an AlarmArray device, much like an AlarmControl service is wrapped up by an Alarm device.</div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.GetAlarmStates">GetAlarmStates</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This action is now deprecated. It is not recommended for production usage. The recommended method is now using the Event Arbiter Library to subscribe to this service's events and alarms OR subscribing directly to the GENA events.</div><p>Returns the current state of the all alarms in the service in bitmapped string.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetAlarmStates</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetAlarmStates]<div style="color:#1E3E66;">Represents a request to the GetAlarmStates action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetAlarmStatesResponse]<div style="color:#1E3E66;">Represents a response from the GetAlarmStates action.</div><ul type="square"><li><b>alarmStates</b> [AlarmStates]<ul type="square"><li><b>objId</b> - optional;  [int]<div style="color:#1E3E66;"/></li><li><b>offset</b> - optional;  [int]<div style="color:#1E3E66;">Zero based offset of the first alarm contained in the contained bitmasks. int 32. The range is 0 to (# of alarms - 1).</div></li><li><b>length</b> [int]<div style="color:#1E3E66;">Number of relays states contained by the contained bitmasks. The range is 1 to (# of alarms)</div></li><li><b>changed</b> - optional, nillable;  [string]<div style="color:#1E3E66;">Bitmask of the change-of-state status of alarm contained within the array range defined by offset and length. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco base64 always appends an equal sign (=) at the end.</div></li><li><b>state1</b> [string]<div style="color:#1E3E66;"><p>Bitmask of the first state bit for alarms contained within the range of the bitmask. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco	base64 always appends an equal sign (=) at the end. Currently defined values are: 
+								<ul><li>0 for INACTIVE</li><li>1 for ACTIVE</li><li>2 for FAULT</li><li>3 for SHORT</li></ul></p></div></li><li><b>state2</b> [string]<div style="color:#1E3E66;"><p>Bitmask of the second state bit for alarms contained within the range of the bitmask. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco	base64 always appends an equal sign (=) at the end. Currently defined values are: 
+								<ul><li>0 for INACTIVE</li><li>1 for ACTIVE</li><li>2 for FAULT</li><li>3 for SHORT</li></ul></p></div></li><li><b>enabled</b> [string]<div style="color:#1E3E66;">Bitmask of enabled states of alarm contained within the range of the bitmask. Pelco base64 is identical to defacto base64 encoding, except that Pelco base64 always appends an equal sign (=) at the end. Live data will be in Pelco's base64.</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetArraySize">GetArraySize</a></h2><div class="value">
+</div><div class="value">Returns the number of alarms contained in the alarm array.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetArraySize</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetArraySize]<div style="color:#1E3E66;">Represents a request to the GetArraySize action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetArraySizeResponse]<div style="color:#1E3E66;">Represents a response from the GetArraySize action.</div><ul type="square"><li><b>size</b> [int]<div style="color:#1E3E66;">The size / length of the alarm array.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetConfiguration">GetConfiguration</a></h2><div class="value">
+</div><div class="value">Get the configuration of the alarm input.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetConfiguration]<div style="color:#1E3E66;">Respresents a request to the GetConfiguration action .</div><ul type="square"><li><b>alarmID</b> [int]<div style="color:#1E3E66;">An alarm's index location within an alarm array</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetConfigurationResponse]<div style="color:#1E3E66;">Respresents a response from the GetConfiguration action.</div><ul type="square"><li><b>alarmConfig</b> [AlarmConfig]<div style="color:#1E3E66;">Represents an AlarmConfig data element.</div><ul type="square"><li><b>severity</b> - optional;  [int]<div style="color:#1E3E66;"><p>The level of importance of the alarm output.</p><div class="notice"><p>Within Endura systems, this value is ignored. Instead the System Manager completely handles alarm severity.</p><p>This value does not correspond to severity values entered by the user through the workstation. Workstation entered severity values are only stored on System Managers, and do not update the severity values in the AlarmArray device itself.</p></div></div></li><li><b>polarity</b> [int]<div style="color:#1E3E66;">The polarity of the alarm output. Valid values are:
+								<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></div></li><li><b>enabled</b> [int]<div style="color:#1E3E66;">The active state of the alarm output. Valid values are:
+								<ul><li>0 for DISABLED (An alarm output that is disabled will not event the alarm state in response to a state change.)</li><li>1 for ENABLED</li></ul></div></li><li><b>supervised</b> [int]<div style="color:#1E3E66;"><p>Determines whether or not the alarm is operating in supervised mode. More specifically it determines whether or not the alarm input should be driven such that a loss of voltage to the input results in an alarm condition.
+								<ul><li>0 for unsupervised</li><li>1 for supervised</li></ul></p></div></li><li><b>dwellTime</b> [double]<div style="color:#1E3E66;">The time, in 100s milliseconds, that the alarm input should be reported as active when triggered, regardless of the actual state of the physical input. The value must be between 0 to 0.5.</div></li><li><b>physicalInput</b> [int]<div style="color:#1E3E66;"><p>An integer representing the physical alarm input with which this service is associated. Valid values:<ul><li>0 - indicates that the service maps to a physical alarm input</li><li>-1 - indicates that the service instance does not map to a physical alarm input. The alarm is software based. (e.g. Sarix returns this value, as they are software based).</li></ul></p></div></li><li><b>combinedEventEntry</b> - optional;  [COMBINED_EVENT_ENTRY]<div style="color:#1E3E66;">A COMBINED_EVENT_ENTRY data element</div><ul type="square"><li><b>opStack</b> [OPSTACK]<div style="color:#1E3E66;">Represents an OPSTACK data element.</div><ul type="square"><li><b>operator</b> [string]<div style="color:#1E3E66;"><p>The operator needed for a combined event. Valid values:
+								<ul><li>AND - expects two arguments</li><li>OR - expects two arguments</li><li>NOT - expects one argument</li><li>NOP - expects one argument</li></ul></p></div></li><li><b>event_entries</b> [EVENT_ENTRIES]<div style="color:#1E3E66;">Represents an EventEntries data element</div><ul type="square"><li><b>eventEntry</b> - unbounded;  [EVENT_ENTRY]<div style="color:#1E3E66;"/><ul type="square"><li><b>uid</b> [string]<div style="color:#1E3E66;">
+								The event's unique identifier.
+							</div></li><li><b>eventURI</b> [string]<div style="color:#1E3E66;">
+								The event's URI.
+							</div></li><li><b>eventType</b> [string]<div style="color:#1E3E66;">
+								The event's Type.
+							</div></li><li><b>serviceType</b> [string]<div style="color:#1E3E66;">
+								A service type URN.
+							</div></li><li><b>propertySet</b> [PROPERTY_SET]<div style="color:#1E3E66;"/><ul type="square"><li><b>property</b> - unbounded;  [PROPERTY]<div style="color:#1E3E66;">Represents a PROPERTY data element</div><ul type="square"><li><b>name</b> [string]<div style="color:#1E3E66;">The name of the property of the value to compare against. 250 max characters.</div></li><li><b>value</b> [string]<div style="color:#1E3E66;">The value to compare against. i.e. The event is considered "active" when the current value of each listed property, compared, via the comparator, to the defined value yields true.</div></li><li><b>comparator</b> [string]<div style="color:#1E3E66;">The comparison operator to utilize.</div></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.ResetConfiguration">ResetConfiguration</a></h2><div class="value">
+</div><div class="value">Returns the alarm input to the default configuration state.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#ResetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ResetConfiguration]<div style="color:#1E3E66;">Respresents a request to the ResetConfiguration action.</div><ul type="square"><li><b>alarmID</b> [int]<div style="color:#1E3E66;">An alarm's index location within an alarm array. An alarmID of -1 resets the configuration of all alarms in the array.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ResetConfigurationResponse]<div style="color:#1E3E66;">Respresents a response from the ResetConfiguration action.</div></div></li><li class="operation"><h2><a name="op.SetAlarmState">SetAlarmState</a></h2><div class="value">
+</div><div class="value">Sets the current state of the alarm input indicated by alarmed to either 1 or 0.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#SetAlarmState</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetAlarmState]<div style="color:#1E3E66;">Represents a request to the SetAlarmState action.</div><ul type="square"><li><b>alarmID</b> [int]<div style="color:#1E3E66;">An alarm's index location within an alarm array.</div></li><li><b>alarmState</b> [int]<div style="color:#1E3E66;">Set to 1 (enabled), set to 0 (disabled) otherwise.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetAlarmStateResponse]<div style="color:#1E3E66;">Represents a response from the SetAlarmState action.</div></div></li><li><h2><a name="op.SetConfiguration">SetConfiguration</a></h2><div class="value">
+</div><div class="value">Sets the configuration of the alarm input.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#SetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetConfiguration]<div style="color:#1E3E66;">Respresents a request to the SetConfiguration action .</div><ul type="square"><li><b>alarmID</b> [int]<div style="color:#1E3E66;">An alarm's index location within an alarm array.</div></li><li><b>alarmConfig</b> [AlarmConfig]<div style="color:#1E3E66;">Represents an AlarmConfig data element.</div><ul type="square"><li><b>severity</b> - optional;  [int]<div style="color:#1E3E66;"><p>The level of importance of the alarm output.</p><div class="notice"><p>Within Endura systems, this value is ignored. Instead the System Manager completely handles alarm severity.</p><p>This value does not correspond to severity values entered by the user through the workstation. Workstation entered severity values are only stored on System Managers, and do not update the severity values in the AlarmArray device itself.</p></div></div></li><li><b>polarity</b> [int]<div style="color:#1E3E66;">The polarity of the alarm output. Valid values are:
+								<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></div></li><li><b>enabled</b> [int]<div style="color:#1E3E66;">The active state of the alarm output. Valid values are:
+								<ul><li>0 for DISABLED (An alarm output that is disabled will not event the alarm state in response to a state change.)</li><li>1 for ENABLED</li></ul></div></li><li><b>supervised</b> [int]<div style="color:#1E3E66;"><p>Determines whether or not the alarm is operating in supervised mode. More specifically it determines whether or not the alarm input should be driven such that a loss of voltage to the input results in an alarm condition.
+								<ul><li>0 for unsupervised</li><li>1 for supervised</li></ul></p></div></li><li><b>dwellTime</b> [double]<div style="color:#1E3E66;">The time, in 100s milliseconds, that the alarm input should be reported as active when triggered, regardless of the actual state of the physical input. The value must be between 0 to 0.5.</div></li><li><b>physicalInput</b> [int]<div style="color:#1E3E66;"><p>An integer representing the physical alarm input with which this service is associated. Valid values:<ul><li>0 - indicates that the service maps to a physical alarm input</li><li>-1 - indicates that the service instance does not map to a physical alarm input. The alarm is software based. (e.g. Sarix returns this value, as they are software based).</li></ul></p></div></li><li><b>combinedEventEntry</b> - optional;  [COMBINED_EVENT_ENTRY]<div style="color:#1E3E66;">A COMBINED_EVENT_ENTRY data element</div><ul type="square"><li><b>opStack</b> [OPSTACK]<div style="color:#1E3E66;">Represents an OPSTACK data element.</div><ul type="square"><li><b>operator</b> [string]<div style="color:#1E3E66;"><p>The operator needed for a combined event. Valid values:
+								<ul><li>AND - expects two arguments</li><li>OR - expects two arguments</li><li>NOT - expects one argument</li><li>NOP - expects one argument</li></ul></p></div></li><li><b>event_entries</b> [EVENT_ENTRIES]<div style="color:#1E3E66;">Represents an EventEntries data element</div><ul type="square"><li><b>eventEntry</b> - unbounded;  [EVENT_ENTRY]<div style="color:#1E3E66;"/><ul type="square"><li><b>uid</b> [string]<div style="color:#1E3E66;">
+								The event's unique identifier.
+							</div></li><li><b>eventURI</b> [string]<div style="color:#1E3E66;">
+								The event's URI.
+							</div></li><li><b>eventType</b> [string]<div style="color:#1E3E66;">
+								The event's Type.
+							</div></li><li><b>serviceType</b> [string]<div style="color:#1E3E66;">
+								A service type URN.
+							</div></li><li><b>propertySet</b> [PROPERTY_SET]<div style="color:#1E3E66;"/><ul type="square"><li><b>property</b> - unbounded;  [PROPERTY]<div style="color:#1E3E66;">Represents a PROPERTY data element</div><ul type="square"><li><b>name</b> [string]<div style="color:#1E3E66;">The name of the property of the value to compare against. 250 max characters.</div></li><li><b>value</b> [string]<div style="color:#1E3E66;">The value to compare against. i.e. The event is considered "active" when the current value of each listed property, compared, via the comparator, to the defined value yields true.</div></li><li><b>comparator</b> [string]<div style="color:#1E3E66;">The comparison operator to utilize.</div></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetConfigurationResponse]<div style="color:#1E3E66;">Respresents a response from the SetConfiguration action.</div></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

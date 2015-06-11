@@ -1,0 +1,194 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>MotionDetection - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		$Id: MotionDetectionV1.wsdl 562 2011-03-09 01:32:29Z  $
+	</div><div class="page"><div>
+			This service allows clients to query and modify the service provider's current motion detection configuration, as well as providing a Pelco device's current motion detection status.
+		</div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.ClearMDRegions">ClearMDRegions</a></h2><div class="value">
+</div><div class="value">Clears all detection regions currently associated with the motion detection grid.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#ClearMDRegions</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ClearMDRegions]<div style="color:#1E3E66;">Represents a request to the ClearMDRegions action.</div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ClearMDRegionsResponse]<div style="color:#1E3E66;">Represents a response from the ClearMDRegions action.</div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetAlarmState">GetAlarmState</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This action is now deprecated. It is not recommended for production usage. The recommended method is now using the Event Arbiter Library to subscribe to this service's events and alarms.</div><p>Returns 1 (true) if any defined motion region is active, otherwise it returns 0 (false).</p><div class="notice">After calling this action, please wait several seconds before calling this action again to prevent overwhelming your Pelco device.</div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetAlarmState</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetAlarmState]<div style="color:#1E3E66;">Represents a request to the GetAlarmState action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetAlarmStateResponse]<div style="color:#1E3E66;">Represents a response from the GetAlarmState action.</div><ul type="square"><li><b>alarmState</b> [int]<div style="color:#1E3E66;"><p>
+										A collection of all defined motion regions. Must be one of the following:
+										<ul><li>true (1) if any region is active</li><li>false (0) if all regions are inactive</li></ul></p></div></li> </ul></div></li><li class="operation"><h2><a name="op.GetEnabled">GetEnabled</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div><p>Returns the status of motion detection.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetEnabled</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetEnabled]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a request to the GetEnabled action.</p></div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetEnabledResponse]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a response from the GetEnabled action.</p></div><ul type="square"><li><b>enabled</b> [int]<div style="color:#1E3E66;">shows whether the device has motion detection enabled or not.</div></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetGridSize">GetGridSize</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div><p>Returns the size of a specific motion detection grid. While both current Pelco IP-based devices and Pelco legacy devices provide this action for MotionDetection, Pelco legacy devices do not always return the correct grid size.</p><div class="notice">The MotionDetection service currently calculates coordinates in an unexpected way. Specifically it fails to account for two rows. For example: (0,0) through (5,5) is technically a 6 x 6 area. However this is calculated as a 5 x 5 area. This is important to consider when determining the bitmask length.</div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetGridSize</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetGridSize]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a request to the GetGridSize action.</p></div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetGridSizeResponse]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a response from the GetGridSize action.</p></div><ul type="square"><li><b>rows</b> [int]<div style="color:#1E3E66;">the number of rows contained in all motion detection regions</div></li><li><b>columns</b> [int]<div style="color:#1E3E66;">the number of columns contained in all motion detection regions</div></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMaxRegions">GetMaxRegions</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div><p>Returns the maximum number of motion detectable regions that the device can accommodate.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetMaxRegions</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMaxRegions]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a request to the GetMaxRegions action.</p></div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMaxRegionsResponse]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a response from the GetMaxRegions action.</p></div><ul type="square"><li><b>maxRegions</b> [int]<div style="color:#1E3E66;">the maximum number of motion detection regions that a device can manage.</div></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMaxSensitivity">GetMaxSensitivity</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div><p>Returns the maximum motion sensitivity setting the device can handle.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetMaxSensitivity</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMaxSensitivity]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a request to the GetMaxSensitivity action.</p></div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMaxSensitivityResponse]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a response from the GetMaxSensitivity action.</p></div><ul type="square"><li><b>maxSensitivity</b> [int]<div style="color:#1E3E66;">the maximum sensitivity motion detection level that a device can handle.</div></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMDConfiguration">GetMDConfiguration</a></h2><div class="value">
+</div><div class="value">Returns the current motion detection configuration.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetMDConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMDConfiguration]<div style="color:#1E3E66;">Represents a request to the GetMDConfiguration action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMDConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the GetMDConfiguration action.</div><ul type="square"><li><b>mdConfig</b> [MDConfig]<div style="color:#1E3E66;">A MDConfig data type.</div><ul type="square"><li><b>rows</b> [int]<div style="color:#1E3E66;">The number of macro block rows in the motion detection grid. Currently the maximum number is 68.</div></li><li><b>columns</b> [int]<div style="color:#1E3E66;">The number of macro block columns in the motion detection grid. Currently the maximum number is 120.</div></li><li><b>maxSensitivity</b> [int]<div style="color:#1E3E66;">The maximum acceptable sensitivity value for a motion detection region. The maximum value is 100.</div></li><li><b>maxRegions</b> [int]<div style="color:#1E3E66;"><p>The maximum number of definable motion detection regions. This will vary by Pelco device.</p></div></li><li><b>alarmEnabled</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to send an alarm when motion is detected, or 0 (false) otherwise.</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetMDRegions">GetMDRegions</a></h2><div class="value">
+</div><div class="value">
+				Returns the regions of the motion detection grid in which motion is being detected and reported. In current Pelco IP-based devices, this action returns the bitmask for the entire available grid. However in Pelco legacy products this action will only return the bitmask of the given region that was passed into the SetMDRegion call.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#GetMDRegions</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMDRegions]<div style="color:#1E3E66;">Represents a request to the GetMDRegions action.</div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMDRegionsResponse]<div style="color:#1E3E66;">Represents a response from the GetMDRegions action.</div><ul type="square"><li><b>regionList</b> [MDRegionList]<div style="color:#1E3E66;">A MDRegionList data type.</div><ul type="square"><li><b>region</b> - optional, unbounded;  [Region]<div style="color:#1E3E66;">A Region data type.</div><ul type="square"><li><b>name</b> [string]<div style="color:#1E3E66;"><p>User defined name of the region. 250 character maximum.</p><div class="notice">
+									Current Pelco IP-based devices (Sarix, Spectra HD, and so on) require the following region name format: RegionX, where X is the number of the region. This does not affect Pelco legacy devices.
+								</div></div></li><li><b>coordinate</b> - unbounded;  [coordinate]<div style="color:#1E3E66;"><p>A list of coordinate data types.</p><div class="notice">
+									The MotionDetection service currently calculates coordinates in an unexpected way. Specifically it fails to account for two rows. For example: (0,0) through (5,5) is technically a 6 x 6 area. However this is calculated as a 5 x 5 area. This is important to consider when determining the bitmask length.
+								</div></div><ul type="square"><li><b>row</b> [int]<div style="color:#1E3E66;">y coordinate</div></li><li><b>column</b> [int]<div style="color:#1E3E66;">x coordinate</div></li> </ul><ul type="circle"><li><b>position</b> - required;  [string]<div style="color:#1E3E66;">The name of the position. 250 character maximum.</div></li></ul></li><li><b>sensitivity</b> [int]<div style="color:#1E3E66;"><p>
+									Indicates the sensitivity level of each cell within the region.
+									<ul><li>This value must be contained within the range 0 &lt;= sensitivity &lt;= MaxSensitivity.</li><li>The higher the sensitivity value, the greater the sensitivity of each cell contained within the region.</li></ul></p></div></li><li><b>threshold</b> [int]<div style="color:#1E3E66;">The number of cells within the region that must be triggered before an motion detection event (e.g. an alarm) is generated.</div></li><li><b>mask</b> [string]<div style="color:#1E3E66;"><p>
+									This is the attribute used to determine how many of a region's cell blocks have detected changes or motion.
+									<ul><li>the size of this field indicates the number of cell blocks this region contains</li><li>A "1" value indicates motion detection / changes, while a "0" value indicates otherwise. For example: 0010101000 - demonstrates that a region has 10 cell blocks, with 3 blocks that detect motion.</li><li>This is a Pelco base64 encoded value (little endian). So, if there are 8 bits in the mask that are 0000001 (in row major) form, this is translated into the number 64 for base-64 encoding and not 1. So the example above of 0010101000 is represented as VAAA= in Pelco base64 and not KgAA=</li></ul><div class="notice">
+										Manually changing this field, will not trigger alarms or events. 
+										
+										Pelco’s base64 implementation is similar to standard base64, with the exception that Pelco’s version always has an additional equal sign (=) appended to the result. Moreover current Pelco IP-based devices (Sarix, Spectra HD, and so on) are able to accept standard Base64. However they only return non-standard Pelco Base64. It is a recommended best practice to always use Pelco Base64.
+									</div></p></div></li><li><b>alarmEnabled</b> [int]<div style="color:#1E3E66;">Set to "1" (true) to send an alarm when motion is detected, or "0" (false) otherwise</div></li> </ul></li> </ul></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.ResetMDConfiguration">ResetMDConfiguration</a></h2><div class="value">
+</div><div class="value">Resets the device's motion detection configuration.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#ResetMDConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ResetMDConfiguration]<div style="color:#1E3E66;">Represents a request to the ResetMDConfiguration action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ResetMDConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the ResetMDConfiguration action.</div></div></li><li class="operation"><h2><a name="op.SetEnabled">SetEnabled</a></h2><div class="value">
+</div><div class="value"><div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div><p>Updates the device's current motion detection state (enabled or disabled).</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#SetEnabled</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetEnabled]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a request to the SetEnabled action.</p></div><ul type="square"><li><b>enabled</b> [int]<div style="color:#1E3E66;">represents the device's state of motion detection</div></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetEnabledResponse]<div style="color:#1E3E66;"><div class="caution">DEPRECATED as of Endura 1.2</div><p>Represents a response from the SetEnabled action.</p></div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li><li class="operation"><h2><a name="op.SetMDConfiguration">SetMDConfiguration</a></h2><div class="value">
+</div><div class="value">Updates the current motion detection configuration.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#SetMDConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetMDConfiguration]<div style="color:#1E3E66;">Represents a request to the SetMDConfiguration action.</div><ul type="square"><li><b>mdConfig</b> [MDConfig]<div style="color:#1E3E66;">A MDConfig data type.</div><ul type="square"><li><b>rows</b> [int]<div style="color:#1E3E66;">The number of macro block rows in the motion detection grid. Currently the maximum number is 68.</div></li><li><b>columns</b> [int]<div style="color:#1E3E66;">The number of macro block columns in the motion detection grid. Currently the maximum number is 120.</div></li><li><b>maxSensitivity</b> [int]<div style="color:#1E3E66;">The maximum acceptable sensitivity value for a motion detection region. The maximum value is 100.</div></li><li><b>maxRegions</b> [int]<div style="color:#1E3E66;"><p>The maximum number of definable motion detection regions. This will vary by Pelco device.</p></div></li><li><b>alarmEnabled</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to send an alarm when motion is detected, or 0 (false) otherwise.</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetMDConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the SetMDConfiguration action.</div></div></li><li><h2><a name="op.SetMDRegions">SetMDRegions</a></h2><div class="value">
+</div><div class="value">
+				Updates the regions of the motion detection grid in which motion should be detected and reported. Creating a region outside the grid will yield a SOAP fault.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MotionDetection:1#SetMDRegions</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetMDRegions]<div style="color:#1E3E66;"/><ul type="square"><li><b>regionList</b> [MDRegionList]<div style="color:#1E3E66;"/><ul type="square"><li><b>region</b> - optional, unbounded;  [Region]<div style="color:#1E3E66;">A Region data type.</div><ul type="square"><li><b>name</b> [string]<div style="color:#1E3E66;"><p>User defined name of the region. 250 character maximum.</p><div class="notice">
+									Current Pelco IP-based devices (Sarix, Spectra HD, and so on) require the following region name format: RegionX, where X is the number of the region. This does not affect Pelco legacy devices.
+								</div></div></li><li><b>coordinate</b> - unbounded;  [coordinate]<div style="color:#1E3E66;"><p>A list of coordinate data types.</p><div class="notice">
+									The MotionDetection service currently calculates coordinates in an unexpected way. Specifically it fails to account for two rows. For example: (0,0) through (5,5) is technically a 6 x 6 area. However this is calculated as a 5 x 5 area. This is important to consider when determining the bitmask length.
+								</div></div><ul type="square"><li><b>row</b> [int]<div style="color:#1E3E66;">y coordinate</div></li><li><b>column</b> [int]<div style="color:#1E3E66;">x coordinate</div></li> </ul><ul type="circle"><li><b>position</b> - required;  [string]<div style="color:#1E3E66;">The name of the position. 250 character maximum.</div></li></ul></li><li><b>sensitivity</b> [int]<div style="color:#1E3E66;"><p>
+									Indicates the sensitivity level of each cell within the region.
+									<ul><li>This value must be contained within the range 0 &lt;= sensitivity &lt;= MaxSensitivity.</li><li>The higher the sensitivity value, the greater the sensitivity of each cell contained within the region.</li></ul></p></div></li><li><b>threshold</b> [int]<div style="color:#1E3E66;">The number of cells within the region that must be triggered before an motion detection event (e.g. an alarm) is generated.</div></li><li><b>mask</b> [string]<div style="color:#1E3E66;"><p>
+									This is the attribute used to determine how many of a region's cell blocks have detected changes or motion.
+									<ul><li>the size of this field indicates the number of cell blocks this region contains</li><li>A "1" value indicates motion detection / changes, while a "0" value indicates otherwise. For example: 0010101000 - demonstrates that a region has 10 cell blocks, with 3 blocks that detect motion.</li><li>This is a Pelco base64 encoded value (little endian). So, if there are 8 bits in the mask that are 0000001 (in row major) form, this is translated into the number 64 for base-64 encoding and not 1. So the example above of 0010101000 is represented as VAAA= in Pelco base64 and not KgAA=</li></ul><div class="notice">
+										Manually changing this field, will not trigger alarms or events. 
+										
+										Pelco’s base64 implementation is similar to standard base64, with the exception that Pelco’s version always has an additional equal sign (=) appended to the result. Moreover current Pelco IP-based devices (Sarix, Spectra HD, and so on) are able to accept standard Base64. However they only return non-standard Pelco Base64. It is a recommended best practice to always use Pelco Base64.
+									</div></p></div></li><li><b>alarmEnabled</b> [int]<div style="color:#1E3E66;">Set to "1" (true) to send an alarm when motion is detected, or "0" (false) otherwise</div></li> </ul></li> </ul></li><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetMDRegionsResponse]<div style="color:#1E3E66;">Represents a request to the SetMDRegions action.</div><ul type="square"><li><b>asyncId</b> - optional;  [int]<div style="color:#1E3E66;">This parameter does not apply to 3rd parties. Please disregard it.</div></li> </ul></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

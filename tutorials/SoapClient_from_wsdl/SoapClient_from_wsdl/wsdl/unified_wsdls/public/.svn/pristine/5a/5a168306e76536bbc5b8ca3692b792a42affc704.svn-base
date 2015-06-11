@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="RelayArrayConfiguration"
+  	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:RelayArrayConfiguration:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:RelayArrayConfiguration:1">
+
+	<wsdl:documentation>
+		$Id: RelayArrayConfigurationV1.wsdl 433 2010-11-23 01:18:25Z  $
+	</wsdl:documentation>
+	
+	<!-- Services -->
+	
+	<wsdl:service name="RelayArrayConfiguration">
+		<wsdl:documentation>The RelayArrayConfiguration service allows multiple relays to be controlled from a single service. Each relay in the service is individually identified by an relayId, which is an index into the relay array. Each RelayArrayConfiguration service should be contained within a RelayArray device.</wsdl:documentation>
+		<wsdl:port binding="tns:RelayArrayConfiguration"
+			name="RelayArrayConfiguration">
+			<soap:address location="http://localhost:49152/control/RelayArrayConfiguration-1" />
+		</wsdl:port>
+	</wsdl:service>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:RelayArrayConfiguration:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:complexType name="RelayStates">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The current state of relays contained in the array.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="offset" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"><p>Zero based offset of the first relay contained in the contained bitmasks. The value must be 0 or greater (it represents the number of alarms - 1).</p><div class="notice">For Atlas IP Cameras, the value will always be 1 since it has only 1 alarm.</div></xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="length" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"><p>Number of relays states contained by the contained bitmasks. Value must be 1 or greater (this represents the number of alarms).</p><div class="notice">For Atlas IP Cameras, the value will always be 1 since it has only 1 alarm.</div></xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="changed" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Bitmask of the change-of-state status of relays contained within the array range defined by offset and length. The bitmask is in base64 format, stored in little-endian, i.e. the bit array "1" is encoded as "AQA=" and not "gAA=".</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="state1" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"><p>The state of each alarm is determined by 2 bits. Each bit of the state is stored in a different bit array. state1 contains the LSB and state2 contains the MSB. state1 contains a 1 if there is an error state on the alarm. The bitmask is in base64 format (little endian). Currently defined values are:
+								<ul>	
+									<li>0 for OPEN</li>
+									<li>1 for CLOSED</li>
+									</ul></p></xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="state2" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"><p>The state of each alarm is determined by 2 bits. Each bit of the state is stored in a different bit array. state1 contains the LSB and state2 contains the MSB. The meaning of a bit in state2 is determined by the value of the corresponding bit in state1. If there is no error then state2 is:
+								<ul>	
+									<li>0 for OPEN</li>
+									<li>1 for CLOSED</li>
+								</ul>
+								if there is an error then the meaning is:
+								<ul>	
+									<li>0 for FAULT</li>
+									<li>1 for SHORT</li>
+								</ul> The bitmask is in base64 format (little endian).</p></xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="enabled" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Bitmask of enabled states of relays contained within the range of the bitmask. The bitmask is in base64 format.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="RelayConfig">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The current configuration state of the relay output. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+                    <xsd:element name="polarity" type="xsd:int" minOccurs="0"> <!-- when was this added? WS 1.5 doesn't send it-->
+                        <xsd:annotation>
+                        	<xsd:documentation xml:lang="en"><p>The polarity of the relay. Valid values:
+                        		<ul>
+                        		<li>0 for NORMAL</li>
+                        		<li>1 for REVERSE</li>
+                        	</ul></p></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="enabled" type="xsd:int" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Set to 1 (True) for an active state, 0 (false) otherwise.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mode" type="xsd:int" >
+						<xsd:annotation><xsd:documentation><p>The mode to be used if the the relay is AUTO triggered. The value may be one of the following:<ul>
+							<li>0 for OFF</li>
+							<li>1 for ON</li>
+							<li>2 for TOGGLE</li>
+							<li>3 for PULSE</li>
+							<li>4 for AUTO</li></ul>
+						</p></xsd:documentation></xsd:annotation>
+					</xsd:element>
+					<xsd:element name="period" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Defines the total time for the relay control pulse. Units are in 100s of milliseconds. Value must be 5 (i.e. 1/2 second) or greater.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="dutyCycle" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The percentage of time during the defined period that the relay will be in the ON state. Valid values ranges from 1 - 100.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pulses" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The number of times the relay will be pulsed when its mode setting is selected as pulse. Value must be 1 or greater.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="physicalOutput" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">This represents the number of physical relays with which this service is associated. Value must be 1 or greater.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Trigger">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">An event in response to which the relay should be triggered.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="eventURI" type="xsd:string" >
+						<xsd:annotation><xsd:documentation>Device uuid and serviceId of the service acting as the event source. 250 max character length</xsd:documentation></xsd:annotation>
+					</xsd:element>
+					<xsd:element name="propertySet" type="tns:PropertySet" >
+						<xsd:annotation><xsd:documentation>A PropertySet data element</xsd:documentation></xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="PropertySet">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">A list of Property data elements.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="property" type="tns:Property" maxOccurs="unbounded">
+						<xsd:annotation><xsd:documentation>A Property data element.</xsd:documentation></xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Property">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">An evented state variable defining the trigger condition. The trigger condition is considered to be met if the logical and of the indicated comparisons evaluates to true. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The state variable name relevant to this condition. 250 max character length</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="value" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The value to which the supplied comparator should be applied. 250 max character length</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="comparator" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The logical operation to be applied. May be one of: &#60;, &#62;, &#61;&#61;, &#60;&#61;, &#62;&#61;</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="GetArraySize">
+				<xsd:annotation><xsd:documentation>Represents a request to the GetArraySize action</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetArraySizeResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the GetArraySize action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="size" type="xsd:int">
+							<xsd:annotation><xsd:documentation>The number of elements the array contains</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetConfiguration">
+				<xsd:annotation><xsd:documentation>Represents a request to the GetConfiguration action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayID" type="xsd:int">
+							<xsd:annotation><xsd:documentation>The identifier of the relay to perform an operation upon. The index into the array.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetConfigurationResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the GetConfiguration action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayConfig" type="tns:RelayConfig">
+							<xsd:annotation><xsd:documentation>A RelayConfig data element</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetRelayStates">
+				<xsd:annotation><xsd:documentation>Represents a request to the GetRelayStates action</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetRelayStatesResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the GetRelayStatesResponse action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayStates" type="tns:RelayStates">
+							<xsd:annotation><xsd:documentation>A RelayStates data element</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ResetConfiguration">
+				<xsd:annotation><xsd:documentation>Represents a request to the ResetConfiguration action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayID" type="xsd:int">
+							<xsd:annotation><xsd:documentation><p>The identifier of the relay to perform an operation upon. The index into the array.</p><div class="notice">A relayId of -1 resets the configuration of all relays in the array.</div></xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ResetConfigurationResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the ResetConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="SetConfiguration">
+				<xsd:annotation><xsd:documentation>Represents a request to the SetConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayID" type="xsd:int">
+							<xsd:annotation><xsd:documentation>The identifier of the relay to perform an operation upon. The index into the array.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="relayConfig" type="tns:RelayConfig">
+							<xsd:annotation><xsd:documentation>A RelayConfig data element</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetConfigurationResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the SetConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="TriggerRelay">
+				<xsd:annotation><xsd:documentation>Represents a request to the TriggerRelay action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relayID" type="xsd:int">
+							<xsd:annotation><xsd:documentation>The identifier of the relay to perform an operation upon. The index into the array.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element name="mode" type="xsd:int">
+							<xsd:annotation><xsd:documentation><p>The operating mode of relay when triggered. The mode may be one of:<ul>
+				<li>0 for OFF</li>
+				<li>1 for ON</li>
+				<li>2 for TOGGLE</li>
+				<li>3 for PULSE</li>
+				<li>4 for AUTO</li></ul></p></xsd:documentation></xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="relayConfig" type="tns:RelayConfig">
+							<xsd:annotation><xsd:documentation>A RelayConfig data element. If relayConfig is supplied, it is applied as the current configuration of the output before the relay is triggered.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="TriggerRelayResponse">
+				<xsd:annotation><xsd:documentation>Represents a response from the TriggerRelay action/</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<wsdl:message name="GetArraySize">
+		<wsdl:part name="parameters" element="tns:GetArraySize"/>
+	</wsdl:message>
+	<wsdl:message name="GetArraySizeResponse">
+		<wsdl:part name="parameters" element="tns:GetArraySizeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetConfiguration">
+		<wsdl:part name="parameters" element="tns:GetConfiguration"/>
+	</wsdl:message>
+	<wsdl:message name="GetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetConfigurationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetRelayStates">
+		<wsdl:part name="parameters" element="tns:GetRelayStates"/>
+	</wsdl:message>
+	<wsdl:message name="GetRelayStatesResponse">
+		<wsdl:part name="parameters" element="tns:GetRelayStatesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ResetConfiguration">
+		<wsdl:part name="parameters" element="tns:ResetConfiguration"/>
+	</wsdl:message>
+	<wsdl:message name="ResetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:ResetConfigurationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="SetConfiguration">
+		<wsdl:part name="parameters" element="tns:SetConfiguration"/>
+	</wsdl:message>
+	<wsdl:message name="SetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:SetConfigurationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="TriggerRelay">
+		<wsdl:part name="parameters" element="tns:TriggerRelay"/>
+	</wsdl:message>
+	<wsdl:message name="TriggerRelayResponse">
+		<wsdl:part name="parameters" element="tns:TriggerRelayResponse"/>
+	</wsdl:message>
+
+	<!-- Ports -->
+
+	<wsdl:portType name="RelayArrayConfigurationPortType">
+		<wsdl:operation name="GetArraySize">
+			<wsdl:documentation>Returns the number of relays contained in the relay array.</wsdl:documentation>
+			<wsdl:input message="tns:GetArraySize" />
+			<wsdl:output message="tns:GetArraySizeResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetConfiguration">
+			<wsdl:documentation>Returns the configuration of the relay.</wsdl:documentation>
+			<wsdl:input message="tns:GetConfiguration" />
+			<wsdl:output message="tns:GetConfigurationResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetRelayStates">
+			<wsdl:documentation>Returns the current state and enabled state of the relays contained within the range indicated by relayStates.offset and relayStates.length.</wsdl:documentation>
+			<wsdl:input message="tns:GetRelayStates" />
+			<wsdl:output message="tns:GetRelayStatesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="ResetConfiguration">
+			<wsdl:documentation>Resets the relay to its factory default settings.</wsdl:documentation>
+			<wsdl:input message="tns:ResetConfiguration" />
+			<wsdl:output message="tns:ResetConfigurationResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="SetConfiguration">
+			<wsdl:documentation>Sets the configuration of the relay indicated by relayId.</wsdl:documentation>
+			<wsdl:input message="tns:SetConfiguration" />
+			<wsdl:output message="tns:SetConfigurationResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="TriggerRelay">
+			<wsdl:documentation>Triggers the relay in the indicated mode.</wsdl:documentation>
+			<wsdl:input message="tns:TriggerRelay" />
+			<wsdl:output message="tns:TriggerRelayResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="RelayArrayConfiguration" type="tns:RelayArrayConfigurationPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="GetArraySize">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetArraySize" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetRelayStates">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetRelayStates" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ResetConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#ResetConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#SetConfiguration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="TriggerRelay">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:RelayArrayConfiguration:1#TriggerRelay" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+</wsdl:definitions>

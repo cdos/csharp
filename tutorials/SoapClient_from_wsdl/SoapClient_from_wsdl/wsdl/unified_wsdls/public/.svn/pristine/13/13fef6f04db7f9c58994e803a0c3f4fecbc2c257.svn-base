@@ -1,0 +1,528 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions  name="SystemLog"
+	targetNamespace="urn:schemas-pelco-com:service:SystemLog:1"
+	xmlns:tns="urn:schemas-pelco-com:service:SystemLog:1"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+	<wsdl:documentation>
+		$Id$
+	</wsdl:documentation>
+
+	<wsdl:types> 
+
+		<xsd:schema  targetNamespace="urn:schemas-pelco-com:service:SystemLog:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:complexType name="LogQuery">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a query for querying system log
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="logID" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The logID of a log entry already in the System Log.
+                If this is set in the query, all other variable fields are ignored
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="fullChain" type="xsd:boolean" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Set to True to return the full chain of exceptions, False otherwise
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="users" type="tns:Users" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A List of usernames OR'd together as part of the query
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="startTime" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The time log entry creation started.
+                datetime.tz format without the time zone information
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="endTime" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The time log entry creation ended.
+                datetime.tz format without the time zone information
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="devices" type="tns:Devices" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A List of device UDN's to query for.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="deviceTypes" type="tns:DeviceTypes" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A List of device Types's to query for.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="serviceTypes" type="tns:ServiceTypes" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A List of Service Types's to query for.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Users">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of user names
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="userName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A username
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Devices">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of device Ids
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="deviceUDN" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A device Id
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="DeviceTypes">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of device types
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="deviceURN" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A device type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="ServiceTypes">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of service types
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="serviceURN" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A service type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="LogQueryResults">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents result of a log query
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="pageHeader" type="tns:PageHeader">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Paging response data
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="exceptions" type="tns:Exceptions" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A list of exceptions
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="messages" type="tns:Messages" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A list of log messages
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="PageHeader">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents paging data
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="ID" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Uniquely identifies the query's saved result set
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="TTL" type="xsd:int" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The saved result set's time to live.
+                If a new request for that specific result set is not made (using the queryid) then the result set will be deleted (from query cache if querying from a traditional database)
+                in seconds.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="URI" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The uri to call to download the whole result set (instead of paging)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="nextEntry" type="xsd:int" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The index where next page begins within the saved result set
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="totalEntries" type="xsd:int" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The max total number of results to return (max number of entries within a saved result set)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Exceptions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents data related to a specific error
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Args" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A container for arguments
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="MsgFileId" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A unique identifier for message's file
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="Result" type="xsd:int" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Exception code.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="MsgId" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Exception's unique string identifier
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Messages">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            List of log messages
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="logMessage" type="tns:LogMessage">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Log Message
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="LogMessage">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            List of log messages
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="fileId" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The log file's identifier/name
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="identifier" type="xsd:double" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The log entry's unique identifier
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="params" type="tns:Params" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                An array of string parameter values
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Params">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            An array of string parameter values
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="param" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Parameter value
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="LogEntry">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The entry to insert into the System Log, or return in a query
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="userName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The username of the operator that made the logEntry
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="time" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The time the logEntry was created. (This can be explicitly set - but will be autogenerated by default)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="deviceUDN" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The UUID of the device the logEntry is referencing
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="deviceURN" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The URN of the device the logEntry is referencing
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="serviceURN" type="xsd:string" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The URN of the service the logEntry is referencing
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="logMessage" type="tns:LogMessage" minOccurs="0" nillable="true">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The xml formatted message.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="Query">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a Query action.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+            <xsd:element name="logQuery" type="tns:LogQuery">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The query to execute
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="QueryResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a response to Query action.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+            <xsd:element name="queryResults" type="tns:LogQueryResults">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The result of running the query
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Log">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a request to write log to system log.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+            <xsd:element name="logEntry" type="tns:LogEntry">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Log Entry to insert
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="LogResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents the response to Log action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="logId" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Id of the inserted log
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema> 
+	</wsdl:types> 
+
+	<wsdl:message name="Query">
+		<wsdl:part name="parameters" element="tns:Query"/>
+	</wsdl:message>
+	<wsdl:message name="QueryResponse">
+		<wsdl:part name="parameters" element="tns:QueryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="Log">
+		<wsdl:part name="parameters" element="tns:Log"/>
+	</wsdl:message>
+	<wsdl:message name="LogResponse">
+		<wsdl:part name="parameters" element="tns:LogResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType  name="SystemLogPortType">
+    
+		<wsdl:operation  name="Query">
+      <wsdl:documentation>
+        Queries the system log and returns the results.
+      </wsdl:documentation>
+			<wsdl:input  message="tns:Query"/>
+			<wsdl:output  message="tns:QueryResponse"/>
+		</wsdl:operation> 
+    
+		<wsdl:operation  name="Log">
+      <wsdl:documentation>
+        Writes a log to the System Log.
+      </wsdl:documentation>
+			<wsdl:input  message="tns:Log"/>
+			<wsdl:output  message="tns:LogResponse"/>
+		</wsdl:operation> 
+    
+	</wsdl:portType> 
+
+	<wsdl:binding  name="SystemLog" type="tns:SystemLogPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation  name="Query">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:SystemLog:1#Query"/>
+			<wsdl:input> 
+				<soap:body use="literal"/>
+			</wsdl:input> 
+			<wsdl:output> 
+				<soap:body use="literal"/>
+			</wsdl:output> 
+		</wsdl:operation> 
+		<wsdl:operation  name="Log">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:SystemLog:1#Log"/>
+			<wsdl:input> 
+				<soap:body use="literal"/>
+			</wsdl:input> 
+			<wsdl:output> 
+				<soap:body use="literal"/>
+			</wsdl:output> 
+		</wsdl:operation> 
+	</wsdl:binding> 
+
+	<wsdl:service name="SystemLog">
+    <wsdl:documentation>
+      This services allows the creation of new log entries or the querying of existing entries.
+    </wsdl:documentation>
+		<wsdl:port name="SystemLog" binding="tns:SystemLog">
+			<soap:address location="http://localhost:49152/control/SystemLog-1"/>
+		</wsdl:port> 
+	</wsdl:service> 
+</wsdl:definitions> 

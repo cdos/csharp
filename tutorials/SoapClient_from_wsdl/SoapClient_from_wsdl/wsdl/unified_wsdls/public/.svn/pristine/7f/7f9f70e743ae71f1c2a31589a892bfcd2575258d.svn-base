@@ -1,0 +1,1098 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="VideoInput"
+	targetNamespace="urn:schemas-pelco-com:service:VideoInput:1"
+	xmlns:tns="urn:schemas-pelco-com:service:VideoInput:1"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+	<wsdl:documentation>
+		$Id: VideoInputV1.wsdl 600 2011-06-10 22:38:52Z  $
+	</wsdl:documentation>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn:schemas-pelco-com:service:VideoInput:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="unqualified"
+			attributeFormDefault="unqualified">
+
+			<xsd:complexType name="StreamParameters">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents parameters needed for connecting to a video stream
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="preAlarmDurationInManualRecord" type="xsd:int" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The amount of time , in seconds prior to the alarm time that the recording should begin
+                <ul>
+                  <li>30 (seconds) is common</li>
+                  <li>Used when a manual recording is initiated</li>
+                  <li>The feature is based on the premise that the recording device has cached some amount of video prior to the current time</li>
+                </ul>
+                <div class="notice">This identifier is a misnomer: its functionality has little to do with alarms themselves.</div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="streamSession" type="tns:StreamSession" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The Session parameters for the Stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="compatability" type="tns:Compatibility" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="videoQuality" type="tns:VideoQuality" minOccurs="0" maxOccurs="1">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The Video Quality parameters such as framerate,bitrate, etc
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          <xsd:element name="displayName" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Friendly name of the session
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="StreamSession">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents data related to specific video stream session.Stream Session is part of Stream Parameters.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="sourceURI" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents URI of orginal source of video data.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="outputURI" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the URI to which video data will be streamed.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="controlURI" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the URI using which the stream could be controlled.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="transportURL" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The URL to which selected video data will be transmitted.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="streamState" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents current transmission state of the stream
+                Possible states are
+                <ul>
+                  <li>Play</li>
+                  <li>Pause</li>
+                  <li>Reverse</li>
+                  <li>Seek</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="sessionId" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Unique Idenitifier for the Session
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="iFrameOnly" type="xsd:int" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents whether to send IFrames only.
+                Possible values are
+                <ul>
+                  <li> 1 - True, only IFrames would be transmitted</li>
+                  <li> 0 - False, All frames would be transmitted</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="secsPerIFrame" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                This is the number of elapsed seconds between the I-frames sent by the device.  
+                The client is responsible for determining the correct amount of time to display the frame.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="startTime" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Primarily used for playback and represents the start time of the interval being played back.
+                <ul>
+                  <li>The format of start time is dateTime.tz. ex 1988-04-07T18:39:09-08:00</li>
+                  <li>UTC timezone</li>
+                  <li>NOW is also valid start time</li>
+                  <li> ex 2007-05-02T18:48:46.017</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="endTime" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Primarily used for playback and represents the end time of the interval being played back.
+                <ul>
+                  <li>The format of end time is dateTime.tz. ex 1988-04-07T18:39:09-08:00</li>
+                  <li>UTC timezone</li>
+                  <li>INFINITE is also valid end time, signifying no end time</li>
+                  <li> ex 2007-05-02T18:48:46.017</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="clients" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the number of clients currently attached to this session
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="refreshInterval" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                The interval in seconds to be used in the RefreshSession action in the StreamControl service indicated by controlURI.
+                If the camera does not receive any calls to the RefreshSession action within the specified interval, the video stream session identified by sessionId will be disconnected.
+                Valid values range from 30 - 900 seconds (15 minutes)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:simpleType name="DELETION-PRIORITY">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents the likelihood an NVR delete a particular stream when it needs to regain a certain amount of free disk space.
+            This is restricted to the following values (lowest priority to highest - excluding UNDEFINED):
+            <ul>
+              <li>DISCARD</li>
+              <li>LOW</li>
+              <li>MEDIUM</li>
+              <li>HIGH</li>
+              <li>LOCK</li>
+              <li>UNDEFINED</li>
+            </ul>
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="DISCARD" />
+					<xsd:enumeration value="LOW" />
+					<xsd:enumeration value="MEDIUM" />
+					<xsd:enumeration value="HIGH" />
+					<xsd:enumeration value="LOCK" />
+					<xsd:enumeration value="UNDEFINED" />
+				</xsd:restriction>
+			</xsd:simpleType>
+
+      <xsd:simpleType name="RESOLUTIONS">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            A list of valid image size values. (This is a misnomer)
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="SIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Source Input Format NTSC (320x240)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="QSIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                320x240
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="2SIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC (704x240) PAL (704x288)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="4SIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC (704x480)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="D1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC(720x480)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="CIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Common Intermediate Format NTSC(352x240) PAL(352x288)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="QCIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC(176x112) PAL(176x144)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="2CIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC(704x240) PAL(704x288)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="4CIF">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                NTSC(704x480) PAL(704x576)
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="PALD1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:complexType name="Resolution">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The number of pixels per square inch
+            <div class="notice">
+              Our devices are NTSC centric.
+              To cater to PAL settings, simply convert the PAL value to an NTSC value: multiply the PAL value by 30/25.
+            </div>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+          <xsd:extension base="tns:RESOLUTIONS">
+            <xsd:attribute name="width" type="xsd:unsignedInt">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The width(x value)
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="height" type="xsd:unsignedInt">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The heigth(y value)
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:extension>
+        </xsd:simpleContent>
+      </xsd:complexType>
+
+			<xsd:complexType name="Compatibility">
+				<xsd:sequence>
+					<xsd:element name="resolution" type="tns:Resolution"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="VideoQuality">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The current transmission state of the stream.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="framerate" type="xsd:double" ><xsd:annotation>
+						<xsd:documentation xml:lang="en">Framerate of the stream, in fps. ex 30 for NTSC, 25 for PAL</xsd:documentation></xsd:annotation>
+					</xsd:element>
+					<xsd:element name="bitrate" type="xsd:int"><xsd:annotation>
+						<xsd:documentation xml:lang="en">Bitrate of the stream, in bps.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="format" type="xsd:string" minOccurs="0"  ><xsd:annotation>
+						<xsd:documentation xml:lang="en">Format of the stream.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="videosize" type="xsd:unsignedInt" ><xsd:annotation><xsd:documentation xml:lang="en">Resolution of the stream.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="tvformat" type="xsd:unsignedInt" ><xsd:annotation><xsd:documentation xml:lang="en">TV Format of the stream.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="gop" type="xsd:decimal"><xsd:annotation><xsd:documentation xml:lang="en">The number of frames in one GOP (Group of Pictures).</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+      <xsd:complexType name="Entries">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of Stream Parameters
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element  name="streamParameters" type="tns:StreamParameters" maxOccurs="unbounded" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Stream Parameters List
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+			
+			<xsd:complexType name="StreamCatalog">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents catalog of streams. The Stream Catalog is returned back as part of Query action call.
+            It primarily consist of the paging data and the list of entries associated with the submitted search criteria.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="entries" type="tns:Entries" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                List of stream parameters associated with the submitted search criteria
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+					<xsd:element name="pageHeader" type="tns:PageHeader" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The paging data
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="SessionList">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of Session
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="session" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                List of Session
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+      <xsd:attributeGroup name="QueryGroup">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Encapsulates a boolean attribute for query items.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="select" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Denotes whether or not the query item will be returned as part of the query result (ie like SQL SELECT items)
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:attributeGroup>
+
+      <xsd:complexType name="SelectableString">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a potential query item.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+          <xsd:extension base="xsd:string">
+            <xsd:attributeGroup ref="tns:QueryGroup">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Denotes whether or not the query item will be returned as part of the query result (ie like SQL SELECT items)
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attributeGroup>
+          </xsd:extension>
+        </xsd:simpleContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="FormatList">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of formats.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="format" minOccurs="0" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Name of the format
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attributeGroup ref="tns:QueryGroup">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Denotes whether or not the query item will be returned as part of the query result (ie like SQL SELECT items)
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attributeGroup>
+      </xsd:complexType>
+
+      <xsd:complexType name="ResolutionList">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a list of resolutions.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="resolution" minOccurs="0" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Name of the resolution
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attributeGroup ref="tns:QueryGroup">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Denotes whether or not the query item will be returned as part of the query result (ie like SQL SELECT items)
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attributeGroup>
+      </xsd:complexType>
+
+      <xsd:complexType name="SelectableRange">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            A range of valid integer values.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="minimum" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The starting value of the range of valid values.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maximum" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The ending value of the range of valid values.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attributeGroup ref="tns:QueryGroup"/>
+      </xsd:complexType>
+
+      <xsd:complexType name="StreamQuery">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents the search criteria for querying video streams.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="pageHeader" minOccurs="0" type="tns:PageHeader">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the paging data
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="sourceURI" minOccurs="0" type="tns:SelectableString">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the source URI.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="outputURI" minOccurs="0" type="tns:SelectableString">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the output URI
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="eventURI" minOccurs="0" type="tns:SelectableString">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the event URI
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="eventURN" minOccurs="0" type="tns:SelectableString" >
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the event URN.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="serviceId" minOccurs="0" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the unique identifier for the service
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="formats" minOccurs="0" type="tns:FormatList">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the list of formats. The following are the valid values
+                <ul>
+                  <li>Mpeg-4</li>
+                  <li>H.264</li>
+                </ul>
+                <div class="notice">The formats are only valid for Sarix</div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="resolutions" minOccurs="0" type="tns:ResolutionList" >
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                A list of resolutions to be used in the search criteria. May be one of:
+                <ul>
+                  <li>D1</li>
+                  <li>4CIF</li>
+                  <li>2CIF</li>
+                  <li>CIF</li>
+                  <li>QCIF</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="framerate" minOccurs="0" type="tns:SelectableRange">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the frame rate
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="bitrate" minOccurs="0" type="tns:SelectableRange">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the bit rate
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="startTime" minOccurs="0" type="tns:SelectableString">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The start time of the interval being played back.
+                <ul>
+                  <li>The format of start time is dateTime.tz. ex 1988-04-07T18:39:09-08:00</li>
+                  <li>UTC timezone</li>
+                  <li>NOW is also valid</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="endTime" minOccurs="0" type="tns:SelectableString">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The end time of the interval being played back.
+                <ul>
+                  <li>The format of the end time is dateTime.tz. ex 1988-04-07T18:39:09-08:00</li>
+                  <li>UTC timezone</li>
+                  <li>INFINITE is also valid for signifying no end time</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="deletionPriority" minOccurs="0" type="xsd:int" >
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Represents the likelihood an NVR delete a particular stream when it needs to regain a certain amount of free disk space.
+                This is restricted to the following values (lowest priority to highest - excluding UNDEFINED):
+                <ul>
+                  <li>0 for DISCARD</li>
+                  <li>1 for LOW</li>
+                  <li>2 for MEDIUM</li>
+                  <li>3 for HIGH</li>
+                  <li>4 for LOCK</li>
+                  <li>5 for UNDEFINED</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attributeGroup ref="tns:QueryGroup"/>
+      </xsd:complexType>
+
+      <xsd:complexType name="QueryId">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Uniquely identifies the query to the NVR
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+          <xsd:extension base="xsd:string">
+            <xsd:attribute name="ttl" type="xsd:unsignedInt">
+              <xsd:annotation>
+                <xsd:documentation>
+                  his represents the saved result set's time to live in seconds.
+                  If a new request for that specific result set is not made (using the queryid) then the result set will be deleted
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:extension>
+        </xsd:simpleContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="PageHeader">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents paging data
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="queryId" type="tns:QueryId" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Unique Identifier when making querying the NSM/NVR
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="nextEntry" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The index where the next page begins within the result set
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="totalEntries" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The total number of entries returned for a particular response
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maxEntries" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The maximum number of results being returned for the query
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="resultURI" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The URL from which the search results can be downloaded
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+			<!-- Query -->
+			<xsd:element name="Query">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents request to the Query Action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamQuery" type="tns:StreamQuery">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Represents a query. StreamQuery only needs to contain elements needed to filter the search results;
+                  these elements are also used to specify which elements should be included in the response (this is akin to SQL's SELECT).
+                  The elements that should be included in the response should contain a "select" attribute marked 'true'.
+                  If a "select" attribute is associated with the root streamQuery element, all sub-elements will be returned.
+                  <div class="notice">
+                    A direct transformation exists between the search criteria and an SQL statement of the form SELECT [syseng:Fields] FROM [syseng:Table] WHERE [syseng:Conditions] where [syseng:Fields] includes those elements with an associated "select" attribute (or is considered to be * if the streamQuery element has a "select" attribute),
+                    [syseng:Table] is empty, and [syseng:Conditions] is the logical and of the included search criteria.
+                  </div>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="QueryResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents the reponse from the Query action call
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamCatalog" type="tns:StreamCatalog">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Represents catalog of streams.
+                  It primarily consist of the paging data and the list of entries associated with the submitted search criteria.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="Connect">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a request to the Connect action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamParameters" type="tns:StreamParameters">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The stream parameters used for connecting
+                  <div class="notice">
+                    Only the following data needs to be set with the Connect request (for the streamParameters parameter):
+                    <ul>
+                      <li>transportUrl - The URL to which the selected video data will be transmitted.By default, video streams are multicast unless this value is filled.</li>
+                      <li>The device port is optional; the server response will include this if it is not specified in the request.</li>
+                      <li>
+                        refreshInterval - The interval in seconds to be used in the RefreshSession action in the urn:schemas-pelcocom: StreamControl service indicated by controlURI.
+                        If the camera does not receive any calls to the RefreshSession action within the specified interval, the video stream session identified by sessionId will be disconnected.
+                        Units are in seconds. The minimum value is 30 and the maximum value is 900.
+                      </li>
+                    </ul>
+                  </div>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ConnectResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a response from the Connect action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamParameters" type="tns:StreamParameters">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The returned streamParameters will include:
+                  <ul>
+                    <li>The URI of the urn:schemas-pelco-com:service:StreamControl service that should be used to control the session</li>
+                    <li>The sessionId to be used when addressing the urn:schemas-pelco-com:service:StreamControl service</li>
+                    <li>The URL to which the video data will be streamed</li>
+                    <li>The transport state of the stream</li>
+                    <li>The number of clients currently attached to this session</li>
+                  </ul>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="Disconnect">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a request to the Disconnect action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  Id of the session to disconnect from
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="DisconnectResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a response from the Disconnect action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetActiveSessions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a request to get all the current active sessions
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetActiveSessionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a response from the GetActiveSessions request
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="activeSessions" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The number of currently active sessions
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="maxSessions" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The maximum number of live sessions supported
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="GetActiveSessionIds">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a request to get the Ids of active sessions
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetActiveSessionIdsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents a response from GetActiveSessionIds request
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionIds" type="tns:SessionList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  List of active session Ids
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+            <xsd:element name="GetSessionParameters">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en">
+                        Represents a request to get Session parameters for a given Session Id
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation xml:lang="en">
+                                    Id of Session to get parameters for
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetSessionParametersResponse">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en">
+                        Represents a response to GetSessionParameters request
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="streamParameters" type="tns:StreamParameters">
+                            <xsd:annotation>
+                                <xsd:documentation xml:lang="en">
+                                    The retrieved Stream Parameters for the given Session Id
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+		</xsd:schema>    
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<wsdl:message name="Query">
+		<wsdl:part name="parameters" element="tns:Query"/>
+	</wsdl:message>
+	<wsdl:message name="QueryResponse">
+		<wsdl:part name="parameters" element="tns:QueryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="Connect">
+		<wsdl:part name="parameters" element="tns:Connect"/>
+	</wsdl:message>
+	<wsdl:message name="ConnectResponse">
+		<wsdl:part name="parameters" element="tns:ConnectResponse"/>
+	</wsdl:message>
+	<wsdl:message name="Disconnect">
+		<wsdl:part name="parameters" element="tns:Disconnect"/>
+	</wsdl:message>
+	<wsdl:message name="DisconnectResponse">
+		<wsdl:part name="parameters" element="tns:DisconnectResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetActiveSessions">
+		<wsdl:part name="parameters" element="tns:GetActiveSessions"/>
+	</wsdl:message>
+	<wsdl:message name="GetActiveSessionsResponse">
+		<wsdl:part name="parameters" element="tns:GetActiveSessionsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetActiveSessionIds">
+		<wsdl:part name="parameters" element="tns:GetActiveSessionIds"/>
+	</wsdl:message>
+	<wsdl:message name="GetActiveSessionIdsResponse">
+		<wsdl:part name="parameters" element="tns:GetActiveSessionIdsResponse"/>
+	</wsdl:message>
+    <wsdl:message name="GetSessionParameters">
+        <wsdl:part name="parameters" element="tns:GetSessionParameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetSessionParametersResponse">
+        <wsdl:part name="parameters" element="tns:GetSessionParametersResponse"/>
+    </wsdl:message>
+    
+	<wsdl:portType name="VideoInputPortType">
+    
+		<wsdl:operation name="Query">
+			<wsdl:documentation>Returns a catalog listing of video data managed by the service instance that is available for streaming and matches the search criteria specified by streamQuery.</wsdl:documentation>
+			<wsdl:input message="tns:Query"/>
+			<wsdl:output message="tns:QueryResponse"/>
+		</wsdl:operation>
+    
+		<wsdl:operation name="Connect">
+			<wsdl:documentation>Initiates a streaming session with the VideoOuput service indicated by outputURI containing the video data indicated by streamParameters. </wsdl:documentation>
+			<wsdl:input message="tns:Connect"/>
+			<wsdl:output message="tns:ConnectResponse"/>
+		</wsdl:operation>
+    
+		<wsdl:operation name="Disconnect">
+			<wsdl:documentation>Terminates the streaming session indicated by sessionId.</wsdl:documentation>
+			<wsdl:input message="tns:Disconnect"/>
+			<wsdl:output message="tns:DisconnectResponse"/>
+		</wsdl:operation>
+    
+		<wsdl:operation name="GetActiveSessions">
+			<wsdl:documentation>Returns the number of active sessions currently managed by the service instance as well as the maximum number of simultaneous sessions supported by the service instance.</wsdl:documentation>
+			<wsdl:input message="tns:GetActiveSessions"/>
+			<wsdl:output message="tns:GetActiveSessionsResponse"/>
+		</wsdl:operation>
+    
+		<wsdl:operation name="GetActiveSessionIds">
+			<wsdl:documentation>Returns a list of sessionIds for currently active sessions associated with the service instance.</wsdl:documentation>
+			<wsdl:input message="tns:GetActiveSessionIds"/>
+			<wsdl:output message="tns:GetActiveSessionIdsResponse"/>
+		</wsdl:operation>
+        
+        <wsdl:operation name="GetSessionParameters">
+            <wsdl:documentation>Returns the parameters associated with the session indicated by sessionId.</wsdl:documentation>
+            <wsdl:input message="tns:GetSessionParameters"/>
+            <wsdl:output message="tns:GetSessionParametersResponse"/>
+        </wsdl:operation>
+        
+	</wsdl:portType>
+
+	<wsdl:binding name="VideoInput" type="tns:VideoInputPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+		<wsdl:operation name="Query">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#Query"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    
+		<wsdl:operation name="Connect">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#Connect"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    
+		<wsdl:operation name="Disconnect">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#Disconnect"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    
+		<wsdl:operation name="GetActiveSessions">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#GetActiveSessions"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    
+		<wsdl:operation name="GetActiveSessionIds">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#GetActiveSessionIds"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+        <wsdl:operation name="GetSessionParameters">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:VideoInput:1#GetSessionParameters"/>
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    
+	</wsdl:binding>
+
+	<wsdl:service name="VideoInput">
+		<wsdl:documentation>
+      This services allows clients to query existing streams and active sessions along with their parameters. 
+      Other uses for this service include initiating a stream, terminating an existing stream, and refreshing sessions</wsdl:documentation>
+		<wsdl:port name="VideoInput" binding="tns:VideoInput">
+			<soap:address location="http://localhost:49152/control/VideoInput-1"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

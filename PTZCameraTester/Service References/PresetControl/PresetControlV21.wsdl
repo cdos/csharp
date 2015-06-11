@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:PresetControl:2" targetNamespace="urn:schemas-pelco-com:service:PresetControl:2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>$Id$</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:PresetControl:2">
+      <xsd:complexType name="SetPreset">
+        <xsd:all>
+          <xsd:element minOccurs="0" name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Id that uniquely identifies this preset. If blank, system assigns one.
+Maximum length 64 bytes.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Freeform description of preset. Minimum length 2 bytes; maximum length
+64 bytes.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="autoFocus" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Lock focus (false) or permit autofocus (true). If not present, value
+defaults to true.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="Preset">
+        <xsd:all>
+          <xsd:element name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Id that uniquely identifies this preset. This API uses uuids; Endura-
+generated presets use the id form "Endura:0", where the int is the
+Endura preset number.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Freeform description of preset.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="autoFocus" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Lock focus (false) or permit autofocus (true)
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="hasThumbnail" type="xsd:boolean" />
+          <xsd:element name="thumbnailPath" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Absolute path to thumbnail, such as
+"/thumbs/presets/cb38ebe6-4781-447a-96ea-bb42b1d4470c.jpg"
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="PresetList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="preset" type="tns:Preset" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IdList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="id" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Name">
+        <xsd:all>
+          <xsd:element name="id" type="xsd:string" />
+          <xsd:element name="name" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="NameList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="name" type="tns:Name" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SetStop">
+        <xsd:all>
+          <xsd:element name="preset" type="xsd:string" />
+          <xsd:element name="dwellTimeSeconds" type="xsd:int" />
+          <xsd:element name="transitionSpeed" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Number from 0.0 to 1.0 defining speed to travel to next preset in the
+tour -- 0.0 is treated as 1.0 (full speed); positive numbers less than
+0.1 are converted to 0.1; numbers greater than 0.0 and less than or
+equal to 1.0 are treated as percent of full speed
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SetTour">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Id that uniquely identifies this tour. If blank, system assigns one.
+Maximum length 64 bytes.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Freeform description of tour. Minimum length 2 bytes; maximum length
+64 bytes.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="stop" type="tns:SetStop" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Stop">
+        <xsd:all>
+          <xsd:element name="preset" type="tns:Preset" />
+          <xsd:element name="dwellTimeSeconds" type="xsd:int" />
+          <xsd:element name="transitionSpeed" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Number from 0.0 to 1.0 defining speed to travel to next preset in the
+tour as percent of full speed
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="Tour">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Id that uniquely identifies this tour. If blank, system assigns one.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Freeform description of tour. Minimum length 2 bytes; maximum length
+64 bytes.
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="stop" type="tns:Stop" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TourList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="tour" type="tns:Tour" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PathList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="path" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="GotoPreset">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:string" />
+          <xsd:element minOccurs="0" name="transitionSpeed" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+Number from 0.0 to 1.0 defining speed to travel to preset -- 0.0 is
+treated as 1.0 (full speed); positive numbers less than 0.1 are
+converted to 0.1; numbers greater than 0.0 and less than or equal to 1.0
+are treated as percent of full speed
+						</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="ForceSetPreset">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="preset" type="tns:SetPreset" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ForceSetPresetResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetPreset">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="preset" type="tns:SetPreset" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetPresetResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetPresets">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetPresetsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="presetList" type="tns:PresetList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetPresetIds">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetPresetIdsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetPresetNames">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetPresetNamesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="nameList" type="tns:NameList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxPresets">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMaxPresetsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="maxPresets" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ForceRemovePresets">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ForceRemovePresetsResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="RemovePresets">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RemovePresetsResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GotoPreset">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="move" type="tns:GotoPreset" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GotoPresetResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GenerateThumbnails">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GenerateThumbnailsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pathList" type="tns:PathList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetTour">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="tour" type="tns:SetTour" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetTourResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetTours">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetToursResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="tourList" type="tns:TourList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetTourIds">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetTourIdsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetTourNames">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetTourNamesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="nameList" type="tns:NameList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxTours">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMaxToursResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="maxTours" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxPresetsPerTour">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMaxPresetsPerTourResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="maxPresetsPerTour" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="StopTour">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="StopTourResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="RemoveTours">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idList" type="tns:IdList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RemoveToursResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="StartTour">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="StartTourResponse">
+        <xsd:complexType />
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ForceSetPreset">
+    <wsdl:part name="parameters" element="tns:ForceSetPreset" />
+  </wsdl:message>
+  <wsdl:message name="ForceSetPresetResponse">
+    <wsdl:part name="parameters" element="tns:ForceSetPresetResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetPreset">
+    <wsdl:part name="parameters" element="tns:SetPreset" />
+  </wsdl:message>
+  <wsdl:message name="SetPresetResponse">
+    <wsdl:part name="parameters" element="tns:SetPresetResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPresets">
+    <wsdl:part name="parameters" element="tns:GetPresets" />
+  </wsdl:message>
+  <wsdl:message name="GetPresetsResponse">
+    <wsdl:part name="parameters" element="tns:GetPresetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPresetIds">
+    <wsdl:part name="parameters" element="tns:GetPresetIds" />
+  </wsdl:message>
+  <wsdl:message name="GetPresetIdsResponse">
+    <wsdl:part name="parameters" element="tns:GetPresetIdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPresetNames">
+    <wsdl:part name="parameters" element="tns:GetPresetNames" />
+  </wsdl:message>
+  <wsdl:message name="GetPresetNamesResponse">
+    <wsdl:part name="parameters" element="tns:GetPresetNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxPresets">
+    <wsdl:part name="parameters" element="tns:GetMaxPresets" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxPresetsResponse">
+    <wsdl:part name="parameters" element="tns:GetMaxPresetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ForceRemovePresets">
+    <wsdl:part name="parameters" element="tns:ForceRemovePresets" />
+  </wsdl:message>
+  <wsdl:message name="ForceRemovePresetsResponse">
+    <wsdl:part name="parameters" element="tns:ForceRemovePresetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemovePresets">
+    <wsdl:part name="parameters" element="tns:RemovePresets" />
+  </wsdl:message>
+  <wsdl:message name="RemovePresetsResponse">
+    <wsdl:part name="parameters" element="tns:RemovePresetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GotoPreset">
+    <wsdl:part name="parameters" element="tns:GotoPreset" />
+  </wsdl:message>
+  <wsdl:message name="GotoPresetResponse">
+    <wsdl:part name="parameters" element="tns:GotoPresetResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateThumbnails">
+    <wsdl:part name="parameters" element="tns:GenerateThumbnails" />
+  </wsdl:message>
+  <wsdl:message name="GenerateThumbnailsResponse">
+    <wsdl:part name="parameters" element="tns:GenerateThumbnailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetTour">
+    <wsdl:part name="parameters" element="tns:SetTour" />
+  </wsdl:message>
+  <wsdl:message name="SetTourResponse">
+    <wsdl:part name="parameters" element="tns:SetTourResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTours">
+    <wsdl:part name="parameters" element="tns:GetTours" />
+  </wsdl:message>
+  <wsdl:message name="GetToursResponse">
+    <wsdl:part name="parameters" element="tns:GetToursResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTourIds">
+    <wsdl:part name="parameters" element="tns:GetTourIds" />
+  </wsdl:message>
+  <wsdl:message name="GetTourIdsResponse">
+    <wsdl:part name="parameters" element="tns:GetTourIdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTourNames">
+    <wsdl:part name="parameters" element="tns:GetTourNames" />
+  </wsdl:message>
+  <wsdl:message name="GetTourNamesResponse">
+    <wsdl:part name="parameters" element="tns:GetTourNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxTours">
+    <wsdl:part name="parameters" element="tns:GetMaxTours" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxToursResponse">
+    <wsdl:part name="parameters" element="tns:GetMaxToursResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxPresetsPerTour">
+    <wsdl:part name="parameters" element="tns:GetMaxPresetsPerTour" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxPresetsPerTourResponse">
+    <wsdl:part name="parameters" element="tns:GetMaxPresetsPerTourResponse" />
+  </wsdl:message>
+  <wsdl:message name="StopTour">
+    <wsdl:part name="parameters" element="tns:StopTour" />
+  </wsdl:message>
+  <wsdl:message name="StopTourResponse">
+    <wsdl:part name="parameters" element="tns:StopTourResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveTours">
+    <wsdl:part name="parameters" element="tns:RemoveTours" />
+  </wsdl:message>
+  <wsdl:message name="RemoveToursResponse">
+    <wsdl:part name="parameters" element="tns:RemoveToursResponse" />
+  </wsdl:message>
+  <wsdl:message name="StartTour">
+    <wsdl:part name="parameters" element="tns:StartTour" />
+  </wsdl:message>
+  <wsdl:message name="StartTourResponse">
+    <wsdl:part name="parameters" element="tns:StartTourResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PresetControlPortType">
+    <wsdl:operation name="ForceSetPreset">
+      <wsdl:input message="tns:ForceSetPreset" />
+      <wsdl:output message="tns:ForceSetPresetResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPreset">
+      <wsdl:input message="tns:SetPreset" />
+      <wsdl:output message="tns:SetPresetResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPresets">
+      <wsdl:input message="tns:GetPresets" />
+      <wsdl:output message="tns:GetPresetsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPresetIds">
+      <wsdl:input message="tns:GetPresetIds" />
+      <wsdl:output message="tns:GetPresetIdsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPresetNames">
+      <wsdl:input message="tns:GetPresetNames" />
+      <wsdl:output message="tns:GetPresetNamesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxPresets">
+      <wsdl:input message="tns:GetMaxPresets" />
+      <wsdl:output message="tns:GetMaxPresetsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ForceRemovePresets">
+      <wsdl:input message="tns:ForceRemovePresets" />
+      <wsdl:output message="tns:ForceRemovePresetsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RemovePresets">
+      <wsdl:input message="tns:RemovePresets" />
+      <wsdl:output message="tns:RemovePresetsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GotoPreset">
+      <wsdl:input message="tns:GotoPreset" />
+      <wsdl:output message="tns:GotoPresetResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateThumbnails">
+      <wsdl:input message="tns:GenerateThumbnails" />
+      <wsdl:output message="tns:GenerateThumbnailsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetTour">
+      <wsdl:input message="tns:SetTour" />
+      <wsdl:output message="tns:SetTourResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTours">
+      <wsdl:input message="tns:GetTours" />
+      <wsdl:output message="tns:GetToursResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTourIds">
+      <wsdl:input message="tns:GetTourIds" />
+      <wsdl:output message="tns:GetTourIdsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTourNames">
+      <wsdl:input message="tns:GetTourNames" />
+      <wsdl:output message="tns:GetTourNamesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxTours">
+      <wsdl:input message="tns:GetMaxTours" />
+      <wsdl:output message="tns:GetMaxToursResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxPresetsPerTour">
+      <wsdl:input message="tns:GetMaxPresetsPerTour" />
+      <wsdl:output message="tns:GetMaxPresetsPerTourResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="StopTour">
+      <wsdl:input message="tns:StopTour" />
+      <wsdl:output message="tns:StopTourResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveTours">
+      <wsdl:input message="tns:RemoveTours" />
+      <wsdl:output message="tns:RemoveToursResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="StartTour">
+      <wsdl:input message="tns:StartTour" />
+      <wsdl:output message="tns:StartTourResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PresetControl" type="tns:PresetControlPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ForceSetPreset">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#ForceSetPreset" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPreset">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#SetPreset" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresets">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetPresets" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresetIds">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetPresetIds" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresetNames">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetPresetNames" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxPresets">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetMaxPresets" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ForceRemovePresets">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#ForceRemovePresets" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemovePresets">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#RemovePresets" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GotoPreset">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GotoPreset" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateThumbnails">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GenerateThumbnails" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetTour">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#SetTour" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTours">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetTours" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTourIds">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetTourIds" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTourNames">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetTourNames" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxTours">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetMaxTours" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxPresetsPerTour">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#GetMaxPresetsPerTour" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StopTour">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#StopTour" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveTours">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#RemoveTours" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartTour">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:PresetControl:2#StartTour" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PresetControl">
+    <wsdl:port name="PresetControl" binding="tns:PresetControl">
+      <soap:address location="http://localhost:49152/control/PresetControl-2" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

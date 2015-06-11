@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:CameraConfiguration:1" name="CameraConfiguration" targetNamespace="urn:schemas-pelco-com:service:CameraConfiguration:1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		$Id$
+	</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:CameraConfiguration:1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="ConfigurableInt">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Shows whether or not a device is configurable.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+          <xsd:extension base="xsd:int">
+            <xsd:attribute name="configurable" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Set to 1 (true) if the device is configurable, 0 (false) otherwise.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:extension>
+        </xsd:simpleContent>
+      </xsd:complexType>
+      <xsd:complexType name="CameraConfig">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This represents a camera's configuration data.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="videoproperties" type="tns:VideoProperties" />
+          <xsd:element minOccurs="0" name="videoQuality">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <div class="caution">DEPRECATED. Available only for backwards compatibility.</div>
+              </xsd:documentation>
+              <xsd:documentation xml:lang="en">Determines the quality of video recordings.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                  <xsd:attribute name="local" type="xsd:int" />
+                </xsd:extension>
+              </xsd:simpleContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="coaxMode" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <div class="caution">DEPRECATED. Available only for backwards compatibility.</div>
+              </xsd:documentation>
+              <xsd:documentation xml:lang="en">
+                <p>The coaxitron mode to be used to control the camera. Currently acceptable values are: 
+								<ul><li>0 for DISABLED</li><li>1 for STANDARD</li><li>2 for EXTENDED</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="controlMode" type="tns:ConfigurableInt">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Describes the type of camera control. This is restricted to the following values:
+							<ul><li>0 for DISABLED</li><li>1 for COAXITRON (BNC COAX)</li><li>2 for EXCOAXITRON (BNC COAX)</li><li>3 for DPROTOCOL (2 wire RS485 or 4 wire RS422)</li><li>4 for PPROTOCOL (deprecated)</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="cameraAddress" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">An index of the camera's location within a group of cameras.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="cameraType" type="tns:ConfigurableInt">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <div class="caution">DEPRECATED. Available only for backwards compatibility.</div>
+              </xsd:documentation>
+              <xsd:documentation xml:lang="en">
+                <p>Describes the type of camera.    
+								<ul><li>configurable — set to 1 (true) if configurable, 0 (false) otherwise. This is restricted to the following values:
+									<ul><li>0 for FIXED — unmovable camera</li><li>1 for PANTILT — a movable camera that has a greater range of motion</li><li>2 for DOME — a camera that utlizes a dome enclosure</li></ul></li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="distinguishers" type="tns:Distinguishers" />
+          <xsd:element name="motionDetectionEnable" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Enable or disable motion detection service. This is restricted to the following values: 
+								<ul><li>-1 for unsupported</li><li>0 for disabled</li><li>1 for enabled</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="motionAlarmDwellSecs" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The amount of time the motion alarm should stay “high” after it is activated.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="audioEnable" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Determines the camera's current audio status. Must be one of the following values: 
+								<ul><li>-1 for TS_UNSUPPORTED</li><li>0 for TS_DISABLED</li><li>1 for TS_ENABLED</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="termination" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Set to 1 (true) to enable termination, 0 (false) otherwise.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="audioHardwareInput" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Indicates what source to use for audio input. This setting is primarily used by encoders that do not have a DIP switch that controls this setting. Must be set to one of the following:
+							<ul><li>-1 for TS_AUDIO_HW_INPUT_UNSUPPORTED: If the input cannot be configured through software then it this should be set to unsupported.</li><li>0 for TS_AUDIO_HW_INPUT_LINE_IN: To use the line in for input.</li><li>1 for TS_AUDIO_HW_INPUT_MIC: To use the mic port as the input.</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ttl" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The time to live of the IP datagrams of RTPpackets. 
+								<ul><li>Valid range is 1 - 255.</li><li>255 is the average value used</li><li>TTL value gets subtracted by 1 for each router it goes through. When zero is reached, the package is discarded.</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="packetsize" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The size of each network packet.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="videopair" type="tns:VideoPair" />
+          <xsd:element name="localQuality" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Set to 1 (true) to use the configuration settings found on camera itself; otherwise set to 0 (false) to use global settings found on the local Endura System Manager.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxUnicast">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The maximum number of concurrent unicast video streams.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:simpleContent>
+                <xsd:extension base="xsd:int">
+                  <xsd:attribute name="mcastFailover" type="xsd:int" />
+                </xsd:extension>
+              </xsd:simpleContent>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="VideoProperties">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This contains properties of the camera's generated video for the currently active camera mode (e.g., normal vs. low-light, etc.).</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="brightness" type="tns:MVElement">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The amount of light in the frame.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="contrast" type="tns:MVElement">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Contrast is defined as the separation between the darkest and brightest areas of the frame. As contrast is increased, the separation between dark and bright is increased, making shadows darker and highlights brighter. As contrast is decreased, the shadows increase and the highlights are decreased to make the values closer to one another. </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="hue" type="tns:MVElement">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A specific color range classification.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="saturation" type="tns:MVElement">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The intensity of a hue.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="filterLevel" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The noise filter level to be applied. Must be one of the following values: 
+								<ul><li>0 for LOW</li><li>1 for MEDIUM</li><li>2 for HIGH 0 is a typical value.</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MVElement">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents an element with a mode and value pair data.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="mode" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">0 for manual, 1 for automatic</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="value" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Distinguishers">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This set of values is used to identify camera types to newer GUIs.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="viewobject" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">For cameras supporting the view object command set this value to 1, otherwise set it to 0 or omit the viewobject sub element entirely.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="dome" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">For dome cameras set this value to 1, otherwise set it to 0 or omit the dome sub element entirely.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="ptz" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">For ptz cameras set this value to 1, otherwise set it to 0 or omit the ptz sub element entirely.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="fixed" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">For fixed cameras set this value to 1, otherwise set it to 0 or omit the fixed sub element entirely.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="VideoPair">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents the user defined video quality settings of both the primary and secondary video streams.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="name" nillable="true" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">This defines the properties for both video channels (primary and secondary). This attribute is limited to the following values defined in Video Pair Values.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="primary" nillable="true" type="tns:VideoChannel">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Represents a VideoChannel data element. The primary video channel's settings correlate to the secondary video channel's settings.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="secondary" nillable="true" type="tns:VideoChannel">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Represents a VideoChannel data element. The secondary video channel's settings correlate to the primary video channel's settings.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="VideoChannel">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents the properties of a video channel.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="framerate" type="xsd:double">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The number of video frames captured in a given space of time.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="bitrate" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The average number of bits that one second of video or audio data will consume.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="format" nillable="true" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The file format of the video stream. Must be one of the following values: 
+								<ul><li>Mpeg-4</li><li>H.264</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videosize" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The resolution of the camera's generated video stream. Can be one of the following values: 
+								<ul><li>0 for QCIF  NTSC:176x112  PAL:176x144</li><li>1 for CIF   NTSC:352×240  PAL:352x288</li><li>2 for 2CIF  NTSC:704x240  PAL:704x288</li><li>3 for 4CIF  NTSC:704x480  PAL:704x576</li><li>4 for D1    NTSC:720x480  PAL:720x576</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="tvformat" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The TV Format of the camera's generated video stream. Must be one of the following values: 
+								<ul><li>0 for NTSC</li><li>1 for PAL</li></ul></p>
+                <div class="caution">tvformat returns PAL, even if the camera is configured for NTSC. This is a known issue and will not be fixed. Use StreamConfiguration instead.</div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="pruneStoredVideo" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">This configuration values is stored on the camera but has no effect on it. The value is read by a NSD/NVR which can then change its recording behavior based on the value of this setting.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="gop" type="xsd:double">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The number of frames in one GOP (Group of Pictures). The typical value ranges from 4-20 frames.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Request to return the values for the currently active mode of the camera.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Returns the values for the currently active mode of the camera</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cameraConfig" type="tns:CameraConfig" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Applies a specific set of configurations to the currently active mode of the camera.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cameraConfig" type="tns:CameraConfig" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents the data for a SetConfiguration response.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="ResetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents the data for a ResetConfiguration request.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="ResetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents the data for a ResetConfiguration response.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GetConfiguration">
+    <wsdl:part name="parameters" element="tns:GetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:GetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetConfiguration">
+    <wsdl:part name="parameters" element="tns:SetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="SetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:SetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetConfiguration">
+    <wsdl:part name="parameters" element="tns:ResetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="ResetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:ResetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CameraConfigurationPortType">
+    <wsdl:operation name="GetConfiguration">
+      <wsdl:documentation>Returns a given camera's current configuration.</wsdl:documentation>
+      <wsdl:input message="tns:GetConfiguration" />
+      <wsdl:output message="tns:GetConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetConfiguration">
+      <wsdl:documentation>
+        <p>Sets the current camera configuration to the configuration indicated by cameraConfig.</p>
+        <div class="caution">Every time you attempt to modify the camera's configuration, you must send a full camera config parameter. (Preferably, one you just retreived from GetConfiguration and modified.) Failure to do so will result in settings (specifically the ones that were not initialized in the CameraConfig instance) being reverted to factory defaults.<p>Failure to use known valid settings may cause unexpected camera behavior.</p><p>The configuration changes apply to the currently active camera mode (e.g., normal vs. low-light, etc.).</p></div>
+      </wsdl:documentation>
+      <wsdl:input message="tns:SetConfiguration" />
+      <wsdl:output message="tns:SetConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetConfiguration">
+      <wsdl:documentation>
+        <p>Resets a camera's configuration to factory defaults.</p>
+        <div class="caution">It is not recommended to use this action for PTZ cameras, since the factory default is to disable PTZ functionality.</div>
+      </wsdl:documentation>
+      <wsdl:input message="tns:ResetConfiguration" />
+      <wsdl:output message="tns:ResetConfigurationResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CameraConfiguration" type="tns:CameraConfigurationPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:CameraConfiguration:1#GetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:CameraConfiguration:1#SetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:CameraConfiguration:1#ResetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CameraConfiguration">
+    <wsdl:documentation>
+      <p>This service allows a client to: 
+			<ul><li>query a camera device's current configuration state</li><li>update a camera device's configuration state</li><li>reset a camera device's configuration state to factory defaults</li></ul></p>
+      <div class="notice">Pelco IP-based devices use the newer StreamConfiguration service instead, except in cases where contrast, saturation, and brightness settings need to be modified.</div>
+    </wsdl:documentation>
+    <wsdl:port name="CameraConfiguration" binding="tns:CameraConfiguration">
+      <soap:address location="http://localhost:49152/control/CameraConfiguration-1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

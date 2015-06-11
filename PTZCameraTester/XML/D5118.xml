@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<Camera Model="D5118" Name="D5118">
+	<Specs>
+		<!-- Values not listed here are obtained from API.  If Defined, they will override API -->
+    <CanZoom>true</CanZoom>
+    <Name>Spectra 720p</Name>
+		<Position>
+      <x>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </x>
+      <!--<y>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </y>-->
+		</Position>
+		<Velocity>
+      <!--<x>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </x>
+      <y>
+        <Min>0</Min>
+        <Max>36000</Max>
+      </y>
+      <Timeout Unit="ms">10000</Timeout>-->
+		</Velocity>
+    <Zoom>
+      <Min>100</Min>
+    </Zoom>		
+		<!-- PanTimeDelay Represents the amount of time between velocity checks when checking velocity.  Should be the amount of time to get as close to a full pan revolution at full velocity, but not a complete one. -->
+		<TestGlobals>
+      <PanTimeDelay Unit="ms">2500</PanTimeDelay>
+      <PanTiltAccuracy Unit="cdeg">10</PanTiltAccuracy>
+      <ZoomAccuracy>30</ZoomAccuracy>
+      <ShowDisabledTests>true</ShowDisabledTests>
+		</TestGlobals>
+	</Specs>
+  <Tests>
+    <AutoFlip>
+      <Standard Trials="25" MaxFlipDuration="1300">Enabled</Standard>
+      <WithLimits>Enabled</WithLimits>
+      <CheckPostFlipControl Trials="25">Enabled</CheckPostFlipControl>
+    </AutoFlip>
+    <Position>
+      <RandomSeek Trials="25">Enabled</RandomSeek>
+      <RandomSeekWithLimits Trials="25">Enabled</RandomSeekWithLimits>
+      <AsmuthZero>Enabled</AsmuthZero>
+    </Position>
+    <Preset>
+      <SetAndCheck Trials="10">Enabled</SetAndCheck>
+      <WithLimits>Enabled</WithLimits>
+      <!-- RealPresets = 1 will send camera to random positions to create presets, rather than create all presets at one location. -->
+      <MaxPresets RealPresets="0">Enabled</MaxPresets>
+    </Preset>
+    <Iris>
+      <Open Trials="5">Enabled</Open>
+    </Iris>
+    <Velocity>
+      <Movement Trials="5">Enabled</Movement>
+      <Relational>Enabled</Relational>
+      <Runaway Trials="5">Enabled</Runaway>
+    </Velocity>
+    <Zoom>
+      <RandomSeek Trials="45">Enabled</RandomSeek>
+      <RandomSeekWithMaxMag Trials="5">Enabled</RandomSeekWithMaxMag>
+      <TeleWide Trials="5">Enabled</TeleWide>
+    </Zoom>
+  </Tests>
+</Camera>

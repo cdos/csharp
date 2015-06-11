@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions 
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tns="http://www.pelco.com/api/ImagingConfiguration/1"
+	targetNamespace="http://www.pelco.com/api/ImagingConfiguration/1">
+	
+	<wsdl:documentation>
+		<p>$Id: ImagingConfigurationV1.wsdl $</p>		
+		<div class="revhistory">
+			<div class="revision">
+				<div class="revnumber">1.0</div>
+				<div class="date">24 Nov 2010</div>
+				<div class="revremark">New service derived from CameraConfigurationV1. Added support for Thermal APIs (Shutter, ColorPalette, RecalibrationMode, Sharpness).</div>
+			</div>
+		</div>
+	</wsdl:documentation>
+	
+	<!-- Services -->
+	
+	<wsdl:service name="ImagingConfiguration">
+		<wsdl:documentation>
+			<p>This service allows a client to query and update various camera configuration settings. Some settings are grouped for convenience, but most can be called individually as well.</p>
+		</wsdl:documentation>
+		<wsdl:port binding="tns:ImagingConfiguration" name="ImagingConfiguration">
+			<soap:address location="http://localhost/control/ImagingConfiguration-1" />
+		</wsdl:port>
+	</wsdl:service>
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://www.pelco.com/api/ImagingConfiguration/1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:simpleType name="ColorPalette">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="WhiteHot" />
+					<xsd:enumeration value="Rainbow" />
+					<xsd:enumeration value="BlackHot" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="RecalibrationMode">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Auto" ><xsd:annotation><xsd:documentation xml:lang="en">The camera decides when to re-calibrate based on temperature</xsd:documentation></xsd:annotation></xsd:enumeration>
+					<xsd:enumeration value="Periodic" ><xsd:annotation><xsd:documentation xml:lang="en">A set time interval between periodic recalibrations (in minutes)</xsd:documentation></xsd:annotation></xsd:enumeration>
+					<xsd:enumeration value="Manual" ><xsd:annotation><xsd:documentation xml:lang="en">Begins recalibration when the Recalibrate Now button is selected on the live page</xsd:documentation></xsd:annotation></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="ModeValuePair">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents an element with a mode and value pair data.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Mode">
+						<xsd:annotation><xsd:documentation xml:lang="en">Sets the mode to manual or automatic operation.</xsd:documentation></xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="Manual"/>
+								<xsd:enumeration value="Automatic"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="Value">
+						<xsd:annotation><xsd:documentation xml:lang="en">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</xsd:documentation></xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:minInclusive value="0"></xsd:minInclusive>
+								<xsd:maxInclusive value="100"></xsd:maxInclusive>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<!-- CalibrateNow -->
+			<xsd:element name="CalibrateNow">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to immediately recalibrate on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="CalibrateNowResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to CalibrateNow.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<!-- Calibration Interval -->
+			<xsd:simpleType name="CalibrationInterval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The time delay, in minutes, between camera recalibrations.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:duration"/>
+			</xsd:simpleType>
+			
+			<!-- SetCalibrationInterval -->
+			<xsd:element name="SetCalibrationInterval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to set the recalibration delay on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="CalibrationInterval" type="tns:CalibrationInterval" />
+						</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetCalibrationIntervalResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetCalibrationInterval.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<!-- GetCalibrationInterval -->
+			<xsd:element name="GetCalibrationInterval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to get the recalibration delay on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<xsd:element name="GetCalibrationIntervalResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to GetCalibrationInterval.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="CalibrationInterval" type="tns:CalibrationInterval" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- DelayRecalibration -->
+			<xsd:element name="DelayRecalibration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to immediately delay recalibration on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="CalibrationDelay" type="xsd:duration" minOccurs="0">
+							<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The time delay, in minutes, between camera recalibrations.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="DelayRecalibrationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to DelayRecalibration.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<!-- GetRecalibrationMode -->
+			<xsd:element name="GetRecalibrationMode">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a GetRecalibrationMode request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetRecalibrationModeResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to GetRecalibrationMode.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="RecalibrationMode" type="tns:RecalibrationMode"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- SetRecalibrationMode -->
+			<xsd:element name="SetRecalibrationMode">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a SetRecalibrationMode request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="RecalibrationMode" type="tns:RecalibrationMode"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetRecalibrationModeResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetRecalibrationMode.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- GetSharpness -->
+			<xsd:element name="GetSharpness">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a GetSharpness request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetSharpnessResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to GetSharpness.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Sharpness" type="tns:ModeValuePair">
+							<xsd:annotation><xsd:documentation xml:lang="en">Sharpness can be defined as edge contrast, that is, the contrast along edges in a frame. As sharpness is increased, the contrast is increased only along/near edges in the frame while leaving smooth areas of the image alone.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- SetSharpness -->
+			<xsd:element name="SetSharpness">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a SetRecalibrationMode request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Sharpness" type="tns:ModeValuePair">
+							<xsd:annotation><xsd:documentation xml:lang="en">Sharpness can be defined as edge contrast, that is, the contrast along edges in a frame. As sharpness is increased, the contrast is increased only along/near edges in the frame while leaving smooth areas of the image alone.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetSharpnessResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetSharpness.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:simpleType name="ImageEnhancementLevel">
+				<xsd:annotation><xsd:documentation xml:lang="en">A tuning value that can be applied to image enhancement. 0 - 100, 50 is a typical value.</xsd:documentation></xsd:annotation>
+					<xsd:restriction base="xsd:int">
+						<xsd:minInclusive value="0"></xsd:minInclusive>
+						<xsd:maxInclusive value="100"></xsd:maxInclusive>
+					</xsd:restriction>			
+			</xsd:simpleType>		
+			
+			<!-- GetImageEnhancementLevel -->
+			<xsd:element name="GetImageEnhancementLevel">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to get the Image Enhancement level on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetImageEnhancementLevelResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetImageEnhancementLevel.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType >
+					<xsd:sequence>
+						<xsd:element name="ImageEnhancementLevel" type="tns:ImageEnhancementLevel"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- SetImageEnhancementLevel -->
+			<xsd:element name="SetImageEnhancementLevel">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to set the Image Enhancement level on the camera.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType >
+					<xsd:sequence>
+						<xsd:element name="ImageEnhancementLevel" type="tns:ImageEnhancementLevel"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetImageEnhancementLevelResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetImageEnhancementLevel.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<!-- GetColorPalette -->
+			<xsd:element name="GetColorPalette">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a GetColorPalette request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetColorPaletteResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to GetColorPalette.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ColorPalette" type="tns:ColorPalette"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetAllColorPalettes -->
+			<xsd:element name="GetAllColorPalettes">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Requests a list of available ColorPalettes.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetAllColorPalettesResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Returns a list of available ColorPalettes.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ColorPalette" type="tns:ColorPalette" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- SetColorPalette -->
+			<xsd:element name="SetColorPalette">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the data for a SetColorPalette request.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ColorPalette" type="tns:ColorPalette"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetColorPaletteResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents a response to SetColorPalette.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- GetCalibrationInterval -->
+	<wsdl:message name="GetCalibrationInterval">
+		<wsdl:part name="parameters" element="tns:GetCalibrationInterval"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetCalibrationIntervalResponse">
+		<wsdl:part name="parameters" element="tns:GetCalibrationIntervalResponse"/>
+	</wsdl:message>
+	
+	<!-- GetImageEnhancementLevel -->
+	<wsdl:message name="GetImageEnhancementLevel">
+		<wsdl:part name="parameters" element="tns:GetImageEnhancementLevel"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetImageEnhancementLevelResponse">
+		<wsdl:part name="parameters" element="tns:GetImageEnhancementLevelResponse"/>
+	</wsdl:message>
+
+	<!-- SetCalibrationInterval -->
+	<wsdl:message name="SetCalibrationInterval">
+		<wsdl:part name="parameters" element="tns:SetCalibrationInterval"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetCalibrationIntervalResponse">
+		<wsdl:part name="parameters" element="tns:SetCalibrationIntervalResponse"/>
+	</wsdl:message>
+	
+	<!-- CalibrateNow -->
+	<wsdl:message name="CalibrateNow">
+		<wsdl:part name="parameters" element="tns:CalibrateNow"/>
+	</wsdl:message>
+	
+	<wsdl:message name="CalibrateNowResponse">
+		<wsdl:part name="parameters" element="tns:CalibrateNowResponse"/>
+	</wsdl:message>
+	
+	<!-- DelayRecalibration -->
+	<wsdl:message name="DelayRecalibration">
+		<wsdl:part name="parameters" element="tns:DelayRecalibration"/>
+	</wsdl:message>
+	
+	<wsdl:message name="DelayRecalibrationResponse">
+		<wsdl:part name="parameters" element="tns:DelayRecalibrationResponse"/>
+	</wsdl:message>
+	
+	<!-- GetSharpness -->
+	<wsdl:message name="GetSharpness">
+		<wsdl:part name="parameters" element="tns:GetSharpness"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetSharpnessResponse">
+		<wsdl:part name="parameters" element="tns:GetSharpnessResponse"/>
+	</wsdl:message>
+	
+	<!-- SetImageEnhancementLevel -->
+	<wsdl:message name="SetImageEnhancementLevel">
+		<wsdl:part name="parameters" element="tns:SetImageEnhancementLevel"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetImageEnhancementLevelResponse">
+		<wsdl:part name="parameters" element="tns:SetImageEnhancementLevelResponse"/>
+	</wsdl:message>
+	
+	<!-- GetColorPalette -->
+	<wsdl:message name="GetColorPalette">
+		<wsdl:part name="parameters" element="tns:GetColorPalette"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetColorPaletteResponse">
+		<wsdl:part name="parameters" element="tns:GetColorPaletteResponse"/>
+	</wsdl:message>
+	
+	<!-- GetAllColorPalettes -->
+	<wsdl:message name="GetAllColorPalettes">
+		<wsdl:part name="parameters" element="tns:GetAllColorPalettes"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetAllColorPalettesResponse">
+		<wsdl:part name="parameters" element="tns:GetAllColorPalettesResponse"/>
+	</wsdl:message>
+	
+	<!-- GetRecalibrationMode -->
+	<wsdl:message name="GetRecalibrationMode">
+		<wsdl:part name="parameters" element="tns:GetRecalibrationMode"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetRecalibrationModeResponse">
+		<wsdl:part name="parameters" element="tns:GetRecalibrationModeResponse"/>
+	</wsdl:message>
+
+	<!-- SetRecalibrationMode -->
+	<wsdl:message name="SetRecalibrationMode">
+		<wsdl:part name="parameters" element="tns:SetRecalibrationMode"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetRecalibrationModeResponse">
+		<wsdl:part name="parameters" element="tns:SetRecalibrationModeResponse"/>
+	</wsdl:message>
+	
+	<!-- SetSharpness -->
+	<wsdl:message name="SetSharpness">
+		<wsdl:part name="parameters" element="tns:SetSharpness"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetSharpnessResponse">
+		<wsdl:part name="parameters" element="tns:SetSharpnessResponse"/>
+	</wsdl:message>
+	
+	<!-- SetColorPalette -->
+	<wsdl:message name="SetColorPalette">
+		<wsdl:part name="parameters" element="tns:SetColorPalette"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetColorPaletteResponse">
+		<wsdl:part name="parameters" element="tns:SetColorPaletteResponse"/>
+	</wsdl:message>
+
+	<!-- Ports -->
+	<wsdl:portType name="ImagingConfigurationPortType">		
+		<wsdl:operation name="CalibrateNow">
+			<wsdl:documentation>Triggers immediate recalibration of the camera.</wsdl:documentation>
+			<wsdl:input message="tns:CalibrateNow" />
+			<wsdl:output message="tns:CalibrateNowResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="DelayRecalibration">
+			<wsdl:documentation>Immediate delay of recalibration of the camera for a specified duration.</wsdl:documentation>
+			<wsdl:input message="tns:DelayRecalibration" />
+			<wsdl:output message="tns:DelayRecalibrationResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCalibrationInterval">
+			<wsdl:documentation>Gets the delay time (in minutes) between camera recalibrations.</wsdl:documentation>
+			<wsdl:input message="tns:GetCalibrationInterval" />
+			<wsdl:output message="tns:GetCalibrationIntervalResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetCalibrationInterval">
+			<wsdl:documentation>Sets the delay time (in minutes) between camera recalibrations.</wsdl:documentation>
+			<wsdl:input message="tns:SetCalibrationInterval" />
+			<wsdl:output message="tns:SetCalibrationIntervalResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetImageEnhancementLevel">
+			<wsdl:documentation>Gets the Image Enhancement tuning value on the camera.</wsdl:documentation>
+			<wsdl:input message="tns:GetImageEnhancementLevel" />
+			<wsdl:output message="tns:GetImageEnhancementLevelResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetImageEnhancementLevel">
+			<wsdl:documentation>Sets the Image Enhancement tuning value on the camera.</wsdl:documentation>
+			<wsdl:input message="tns:SetImageEnhancementLevel" />
+			<wsdl:output message="tns:SetImageEnhancementLevelResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetSharpness">
+			<wsdl:documentation>Returns the current Sharpness setting.</wsdl:documentation>
+			<wsdl:input message="tns:GetSharpness" />
+			<wsdl:output message="tns:GetSharpnessResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetSharpness">
+			<wsdl:documentation>Sets the current Sharpness setting.</wsdl:documentation>
+			<wsdl:input message="tns:SetSharpness" />
+			<wsdl:output message="tns:SetSharpnessResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetRecalibrationMode">
+			<wsdl:documentation>Returns the current RecalibrationMode setting.</wsdl:documentation>
+			<wsdl:input message="tns:GetRecalibrationMode" />
+			<wsdl:output message="tns:GetRecalibrationModeResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetRecalibrationMode">
+			<wsdl:documentation>Sets the current RecalibrationMode setting.</wsdl:documentation>
+			<wsdl:input message="tns:SetRecalibrationMode" />
+			<wsdl:output message="tns:SetRecalibrationModeResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetColorPalette">
+			<wsdl:documentation>Returns the current ColorPalette setting.</wsdl:documentation>
+			<wsdl:input message="tns:GetColorPalette" />
+			<wsdl:output message="tns:GetColorPaletteResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllColorPalettes">
+			<wsdl:documentation>Returns the available ColorPalette settings.</wsdl:documentation>
+			<wsdl:input message="tns:GetAllColorPalettes" />
+			<wsdl:output message="tns:GetAllColorPalettesResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetColorPalette">
+			<wsdl:documentation>Sets the current ColorPalette setting.</wsdl:documentation>
+			<wsdl:input message="tns:SetColorPalette" />
+			<wsdl:output message="tns:SetColorPaletteResponse" />
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="ImagingConfiguration" type="tns:ImagingConfigurationPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="GetCalibrationInterval">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetCalibrationInterval" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetCalibrationInterval">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/SetCalibrationInterval" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetImageEnhancementLevel">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/SetImageEnhancementLevel" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetImageEnhancementLevel">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetImageEnhancementLevel" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="CalibrateNow">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/CalibrateNow" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DelayRecalibration">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/DelayRecalibration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetRecalibrationMode">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetRecalibrationMode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetSharpness">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetSharpness" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetColorPalette">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetColorPalette" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllColorPalettes">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/GetAllColorPalettes" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetColorPalette">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/SetColorPalette" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetRecalibrationMode">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/SetRecalibrationMode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetSharpness">
+			<soap:operation soapAction="http://www.pelco.com/api/ImagingConfiguration/1/SetSharpness" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+
+</wsdl:definitions>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:tt="urn:schemas-pelco-com:fault" 
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="urn:schemas-pelco-com:fault" elementFormDefault="qualified">
+
+  <xsd:complexType name="ProfileAlreadyExistFaultType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Fault thrown if the profile with given id already exists
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:element name="ProfileAlreadyExistFault" type="tt:ProfileAlreadyExistFaultType" />
+
+  <xsd:complexType name="ProfileDoesNotExistFaultType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Fault thrown if a profile is tried to retrive, update or deleted that does not exist
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:element name="ProfileDoesNotExistFault" type="tt:ProfileDoesNotExistFaultType" />
+  
+  <xsd:complexType name="InvalidArgumentFaultType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Fault thrown if the argument is invalid
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Brief description of the invalid argument
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="InvalidArgumentFault" type="tt:InvalidArgumentFaultType" />
+
+  <xsd:complexType name="ActionNotSupportedFaultType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Fault thrown if the argument is invalid
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:element name="ActionNotSupportedFault" type="tt:ActionNotSupportedFaultType" />
+	
+</xsd:schema>

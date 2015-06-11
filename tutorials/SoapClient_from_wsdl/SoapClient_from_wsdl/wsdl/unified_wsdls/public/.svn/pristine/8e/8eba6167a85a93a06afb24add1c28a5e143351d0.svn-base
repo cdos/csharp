@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:schemas-pelco-com:service:VideoAnalytics:2"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:schemas-pelco-com:service:VideoAnalytics:2">
+
+	<wsdl:documentation>
+		The Video Analytics service provides developers with functionality related 
+		to video analytics functionality such as configuration and alarms notification.
+	</wsdl:documentation>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:VideoAnalytics:2"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<!-- GetBehaviorAvailability & GetBehaviorAvailabilityResponse types -->
+			<xsd:element name="GetBehaviorAvailability">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the GetBehaviorAvailability action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile with the desired behavior to return.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetBehaviorAvailabilityResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetBehaviorAvailability request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="behaviors" type="tns:AvailabilityList">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This is a AvailabilityList data type.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetBehaviorAvailability2 -->
+			<xsd:element name="GetBehaviorAvailability2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to GetBehaviorAvailability2 action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="activeBehaviors" type="tns:BehaviorIdList">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This is a tns:BehaviorIdList data type.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetProfileBehavior & GetProfileBehaviorResponse types -->
+			<xsd:element name="GetProfileBehavior">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to GetProfileBehavior action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile with the desired behavior to return.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="behaviorId" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the desired behavior to return.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetProfileBehaviorResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetProfileBehavior request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="config" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This rerepsents a behaviors configuration.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetActiveProfile & GetActiveProfileResponse types -->
+			<xsd:element name="GetActiveProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to GetActiveProfile action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetActiveProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetActiveProfile request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile that is currently active.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- ExecuteProfile & ExecuteProfileResponse types -->
+			<xsd:element name="ExecuteProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the ExecuteProfile action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile with the desired behavior to make active.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ExecuteProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a ExecuteProfile request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetProfileList & GetProfileListResponse types -->
+			<xsd:element name="GetProfileList">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the GetProfileList action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetProfileListResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetProfileList request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileList" type="tns:ProfileList">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This is a ProfileList data type.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- StopProfile & StopProfileResponse types -->
+			<xsd:element name="StopProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the StopProfile action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int" use="optional" default="-1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile to make inactive. This is an optional parameter. By default, 
+									the currently active profile will be made inactive.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="StopProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a StopProfile request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- AlgorithmControl & AlgorithmControlResponse types -->
+			<xsd:element name="AlgorithmControl">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the AlgorithmControl action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="command" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The meaning of command is behavior specific i.e. it will 
+									vary from behavior to the next. However the meaning of 0,
+									is common to all behaviors. It is reserved for resetting the
+									scene's background. 
+									
+									If a behavior does not handle algorithm commands, e.g. Directional Motion, 
+									this request will be ignored. 
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="AlgorithmControlResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a AlgorithmControl request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- DeleteProfileBehavior & DeleteProfileBehaviorResponse types -->
+			<xsd:element name="DeleteProfileBehavior">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the DeleteProfileBehavior action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the profile whose behavior will be deleted.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="behaviorId" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the behavior to delete.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="DeleteProfileBehaviorResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a DeleteProfileBehavior request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetDefaultConfiguration & GetDefaultConfigurationResponse types -->
+			<xsd:element name="GetDefaultConfiguration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the GetDefaultConfiguration action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="behaviorId" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The identifer of the behavior whose factory default settings will be returned.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetDefaultConfigurationResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetDefaultConfiguration request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="config" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The behavior's default settings. The actual
+									settings will vary from one behavior to
+									another.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetDefaultScene & GetDefaultSceneResponse types -->
+			<xsd:element name="GetDefaultScene">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the GetDefaultScene action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetDefaultSceneResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetDefaultSceneResponse request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="scene" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This represents default scene settings.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetProfileBehavior & SetProfileBehaviorResponse types -->
+			<xsd:element name="SetProfileBehavior">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the SetProfileBehavior action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This is the unique identifier of the profile to 
+									associate with the given behavior.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="behaviorId" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This behavior's unique identifier..
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="config" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This represents behavior's settings.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetProfileBehaviorResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a SetProfileBehavior request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- SetProfileScene & SetProfileSceneResponse types -->
+			<xsd:element name="SetProfileScene">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the SetProfileScene action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This identifier of the profile whose scene
+									settings will be configured.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="scene" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The scene settings to associate with a profile
+									with a particular identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetProfileSceneResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a SetProfileScene request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetProfileScene & GetProfileSceneResponse types -->
+			<xsd:element name="GetProfileScene">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the GetProfileScene action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This identifier of the profile whose scene
+									settings will be returned.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetProfileSceneResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a GetProfileScene request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="scene" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This represents a scene's settings.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- CreateProfile & CreateProfileResponse types -->
+			<xsd:element name="CreateProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the CreateProfile action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="name" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The name of the profile.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="CreateProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a CreateProfile request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This identifier of the profile that was successfully
+									created.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- DeleteProfile & DeleteProfileResponse types -->
+			<xsd:element name="DeleteProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a request to the DeleteProfile action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									This identifier of the profile to delete.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="DeleteProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents a response to a DeleteProfile request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- GetBehaviorAvailability -->
+	<wsdl:message name="GetBehaviorAvailabilityRequest">
+		<wsdl:part name="parameters" element="tns:GetBehaviorAvailability"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetBehaviorAvailability2Request">
+		<wsdl:part name="parameters" element="tns:GetBehaviorAvailability2"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetBehaviorAvailabilityResponse">
+		<wsdl:part name="parameters" element="tns:GetBehaviorAvailabilityResponse"/>
+	</wsdl:message>
+
+	<!-- GetProfileBehavior -->
+	<wsdl:message name="GetProfileBehaviorRequest">
+		<wsdl:part name="parameters" element="tns:GetProfileBehavior"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetProfileBehaviorResponse">
+		<wsdl:part name="parameters" element="tns:GetProfileBehaviorResponse"/>
+	</wsdl:message>
+
+	<!-- ExecuteProfile -->
+	<wsdl:message name="ExecuteProfileRequest">
+		<wsdl:part name="parameters" element="tns:ExecuteProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="ExecuteProfileResponse">
+		<wsdl:part name="parameters" element="tns:ExecuteProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetActiveProfile -->
+	<wsdl:message name="GetActiveProfileRequest">
+		<wsdl:part name="parameters" element="tns:GetActiveProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetActiveProfileResponse">
+		<wsdl:part name="parameters" element="tns:GetActiveProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetProfileList -->
+	<wsdl:message name="GetProfileListRequest">
+		<wsdl:part name="parameters" element="tns:GetProfileList"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetProfileListResponse">
+		<wsdl:part name="parameters" element="tns:GetProfileListResponse"/>
+	</wsdl:message>
+
+	<!-- StopProfile -->
+	<wsdl:message name="StopProfileRequest">
+		<wsdl:part name="parameters" element="tns:StopProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="StopProfileResponse">
+		<wsdl:part name="parameters" element="tns:StopProfileResponse"/>
+	</wsdl:message>
+
+	<!-- AlgorithmControl -->
+	<wsdl:message name="AlgorithmControlRequest">
+		<wsdl:part name="parameters" element="tns:AlgorithmControl"/>
+	</wsdl:message>
+
+	<wsdl:message name="AlgorithmControlResponse">
+		<wsdl:part name="parameters" element="tns:AlgorithmControlResponse"/>
+	</wsdl:message>
+
+	<!-- DeleteProfileBehavior -->
+	<wsdl:message name="DeleteProfileBehaviorRequest">
+		<wsdl:part name="parameters" element="tns:DeleteProfileBehavior"/>
+	</wsdl:message>
+
+	<wsdl:message name="DeleteProfileBehaviorResponse">
+		<wsdl:part name="parameters" element="tns:DeleteProfileBehaviorResponse"/>
+	</wsdl:message>
+
+	<!-- GetDefaultConfiguration -->
+	<wsdl:message name="GetDefaultConfigurationRequest">
+		<wsdl:part name="parameters" element="tns:GetDefaultConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDefaultConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetDefaultConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- GetDefaultScene -->
+	<wsdl:message name="GetDefaultSceneRequest">
+		<wsdl:part name="parameters" element="tns:GetDefaultScene"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDefaultSceneResponse">
+		<wsdl:part name="parameters" element="tns:GetDefaultSceneResponse"/>
+	</wsdl:message>
+
+	<!-- SetProfileBehavior -->
+	<wsdl:message name="SetProfileBehaviorRequest">
+		<wsdl:part name="parameters" element="tns:SetProfileBehavior"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetProfileBehaviorResponse">
+		<wsdl:part name="parameters" element="tns:SetProfileBehaviorResponse"/>
+	</wsdl:message>
+
+	<!-- SetProfileScene -->
+	<wsdl:message name="SetProfileSceneRequest">
+		<wsdl:part name="parameters" element="tns:SetProfileScene"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetProfileSceneResponse">
+		<wsdl:part name="parameters" element="tns:SetProfileSceneResponse"/>
+	</wsdl:message>
+
+	<!-- GetProfileScene -->
+	<wsdl:message name="GetProfileSceneRequest">
+		<wsdl:part name="parameters" element="tns:GetProfileScene"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetProfileSceneResponse">
+		<wsdl:part name="parameters" element="tns:GetProfileSceneResponse"/>
+	</wsdl:message>
+
+	<!-- CreateProfile -->
+	<wsdl:message name="CreateProfileRequest">
+		<wsdl:part name="parameters" element="tns:CreateProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="CreateProfileResponse">
+		<wsdl:part name="parameters" element="tns:CreateProfileResponse"/>
+	</wsdl:message>
+
+	<!-- DeleteProfile -->
+	<wsdl:message name="DeleteProfileRequest">
+		<wsdl:part name="parameters" element="tns:DeleteProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="DeleteProfileResponse">
+		<wsdl:part name="parameters" element="tns:DeleteProfileResponse"/>
+	</wsdl:message>
+
+	<!-- Ports -->
+
+	<wsdl:portType name="VideoAnalyticsPortType">
+
+		<wsdl:operation name="GetBehaviorAvailability">
+			<wsdl:input message="tns:GetBehaviorAvailabilityRequest"/>
+			<wsdl:output message="tns:GetBehaviorAvailabilityResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetBehaviorAvailability2">
+			<wsdl:input message="tns:GetBehaviorAvailability2Request"/>
+			<wsdl:output message="tns:GetBehaviorAvailabilityResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="ExecuteProfile">
+			<wsdl:input message="tns:ExecuteProfileRequest"/>
+			<wsdl:output message="tns:ExecuteProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveProfile">
+			<wsdl:input message="tns:GetActiveProfileRequest"/>
+			<wsdl:output message="tns:GetActiveProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileList">
+			<wsdl:input message="tns:GetProfileListRequest"/>
+			<wsdl:output message="tns:GetProfileListResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopProfile">
+			<wsdl:input message="tns:StopProfileRequest"/>
+			<wsdl:output message="tns:StopProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="AlgorithmControl">
+			<wsdl:input message="tns:AlgorithmControlRequest"/>
+			<wsdl:output message="tns:AlgorithmControlResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfileBehavior">
+			<wsdl:input message="tns:DeleteProfileBehaviorRequest"/>
+			<wsdl:output message="tns:DeleteProfileBehaviorResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultConfiguration">
+			<wsdl:input message="tns:GetDefaultConfigurationRequest"/>
+			<wsdl:output message="tns:GetDefaultConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultScene">
+			<wsdl:input message="tns:GetDefaultSceneRequest"/>
+			<wsdl:output message="tns:GetDefaultSceneResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileBehavior">
+			<wsdl:input message="tns:GetProfileBehaviorRequest"/>
+			<wsdl:output message="tns:GetProfileBehaviorResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfileBehavior">
+			<wsdl:input message="tns:SetProfileBehaviorRequest"/>
+			<wsdl:output message="tns:SetProfileBehaviorResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileScene">
+			<wsdl:input message="tns:GetProfileSceneRequest"/>
+			<wsdl:output message="tns:GetProfileSceneResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="CreateProfile">
+			<wsdl:input message="tns:CreateProfileRequest"/>
+			<wsdl:output message="tns:CreateProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfile">
+			<wsdl:input message="tns:DeleteProfileRequest"/>
+			<wsdl:output message="tns:DeleteProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfileScene">
+			<wsdl:input message="tns:SetProfileSceneRequest"/>
+			<wsdl:output message="tns:SetProfileSceneResponse"/>
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="VideoAnalytics" type="tns:VideoAnalyticsPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="GetBehaviorAvailability">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetBehaviorAvailability" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetBehaviorAvailability2">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetBehaviorAvailability2" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileBehavior">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetProfileBehavior" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ExecuteProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#ExecuteProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetActiveProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileList">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetProfileList" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#StopProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="AlgorithmControl">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#AlgorithmControl" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfileBehavior">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#DeleteProfileBehavior" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetDefaultConfiguration" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultScene">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetDefaultScene" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfileBehavior">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#SetProfileBehavior" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="CreateProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#CreateProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#DeleteProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileScene">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#GetProfileScene" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfileScene">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:2#SetProfileScene" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<!-- Services -->
+
+	<wsdl:service name="VideoAnalytics">
+		<wsdl:port binding="tns:VideoAnalytics" name="VideoAnalytics2">
+			<soap:address location="localhost:80/control/VideoAnalytics-2" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

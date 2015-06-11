@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="DeviceCapability"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:tns="http://www.pelco.com/api/DeviceCapability/1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:fault="urn:schemas-pelco-com:fault"
+	targetNamespace="http://www.pelco.com/api/DeviceCapability/1">
+
+  <!-- Types -->
+
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.pelco.com/api/DeviceCapability/1"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="urn:schemas-pelco-com:fault" schemaLocation="fault.xsd"/>
+
+      <xsd:complexType name="Service">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a web service on the device
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Namespace" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the namespace of the webservice
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="URL" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the URL at which the web service is hosted
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="IsEnabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents whether the service is currently enabled or not
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ServiceNamespaces">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a list of service namespaces
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="ServiceNamespace" type="xsd:string" maxOccurs="unbounded" minOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents a service namespace
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Services">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a list of services
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Service" type="tns:Service" maxOccurs="unbounded" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                List of services
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:simpleType name="StreamType">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents the stream type. The following are the different options
+            <ul>
+              <li>Primary</li>
+              <li>Secondary</li>
+            </ul>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Primary"/>
+          <xsd:enumeration value="Secondary"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="CompressionFormat">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents available compression formats.
+            The following are different options
+            <ul>
+              <li>MPEG-4</li>
+              <li>H.264</li>
+              <li>MJPEG</li>
+              <li>JPEG</li>
+            </ul>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="MPEG-4"/>
+          <xsd:enumeration value="H.264"/>
+          <xsd:enumeration value="MJPEG"/>
+          <xsd:enumeration value="JPEG"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="GOPStructure">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="NotSupported"/>
+          <xsd:enumeration value="IP"/>
+          <xsd:enumeration value="IBBrBP"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:complexType name="CompressionFormats">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a list of compression formats
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="CompressionFormat" type="tns:CompressionFormat" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="AvailableStream">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents how many streams are available for a given stream type
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="StreamType" type="tns:StreamType">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the stream type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="TotalAvailable" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents total number of the streams available with the associated stream type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+           <xsd:element name="InUse" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents total number of the streams currently in use with the associated stream type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="AvailableStreams">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a list of available streams for a given stream type
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="AvailableStream" type="tns:AvailableStream" maxOccurs="unbounded" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                List of available streams for a given stream type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="PTZCapability">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents the built in PTZ capability supported by the device
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="IsPanTiltSupported" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents if pan and tilt support is built into the system
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="IsZoomSupported" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents if zoom support is built into the system
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Capability">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents resources available on the device
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="AudioIn">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the total number of audio input available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="AudioOut">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the total number of audio output available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="Alarms">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the total number of alarms available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="Relays">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the total number of relays available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="SerialPorts">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the total number of directly accesible serial ports available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="PTZCapability" type="tns:PTZCapability">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents built in PTZ capability of the device
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="VideoSources">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents number of physical video sources available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="count" type="xsd:int" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="CompressionFormats" type="tns:CompressionFormats">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents list of compression format available on the device
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="AvailableStreams" type="tns:AvailableStreams">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents list of streams currently available for each stream type
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Resolution">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents resolution of image in height and width
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Height" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Resolution height
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="Width" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Resolution width
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="StreamConfiguration">
+        <xsd:sequence>
+          <xsd:element name="PrimaryStreamSetting" type="tns:StreamSetting" />
+          <xsd:element name="SecondaryStreamSetting" type="tns:StreamSetting" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="EnabledElement">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+      </xsd:complexType>
+            
+      <xsd:complexType name="StreamSetting">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents configuration of a stream
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Bitrate" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Bitrate for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="FrameRate" type="xsd:decimal">
+            <xsd:annotation>
+              <xsd:documentation>
+                Framerate for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="GOP" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                GOP for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="GOPStructure" type="tns:GOPStructure" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                GOP Structure for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="DSCP" type="xsd:int" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                DSCP for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="CompressionFormat" type="tns:CompressionFormat">
+            <xsd:annotation>
+              <xsd:documentation>
+                Compression Format for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="Resolution" type="tns:Resolution">
+            <xsd:annotation>
+              <xsd:documentation>
+                Resolution for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="EnduraSigning">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents endura signing is enabled/disabled for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:attribute name="enabled" type="xsd:boolean" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="AdvancedSharpening" type="tns:EnabledElement" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents if advanced sharpening is enabled/disabled for the stream
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:simpleType name="ErrorCodes">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents error codes thrown by different methods
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="InvalidCompressionFormat"/>
+          <xsd:enumeration value="IncompatibleConfiguration"/>
+          <xsd:enumeration value="InvalidServiceNamespace"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:element name="GetDeviceCapability">
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetDeviceCapabilityResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Capability" type="tns:Capability"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetServices">
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetServicesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Services" type="tns:Services"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetPrimaryStreamCapabilities">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CompressionFormat" type="tns:CompressionFormat" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetPrimaryStreamCapabilitiesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="StreamConfiguration" type="tns:StreamConfiguration"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetSecondaryStreamCapabilities">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CompressionFormat" type="tns:CompressionFormat" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetSecondaryStreamCapabilitiesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="StreamSetting" type="tns:StreamSetting"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+
+      <xsd:element name="GetStreamConfigurations">
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetStreamConfigurationsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="StreamConfiguration" type="tns:StreamConfiguration"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetRecommendedStreamConfiguration">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ServiceNamespaces" type="tns:ServiceNamespaces"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetRecommendedStreamConfigurationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="StreamConfiguration" type="tns:StreamConfiguration"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+    </xsd:schema>
+  </wsdl:types>
+
+  <!-- Messages -->
+
+  <wsdl:message name="GetDeviceCapability">
+    <wsdl:part name="parameters" element="tns:GetDeviceCapability"/>
+  </wsdl:message>
+  <wsdl:message name="GetDeviceCapabilityResponse">
+    <wsdl:part name="parameters" element="tns:GetDeviceCapabilityResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetServices">
+    <wsdl:part name="parameters" element="tns:GetServices"/>
+  </wsdl:message>
+  <wsdl:message name="GetServicesResponse">
+    <wsdl:part name="parameters" element="tns:GetServicesResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetPrimaryStreamCapabilities">
+    <wsdl:part name="parameters" element="tns:GetPrimaryStreamCapabilities"/>
+  </wsdl:message>
+  <wsdl:message name="GetPrimaryStreamCapabilitiesResponse">
+    <wsdl:part name="parameters" element="tns:GetPrimaryStreamCapabilitiesResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetSecondaryStreamCapabilities">
+    <wsdl:part name="parameters" element="tns:GetSecondaryStreamCapabilities"/>
+  </wsdl:message>
+  <wsdl:message name="GetSecondaryStreamCapabilitiesResponse">
+    <wsdl:part name="parameters" element="tns:GetSecondaryStreamCapabilitiesResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetStreamConfigurations">
+    <wsdl:part name="parameters" element="tns:GetStreamConfigurations"/>
+  </wsdl:message>
+  <wsdl:message name="GetStreamConfigurationsResponse">
+    <wsdl:part name="parameters" element="tns:GetStreamConfigurationsResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetRecommendedStreamConfiguration">
+    <wsdl:part name="parameters" element="tns:GetRecommendedStreamConfiguration"/>
+  </wsdl:message>
+  <wsdl:message name="GetRecommendedStreamConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:GetRecommendedStreamConfigurationResponse"/>
+  </wsdl:message>
+
+  <!-- Fault Messages -->
+  <wsdl:message name="ActionNotSupportedFault">
+    <wsdl:part name="ActionNotSupportedFault" element="fault:ActionNotSupportedFault"/>
+  </wsdl:message>
+
+  <wsdl:message name="InvalidArgumentFault">
+    <wsdl:part name="InvalidArgumentFault" element="fault:InvalidArgumentFault"/>
+  </wsdl:message>
+
+  <!-- Ports -->
+  <wsdl:portType name="DeviceCapabilityPortType">
+
+    <wsdl:operation name="GetDeviceCapability">
+      <wsdl:input message="tns:GetDeviceCapability"></wsdl:input>
+      <wsdl:output message="tns:GetDeviceCapabilityResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetServices">
+      <wsdl:input message="tns:GetServices"></wsdl:input>
+      <wsdl:output message="tns:GetServicesResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetPrimaryStreamCapabilities">
+      <wsdl:input message="tns:GetPrimaryStreamCapabilities"></wsdl:input>
+      <wsdl:output message="tns:GetPrimaryStreamCapabilitiesResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+      <wsdl:fault message="tns:InvalidArgumentFault" name="InvalidArgumentFault"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetSecondaryStreamCapabilities">
+      <wsdl:input message="tns:GetSecondaryStreamCapabilities"></wsdl:input>
+      <wsdl:output message="tns:GetSecondaryStreamCapabilitiesResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+      <wsdl:fault message="tns:InvalidArgumentFault" name="InvalidArgumentFault"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetStreamConfigurations">
+      <wsdl:input message="tns:GetStreamConfigurations"></wsdl:input>
+      <wsdl:output message="tns:GetStreamConfigurationsResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetRecommendedStreamConfiguration">
+      <wsdl:input message="tns:GetRecommendedStreamConfiguration"></wsdl:input>
+      <wsdl:output message="tns:GetRecommendedStreamConfigurationResponse"></wsdl:output>
+      <wsdl:fault message="tns:ActionNotSupportedFault" name="ActionNotSupportedFault"/>
+      <wsdl:fault message="tns:InvalidArgumentFault" name="InvalidArgumentFault"/>
+    </wsdl:operation>
+
+  </wsdl:portType>
+
+  <!-- Bindings -->
+  <wsdl:binding name="DeviceCapability" type="tns:DeviceCapabilityPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <wsdl:operation name="GetDeviceCapability">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetDeviceCapability" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetServices">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetServices" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetPrimaryStreamCapabilities">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetPrimaryStreamCapabilities" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="InvalidArgumentFault">
+        <soap:fault name="InvalidArgumentFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetSecondaryStreamCapabilities">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetSecondaryStreamCapabilities" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="InvalidArgumentFault">
+        <soap:fault name="InvalidArgumentFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetStreamConfigurations">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetStreamConfigurations" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="GetRecommendedStreamConfiguration">
+      <soap:operation soapAction="http://www.pelco.com/api/DeviceCapability/1/GetRecommendedStreamConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ActionNotSupportedFault">
+        <soap:fault name="ActionNotSupportedFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="InvalidArgumentFault">
+        <soap:fault name="InvalidArgumentFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+  </wsdl:binding>
+
+  <wsdl:service name="DeviceCapability">
+    <wsdl:port binding="tns:DeviceCapability" name="DeviceCapability">
+      <soap:address location="http://localhost/control/DeviceCapability-1" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

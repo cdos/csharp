@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions xmlns:tns="urn:schemas-pelco-com:service:AudioInputRtsp:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:schemas-pelco-com:service:AudioInputRtsp:1">
+	<wsdl:documentation>$Id: AudioInputRtspV1.wsdl 474 2010-12-22 19:25:11Z  $</wsdl:documentation>
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn:schemas-pelco-com:service:AudioInputRtsp:1">
+			<xsd:complexType name="AudioOutSettings">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This contains audio output related settings such as volume 
+						and other user defined settings, which users can add.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="volume" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								This is the volume level. The measure of loudness from 0 to 100.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:any namespace="##any" processContents="skip" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:any>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ChannelInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This represents information pertaining to an audio channel.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="channelId" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A channel's unique identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="channelStatus" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A channel's current status.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:any namespace="##any" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ChannelInfoList">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a list of channels.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="channelInfo" type="tns:ChannelInfo" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<!--SetEnabled-->
+			<xsd:element name="SetEnabled">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the SetEnabled action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="enabled" type="xsd:boolean">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The desired state of the audio line in. Set 
+									to true to enabled, and false otherwise.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SetEnabledResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a SetEnabled request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<!--GetEnabled-->
+			<xsd:element name="GetEnabled">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the GetEnabled action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<xsd:element name="GetEnabledResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a GetEnabled request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="enabled" type="xsd:boolean">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The current state of the audio line in. This 
+									is true if enabled, and false otherwise.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--Query-->
+			<xsd:element name="Query">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the Query action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<xsd:element name="QueryResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a Query request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelInfoList" type="tns:ChannelInfoList"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--SetChannelParameters-->
+			<xsd:element name="SetChannelParameters">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the SetChannelParameters action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A channel's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="audioOutSettings" type="tns:AudioOutSettings"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SetChannelParametersResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a SetChannelParameters request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--GetChannelParameters-->
+			<xsd:element name="GetChannelParameters">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the GetChannelParameters action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="channelId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A channel's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GetChannelParametersResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a GetChannelParameters request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="audioOutSettings" type="tns:AudioOutSettings"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--Connect-->
+			<xsd:element name="Connect">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the Connect action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sourceURI" type="xsd:anyURI">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The URI of the original source of the audio data.
+									
+									e.g. uuid:EnduraEncoder-CU6350-5/urn:pelco-com:serviceId:AudioInputRtsp-1
+	 								e.g. uuid:ca522d4a-d26f-446a-8e7e-ccdb6127fd2d/urn:pelco-com:serviceId:AudioInputRtsp-16
+	 								
+	 								For audio connections:
+	 								e.g. rtsp://10.221.224.120/audioStreamIdentification
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="channelId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A channel's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="sessionTimeoutSeconds" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ConnectResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a Connect request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream session's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="streamStatus" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream's current status.
+									
+									Valid values are the following:
+									<ul>
+										<li>Ok</li>
+										<li>
+											Bad ChannelId: the is associated with
+											an invalid channel identifier.
+										</li>
+										<li>
+											Invalid Url: the stream has an 
+											invalid URL.
+										</li>
+										<li>
+											Unsupported Format: the stream's
+											format is currently unsupported.
+										</li>
+										<li>
+											Failed: the stream failed.
+										</li>
+									</ul>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--KeepAlive-->
+			<xsd:element name="KeepAlive">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the KeepAlive action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream session's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="KeepAliveResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a KeepAlive request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamStatus" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream's current status.
+									
+									Valid values are the following:
+									<ul>
+										<li>Ok</li>
+										<li>
+											Bad ChannelId: the is associated with
+											an invalid channel identifier.
+										</li>
+										<li>
+											Invalid Url: the stream has an 
+											invalid URL.
+										</li>
+										<li>
+											Unsupported Format: the stream's
+											format is currently unsupported.
+										</li>
+										<li>
+											Failed: the stream failed.
+										</li>
+									</ul>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--Disconnect-->
+			<xsd:element name="Disconnect">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a request to the Disconnect action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamId" type="xsd:int">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream session's unique identifier.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="DisconnectResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a response to a Disconnect request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="streamStatus" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									A stream's current status.
+									
+									Valid values are the following:
+									<ul>
+										<li>Ok</li>
+										<li>
+											Bad ChannelId: the is associated with
+											an invalid channel identifier.
+										</li>
+										<li>
+											Invalid Url: the stream has an 
+											invalid URL.
+										</li>
+										<li>
+											Unsupported Format: the stream's
+											format is currently unsupported.
+										</li>
+										<li>
+											Failed: the stream failed.
+										</li>
+									</ul>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<!--SetEnabled-->
+	<wsdl:message name="SetEnabled">
+		<wsdl:part name="parameters" element="tns:SetEnabled"/>
+	</wsdl:message>
+	<wsdl:message name="SetEnabledResponse">
+		<wsdl:part name="parameters" element="tns:SetEnabledResponse"/>
+	</wsdl:message>
+	<!--GetEnabled-->
+	<wsdl:message name="GetEnabled">
+		<wsdl:part name="parameters" element="tns:GetEnabled"/>
+	</wsdl:message>
+	<wsdl:message name="GetEnabledResponse">
+		<wsdl:part name="parameters" element="tns:GetEnabledResponse"/>
+	</wsdl:message>
+	<!--Query-->
+	<wsdl:message name="Query">
+		<wsdl:part name="parameters" element="tns:Query"/>
+	</wsdl:message>
+	<wsdl:message name="QueryResponse">
+		<wsdl:part name="parameters" element="tns:QueryResponse"/>
+	</wsdl:message>
+	<!--SetChannelParameters-->
+	<wsdl:message name="SetChannelParameters">
+		<wsdl:part name="parameters" element="tns:SetChannelParameters"/>
+	</wsdl:message>
+	<wsdl:message name="SetChannelParametersResponse">
+		<wsdl:part name="parameters" element="tns:SetChannelParametersResponse"/>
+	</wsdl:message>
+	<!--GetChannelParameters-->
+	<wsdl:message name="GetChannelParameters">
+		<wsdl:part name="parameters" element="tns:GetChannelParameters"/>
+	</wsdl:message>
+	<wsdl:message name="GetChannelParametersResponse">
+		<wsdl:part name="parameters" element="tns:GetChannelParametersResponse"/>
+	</wsdl:message>
+	<!--Connect-->
+	<wsdl:message name="Connect">
+		<wsdl:part name="parameters" element="tns:Connect"/>
+	</wsdl:message>
+	<wsdl:message name="ConnectResponse">
+		<wsdl:part name="parameters" element="tns:ConnectResponse"/>
+	</wsdl:message>
+	<!--KeepAlive-->
+	<wsdl:message name="KeepAlive">
+		<wsdl:part name="parameters" element="tns:KeepAlive"/>
+	</wsdl:message>
+	<wsdl:message name="KeepAliveResponse">
+		<wsdl:part name="parameters" element="tns:KeepAliveResponse"/>
+	</wsdl:message>
+	<!--Disconnect-->
+	<wsdl:message name="Disconnect">
+		<wsdl:part name="parameters" element="tns:Disconnect"/>
+	</wsdl:message>
+	<wsdl:message name="DisconnectResponse">
+		<wsdl:part name="parameters" element="tns:DisconnectResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="AudioInputRtspPortType">
+		<wsdl:operation name="SetEnabled">
+			<wsdl:documentation>
+				Enabling or disabling a device's audio capabilities.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetEnabled"/>
+			<wsdl:output message="tns:SetEnabledResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetEnabled">
+			<wsdl:documentation>
+				Returns a device's current audio status.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetEnabled"/>
+			<wsdl:output message="tns:GetEnabledResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="Query">
+			<wsdl:documentation>
+				Queries available audio channels.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Query"/>
+			<wsdl:output message="tns:QueryResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="SetChannelParameters">
+			<wsdl:documentation>
+				Modifies a particular channel's attributes.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetChannelParameters"/>
+			<wsdl:output message="tns:SetChannelParametersResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetChannelParameters">
+			<wsdl:documentation>
+				Returns a particular channel's attributes.
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetChannelParameters"/>
+			<wsdl:output message="tns:GetChannelParametersResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="Connect">
+			<wsdl:documentation>
+				Initiates a connection to a specific audio channel.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Connect"/>
+			<wsdl:output message="tns:ConnectResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="KeepAlive">
+			<wsdl:documentation>
+				Keeps a specific audio session alive.
+			</wsdl:documentation>
+			<wsdl:input message="tns:KeepAlive"/>
+			<wsdl:output message="tns:KeepAliveResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="Disconnect">
+			<wsdl:documentation>
+				Disconnects from a specific audio channel.
+			</wsdl:documentation>
+			<wsdl:input message="tns:Disconnect"/>
+			<wsdl:output message="tns:DisconnectResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AudioInputRtsp" type="tns:AudioInputRtspPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="SetEnabled">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#SetEnabled"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetEnabled">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#GetEnabled"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Query">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#Query"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetChannelParameters">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#SetChannelParameters"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetChannelParameters">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#GetChannelParameters"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Connect">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#Connect"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="KeepAlive">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#KeepAlive"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Disconnect">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:AudioInputRtsp:1#Disconnect"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AudioInputRtsp">
+		<wsdl:documentation>
+			This service allows a client to query available and outgoing audio 
+			streams and to request connections to those streams.
+		</wsdl:documentation>
+		<wsdl:port binding="tns:AudioInputRtsp" name="AudioInputRtsp">
+			<soap:address location="http://localhost:49152/control/AudioInputRtsp-1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

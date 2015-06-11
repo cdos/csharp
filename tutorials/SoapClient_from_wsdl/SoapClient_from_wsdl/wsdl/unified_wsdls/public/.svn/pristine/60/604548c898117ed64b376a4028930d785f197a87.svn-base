@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	name="NVRConfiguration"
+  	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:NVRConfiguration:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:NVRConfiguration:1">
+	
+	<wsdl:documentation>
+		$Id$
+	</wsdl:documentation>
+	
+	<wsdl:types>
+		<xsd:schema
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:schemas-pelco-com:service:NVRConfiguration:1">
+			
+			<xsd:complexType name="Associations">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						This is a list containing associations.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="session" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="NVRConfig">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Defines the data type used to configure the NVR.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="estimatedStorageTime" type="xsd:int" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The total estimated storage capacity available to the NVR in time unit. This value can be converted to the required format for 
+								display. Moreover, this will allow the user to estimate the total storage time at his disposal based on current usage. 
+								Thereby allowing the user to adjust it either by changing the recording parameters or by increasing storage capacity.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="estimatedStorageTimeThreshold" type="xsd:int" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The number of days the NVR's internally calculated storage time is off from the user desired amount of recording time. 
+								0 is used if no artificial limit is needed (limited only by the total storage capacity of the device). 3 is the default value.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pruningDelay" type="xsd:int" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The amount of time video pruning is delayed.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pruningEnabled" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Set to 1 (true) to enable video pruning, 0 (false) otherwise.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="associationsEnabled" type="xsd:int" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Set to 1 (true) to enable associations, 0 (false) otherwise.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="associationList" type="tns:Associations" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								A list of Association data types.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="storageDays" type="xsd:int" minOccurs="0"  maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The maximum number of days to keep a video. Set to 0 if there is no artificial limit.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lockedStorageDays" type="xsd:int" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The maximum number of days to keep a video locked. Set to 0 if there is no artificial limit.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="NVRStats">
+				<xsd:sequence>
+					<xsd:element name="friendlyName" type="xsd:string" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The NVR's friendly human readable device name.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="udn" type="xsd:string" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The NVR's unique device name in UUID format.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="location" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+					<xsd:element name="uptime" type="xsd:int" minOccurs="1" maxOccurs="1"></xsd:element>
+					<xsd:element name="storage" type="xsd:int" minOccurs="1" maxOccurs="1"></xsd:element>
+					<xsd:element name="isArbiter" type="xsd:boolean" minOccurs="1" maxOccurs="1"></xsd:element>
+					<xsd:element name="assigned" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<!-- GetConfiguration -->
+			
+			<xsd:element name="GetConfiguration"></xsd:element>
+
+			<xsd:element name="GetConfigurationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="nvrConfig" type="tns:NVRConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- SetConfiguration -->
+
+			<xsd:element name="SetConfiguration">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="nvrConfig" type="tns:NVRConfig"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetConfigurationResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- ResetConfiguration -->
+
+			<xsd:element name="ResetConfiguration">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="ResetConfigurationResponse">
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- Identity -->
+			
+			<xsd:element name="Identity">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="IdentityResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="identity" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetNVRStats -->
+			
+			<xsd:element name="GetStats">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetStatsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="identity" type="tns:NVRStats"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="GetConfiguration">
+		<wsdl:part name="parameters" element="tns:GetConfiguration"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetConfigurationResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Identity">
+		<wsdl:part name="parameters" element="tns:Identity"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IdentityResponse">
+		<wsdl:part name="parameters" element="tns:IdentityResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetConfiguration">
+		<wsdl:part name="parameters" element="tns:SetConfiguration"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:SetConfigurationResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ResetConfiguration">
+		<wsdl:part name="parameters" element="tns:ResetConfiguration"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ResetConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:ResetConfigurationResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetStats">
+		<wsdl:part name="parameters" element="tns:GetStats"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetStatsResponse">
+		<wsdl:part name="parameters" element="tns:GetStatsResponse"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="NVRConfigurationPortType">
+	
+		<wsdl:operation name="GetConfiguration">
+			<wsdl:input message="tns:GetConfiguration" />
+			<wsdl:output message="tns:GetConfigurationResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="Identity">
+			<wsdl:input message="tns:Identity" />
+			<wsdl:output message="tns:IdentityResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetConfiguration">
+			<wsdl:input message="tns:SetConfiguration" />
+			<wsdl:output message="tns:SetConfigurationResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="ResetConfiguration">
+			<wsdl:input message="tns:ResetConfiguration" />
+			<wsdl:output message="tns:ResetConfigurationResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetStats">
+			<wsdl:input message="tns:GetStats" />
+			<wsdl:output message="tns:GetStatsResponse" />
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	
+	<wsdl:binding name="NVRConfiguration" type="tns:NVRConfigurationPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		
+		<wsdl:operation name="GetConfiguration">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:NVRConfiguration:1.0.0.1#GetConfiguration" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="Identity">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:NVRConfiguration:1.0.0.1#Identity" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetConfiguration">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:NVRConfiguration:1.0.0.1#SetConfiguration" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ResetConfiguration">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:NVRConfiguration:1.0.0.1#ResetConfiguration" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetStats">
+			<soap:operation
+				soapAction="urn:schemas-pelco-com:service:NVRConfiguration:1.0.0.1#GetStats" />
+			<wsdl:input><soap:body use="literal" /></wsdl:input>
+			<wsdl:output><soap:body use="literal" /></wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<!-- Services -->
+	
+	<wsdl:service name="NVRConfiguration">
+		<wsdl:port binding="tns:NVRConfiguration" name="NVRConfiguration">
+			<soap:address location="http://localhost:49152/control/NVRConfiguration-1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

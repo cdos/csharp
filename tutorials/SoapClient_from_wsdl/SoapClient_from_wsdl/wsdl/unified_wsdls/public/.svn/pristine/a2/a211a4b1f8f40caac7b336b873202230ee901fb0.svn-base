@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	xmlns:tns="urn:schemas-pelco-com:service:StreamDiscovery:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:schemas-pelco-com:service:StreamDiscovery:1">
+	<wsdl:documentation>
+		$Id: StreamDiscoveryV1.wsdl 433 2010-11-23 01:18:25Z $
+	</wsdl:documentation>
+	
+	<wsdl:service name="StreamDiscovery">
+		<wsdl:documentation>This API provides a simple way to find the streams on a camera. Querying this API will return the url that can be used to connect to the stream. Connecting to each stream is left to the protocol for each stream type (e.g. RTSP). This service is only valid for the Sarix product line.</wsdl:documentation>
+		<wsdl:port binding="tns:StreamDiscovery" name="StreamDiscovery">
+			<soap:address location="http://localhost:49152/control/StreamDiscovery-1"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn:schemas-pelco-com:service:StreamDiscovery:1">
+			<xsd:complexType name="StreamID">
+				<xsd:annotation><xsd:documentation xml:lang="en">The stream's unique identifier. Each device can output a certain number of streams. These streams are identified by an integer value: streamID.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="type" type="xsd:string">
+						<xsd:annotation><xsd:documentation xml:lang="en">the type of stream</xsd:documentation></xsd:annotation>
+					</xsd:element>
+					<xsd:element name="id" type="xsd:int">
+						<xsd:annotation><xsd:documentation xml:lang="en">An integer value assigned by order of priority. The first stream is assigned the id 0. Subsequent streams are assigned consecutive values (1, 2, ...) in order of priority. 0 is the "primary" stream, 1 is the "secondary" stream, and so on. This StreamID can be used to look up a stream's configuration using the StreamConfiguration API.</xsd:documentation></xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ConnectionURL">
+				<xsd:annotation><xsd:documentation xml:lang="en">A wrapper containing information on connecting to the stream.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="stream" type="tns:StreamID" maxOccurs="unbounded">
+						<xsd:annotation><xsd:documentation xml:lang="en">A StreamID data element</xsd:documentation></xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="address" type="xsd:anyURI" use="required">
+					<xsd:annotation><xsd:documentation xml:lang="en">A valid URI for the stream.</xsd:documentation></xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="transmission" type="xsd:string" use="optional">
+					<xsd:annotation><xsd:documentation xml:lang="en"><p>The type of stream. Possible values are:
+						<ul><li>unicast</li>
+						<li>multicast</li></ul></p>
+					</xsd:documentation></xsd:annotation>
+				</xsd:attribute> <!-- todo: create an enum multi/unicast -->
+				<xsd:attribute name="mimeType" type="xsd:string" use="optional">
+					<xsd:annotation><xsd:documentation xml:lang="en">The Content-type or the stream.</xsd:documentation></xsd:annotation>
+				</xsd:attribute>
+
+			</xsd:complexType>
+			<xsd:complexType name="ConnectionList">
+				<xsd:annotation><xsd:documentation xml:lang="en">A list of ConnectionURL data elements.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="connectionURL" type="tns:ConnectionURL" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<!--StreamQuery-->
+			<xsd:element name="StreamQuery">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represent a request to the StreamQuery action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<xsd:element name="StreamQueryResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represent a response from the StreamQuery action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="connectionList" type="tns:ConnectionList"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<!--StreamQuery-->
+	<wsdl:message name="StreamQuery">
+		<wsdl:part name="parameters" element="tns:StreamQuery"/>
+	</wsdl:message>
+	<wsdl:message name="StreamQueryResponse">
+		<wsdl:part name="parameters" element="tns:StreamQueryResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="StreamDiscoveryPortType">
+		<wsdl:operation name="StreamQuery">
+			<wsdl:documentation>Queries a device for its available streams.</wsdl:documentation>
+			<wsdl:input message="tns:StreamQuery"/>
+			<wsdl:output message="tns:StreamQueryResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="StreamDiscovery" type="tns:StreamDiscoveryPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="StreamQuery">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:StreamDiscovery:1#StreamQuery"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+</wsdl:definitions>

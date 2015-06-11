@@ -1,0 +1,37 @@
+﻿AutoFlip
+	- Set and Check
+	- With Limits
+	- Post Control Check
+Position
+	- Random Seek 
+	- Random Seek with Limits
+	- (NI) Move at Speed
+Presets
+	- Set and Check
+	- Check With Limits
+	- (NI) Acquisition Speed
+	- Verify Max Presets (Default 255)
+Velocity
+	- Movement Verification (If positive Velocity given, does camera move positive)
+	- Relational Speed Verification (IE: speed 20 should be less than speed 40)
+	- Runaway Check (Set speed, should stop after 10 seconds)
+Tours
+	- (NI) Run Endlessly
+	- (NI) Dwell Time
+	- (NI) Aquisition Speed
+	- (NI) Max Tours
+Iris
+	- Open (check brigntness value.  Should Change)
+	- (NI) Close
+	- (NI) move and check (should switch to auto)
+Zoom
+	- Position
+	- Limits
+	- Tele/Wide
+Asmuth 
+	- Set/Check
+Window Blanking
+	- (NI) Random gen
+Reboot (may need seperate app) Order of Test:
+	- (NI) Reboot
+	- (NI) Wait 

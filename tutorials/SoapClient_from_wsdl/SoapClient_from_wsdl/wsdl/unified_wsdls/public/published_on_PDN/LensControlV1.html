@@ -1,0 +1,165 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>LensControl - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div><p>$Id: LensControlV1.wsdl 607 2011-08-23 23:56:33Z  $</p><div class="revhistory"><div class="revision"><div class="revnumber">1.0</div><div class="date">22 Nov 2010</div><div class="revremark">Updated documentation, incorporated review comments, changed unsignedInt to float for magnification.</div></div><div class="revision"><div class="revnumber">1.1</div><div class="date">11 Mar 2011</div><div class="revremark">Removed interpretation of zoom factor as singular values rather than centidegrees, due to current product implementations.</div></div></div></div><div class="page"><div><p>This service allows control of a camera's lens. Specifically the following elements are configurable:
+			<ul><li>configuration of the iris</li><li>configuration of lens focus</li><li>magnification level of the lens</li><li>maximum angle of view of the lens</li></ul></p></div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.AutoFocus">AutoFocus</a></h2><div class="value">
+</div><div class="value">Turns auto focus on/off.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#AutoFocus</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [AutoFocus]<div style="color:#1E3E66;">Represents a request to the AutoFocus action.</div><ul type="square"><li><b>onOff</b> [int]<div style="color:#1E3E66;"><p>State of the auto focus setting of the lens. Controls which aspects of a picture are sharp. Must be one of:
+								<ul><li>0 for OFF</li><li>1 for ON</li></ul></p></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [AutoFocusResponse]<div style="color:#1E3E66;">Represents a response from the AutoFocus action.</div></div></li><li class="operation"><h2><a name="op.AutoIris">AutoIris</a></h2><div class="value">
+</div><div class="value">Turns auto iris on/off.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#AutoIris</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [AutoIris]<div style="color:#1E3E66;">Represents a request to the AutoIris action.</div><ul type="square"><li><b>onOff</b> [int]<div style="color:#1E3E66;"><p>State of the auto iris setting of the lens. The iris controls exposure or how bright the video frames will appear. Must be one of:
+								<ul><li>0 for OFF</li><li>1 for ON</li></ul></p></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [AutoIrisResponse]<div style="color:#1E3E66;">Represents a response from the AutoIris action.</div></div></li><li class="operation"><h2><a name="op.Focus">Focus</a></h2><div class="value">
+</div><div class="value">Focuses the lens near/far, continuously until a limit is reached.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#Focus</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [Focus]<div style="color:#1E3E66;">Represents a request to the Focus action.</div><ul type="square"><li><b>nearFar</b> [unsignedInt]<div style="color:#1E3E66;"><p>This action sets the state of the focus setting of the lens, which moves the focus motor in a particular direction. The motor keeps moving until it hits a limit or stop is called. Must be one of:
+								<ul><li>0 for STOP</li><li>1 for NEAR</li><li>2 for FAR</li></ul></p></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [FocusResponse]<div style="color:#1E3E66;">Represents a response from the Focus action.</div></div></li><li class="operation"><h2><a name="op.GetMag">GetMag</a></h2><div class="value">
+</div><div class="value"><p>Gets the current magnification of the lens.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#GetMag</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMag]<div style="color:#1E3E66;">Represents a request to the GetMag action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMagResponse]<div style="color:#1E3E66;">Represents a response from the GetMag action.</div><ul type="square"><li><b>magnification</b> [unsignedInt]<div style="color:#1E3E66;">State of the focus setting of the lens. The higher the value, the higher the magnification.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMaxAOV">GetMaxAOV</a></h2><div class="value">
+</div><div class="value">Returns the maximum possible angle-of-view of the lens.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#GetMaxAOV</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMaxAOV]<div style="color:#1E3E66;">Represents a request to the GetMaxAOV action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMaxAOVResponse]<div style="color:#1E3E66;">Represents a response from the GetMaxAOV action.</div><ul type="square"><li><b>aovMax</b> [unsignedInt]<div style="color:#1E3E66;">Maximum possible angle-of-view of the lens. Determines the maximum possible area that the camera can capture. Units are in centidegrees, so an aov of 90 degrees would be 9000.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMaxDigitalMag">GetMaxDigitalMag</a></h2><div class="value">
+</div><div class="value"><p>Returns the maximum digital magnification of the lens.</p></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#GetMaxDigitalMag</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMaxDigitalMag]<div style="color:#1E3E66;">Represents a request to the GetMaxDigitalMag action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMaxDigitalMagResponse]<div style="color:#1E3E66;">Represents a response from the GetMaxDigitalMag action</div><ul type="square"><li><b>magnification</b> [unsignedInt]<div style="color:#1E3E66;">The maximum digital magnification of the lens. This determines the ability to see near and far.</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMaxOpticalMag">GetMaxOpticalMag</a></h2><div class="value">
+</div><div class="value">Returns the maximum optical magnification of the lens.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#GetMaxOpticalMag</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMaxOpticalMag]<div style="color:#1E3E66;">Represents a request to the GetMaxOpticalMag action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMaxOpticalMagResponse]<div style="color:#1E3E66;">Respresents a response from the GetMaxOpticalMag action.</div><ul type="square"><li><b>magnification</b> [unsignedInt]<div style="color:#1E3E66;">The maximum optical magnification of the lens. This determines the ability to see near and far.</div></li> </ul></div></li><li class="operation"><h2><a name="op.Iris">Iris</a></h2><div class="value">
+</div><div class="value">Opens/closes the lens iris, continuously until a limit is reached.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#Iris</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [Iris]<div style="color:#1E3E66;">Represents a request to the Iris action.</div><ul type="square"><li><b>openClose</b> [unsignedInt]<div style="color:#1E3E66;"><p>Sets the state of the iris of the lens, which starts moving the iris in a particular direction. Movement continues until a limit is reached or STOP is called. Must be one of:
+								<ul><li>0 for STOP</li><li>1 for CLOSE</li><li>2 for OPEN</li></ul></p></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [IrisResponse]<div style="color:#1E3E66;">Represents a response from the Iris action.</div></div></li><li class="operation"><h2><a name="op.SetMag">SetMag</a></h2><div class="value">
+</div><div class="value">Sets the current magnification of the lens. Magnification must be between 1 and MaxMag value.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#SetMag</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetMag]<div style="color:#1E3E66;">Represents a request to the SetMag action.</div><ul type="square"><li><b>magnification</b> [unsignedInt]<div style="color:#1E3E66;">The maximum optical magnification of the lens. This determines the ability to see near and far.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetMagResponse]<div style="color:#1E3E66;">Represents a response from the SetMag action.</div></div></li><li class="operation"><h2><a name="op.Stop">Stop</a></h2><div class="value">
+</div><div class="value"><p>Stops all currently executing lens operations.</p><div class="notice">Anytime you explicitly call the Iris, Focus, or Zoom actions; the camera will continue executing them (opening the iris, zooming in, ...) regardless of whether the camera has reached the maximum or minimum state (maximum zoom or focus value). At some point, this action must be called.</div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#Stop</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [Stop]<div style="color:#1E3E66;">Represents a request to the Stop action.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [StopResponse]<div style="color:#1E3E66;">Represents a response from the Stop action.</div></div></li><li><h2><a name="op.Zoom">Zoom</a></h2><div class="value">
+</div><div class="value">Changes the magnification of the lens, continuously zooming in or out until a limit is reached.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:LensControl:1#Zoom</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [Zoom]<div style="color:#1E3E66;">Represents a request to the Zoom action.</div><ul type="square"><li><b>inOut</b> [unsignedInt]<div style="color:#1E3E66;"><p>Controls the lens zoom in and out. Must be one of:
+								<ul><li>0 for STOP</li><li>1 for OUT</li><li>2 for IN</li></ul></p></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ZoomResponse]<div style="color:#1E3E66;">Represents a response from the Zoom action.</div></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

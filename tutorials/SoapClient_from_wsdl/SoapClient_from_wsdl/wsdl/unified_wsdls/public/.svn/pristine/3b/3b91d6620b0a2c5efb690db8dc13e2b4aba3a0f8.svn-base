@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	xmlns:tns="urn:schemas-pelco-com:service:MotionRegionConfiguration:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:schemas-pelco-com:service:MotionRegionConfiguration:1">
+	<wsdl:documentation>
+		$Id$
+	</wsdl:documentation>
+	
+	<wsdl:service name="MotionRegionConfiguration">
+		<wsdl:documentation>This service allows clients to configure Regions of Interest (ROI) for MotionDetection.			
+			<div class="warning">This API has been deprecated and is no longer supported!</div></wsdl:documentation>
+		<wsdl:port binding="tns:MotionRegionConfiguration" name="MotionRegionConfiguration">
+			<soap:address location="http://localhost:49152/control/MotionRegionConfiguration-1"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn:schemas-pelco-com:service:MotionRegionConfiguration:1">
+			<xsd:simpleType name="Sensitivity">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents the motion sensitivity setting of the ROI. This holds an integer value restricted from 0 to 100.</xsd:documentation></xsd:annotation>
+				<xsd:restriction base="xsd:int">
+					<xsd:minInclusive value="0"/>
+					<xsd:maxInclusive value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="NormalizedCoordinate">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents the value of a 2D point on a single axis. This holds an integer value restricted from 0 to 100.</xsd:documentation></xsd:annotation>
+				<xsd:restriction base="xsd:double">
+					<xsd:minInclusive value="0"/>
+					<xsd:maxInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="Point">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a point on a 2D plane.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="x" type="tns:NormalizedCoordinate"/>
+					<xsd:element name="y" type="tns:NormalizedCoordinate"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="PointEnumeration">
+				<xsd:annotation><xsd:documentation xml:lang="en">This is a set of Points.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="value" type="tns:Point" minOccurs="3" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Region">
+				<xsd:annotation><xsd:documentation xml:lang="en">This a named collection of points on the video frame along with motion sensitivity attributes.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="polygon" type="tns:PointEnumeration"/>
+					<xsd:element name="sensitivity" type="tns:Sensitivity"/>
+					<xsd:element name="threshold" type="tns:Sensitivity"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RegionElement">
+				<xsd:annotation><xsd:documentation xml:lang="en">This is simply a [Region] with a unique integer identifier.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="id" type="xsd:int"/>
+					<xsd:element name="region" type="tns:Region"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RegionList">
+				<xsd:annotation><xsd:documentation xml:lang="en">This is a set of RegionElement.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="regionElement" type="tns:RegionElement" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<!--GetRegionList-->
+			<xsd:element name="GetRegionList">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a request to the GetRegionList action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<xsd:element name="GetRegionListResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a response from the GetRegionList action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="regionList" type="tns:RegionList">
+							<xsd:annotation><xsd:documentation xml:lang="en">A RegionList data type.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--GetRegionConfiguration-->
+			<xsd:element name="GetRegionConfiguration">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a request to the GetRegionConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en">The unique identifier associated with a ROI.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GetRegionConfigurationResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a response from the GetRegionConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="result" type="tns:Region">
+							<xsd:annotation><xsd:documentation xml:lang="en">A Region data type.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--SetRegionConfiguration-->
+			<xsd:element name="SetRegionConfiguration">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a request to the SetRegionConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en">The unique identifier associated with a ROI.</xsd:documentation></xsd:annotation></xsd:element>
+						<xsd:element name="region" type="tns:Region">
+							<xsd:annotation><xsd:documentation xml:lang="en">A Region data type.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SetRegionConfigurationResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a response from the SetRegionConfiguration action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<!--ClearRegion-->
+			<xsd:element name="ClearRegion">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a request to the ClearRegion action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en">The unique identifier associated with a ROI.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ClearRegionResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">This represents a response from the ClearRegion action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<!--GetRegionList-->
+	<wsdl:message name="GetRegionList">
+		<wsdl:part name="parameters" element="tns:GetRegionList"/>
+	</wsdl:message>
+	<wsdl:message name="GetRegionListResponse">
+		<wsdl:part name="parameters" element="tns:GetRegionListResponse"/>
+	</wsdl:message>
+	<!--GetRegionConfiguration-->
+	<wsdl:message name="GetRegionConfiguration">
+		<wsdl:part name="parameters" element="tns:GetRegionConfiguration"/>
+	</wsdl:message>
+	<wsdl:message name="GetRegionConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetRegionConfigurationResponse"/>
+	</wsdl:message>
+	<!--SetRegionConfiguration-->
+	<wsdl:message name="SetRegionConfiguration">
+		<wsdl:part name="parameters" element="tns:SetRegionConfiguration"/>
+	</wsdl:message>
+	<wsdl:message name="SetRegionConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:SetRegionConfigurationResponse"/>
+	</wsdl:message>
+	<!--ClearRegion-->
+	<wsdl:message name="ClearRegion">
+		<wsdl:part name="parameters" element="tns:ClearRegion"/>
+	</wsdl:message>
+	<wsdl:message name="ClearRegionResponse">
+		<wsdl:part name="parameters" element="tns:ClearRegionResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="MotionRegionConfigurationPortType">
+		<wsdl:operation name="GetRegionList">
+			<wsdl:documentation>Returns a list of Regions.</wsdl:documentation>
+			<wsdl:input message="tns:GetRegionList"/>
+			<wsdl:output message="tns:GetRegionListResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetRegionConfiguration">
+			<wsdl:documentation>Returns a Region associated with the given unique identifier.</wsdl:documentation>
+			<wsdl:input message="tns:GetRegionConfiguration"/>
+			<wsdl:output message="tns:GetRegionConfigurationResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="SetRegionConfiguration">
+			<wsdl:documentation>Creates a Region, if it does not already exist and associates the Region with the given unique identifier.</wsdl:documentation>
+			<wsdl:input message="tns:SetRegionConfiguration"/>
+			<wsdl:output message="tns:SetRegionConfigurationResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ClearRegion">
+			<wsdl:documentation>Clears the association of a unique identifier with a Region.</wsdl:documentation>
+			<wsdl:input message="tns:ClearRegion"/>
+			<wsdl:output message="tns:ClearRegionResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MotionRegionConfiguration" type="tns:MotionRegionConfigurationPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetRegionList">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MotionRegionConfiguration:1#GetRegionList"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetRegionConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MotionRegionConfiguration:1#GetRegionConfiguration"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetRegionConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MotionRegionConfiguration:1#SetRegionConfiguration"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ClearRegion">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MotionRegionConfiguration:1#ClearRegion"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+</wsdl:definitions>

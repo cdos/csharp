@@ -1,0 +1,1739 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions xmlns:tns="urn:schemas-pelco-com:service:UserAndRole:1" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  name="UserAndRole" 
+                  targetNamespace="urn:schemas-pelco-com:service:UserAndRole:1" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    
+    <wsdl:documentation>
+	    The UserAndRole Service provides the following operations:
+        <ul>
+            <li>Login to the System Manager</li>
+            <li>Logout of the System Manager</li>
+            <li>Many other functions</li>
+		</ul>
+	</wsdl:documentation>
+    
+    <!-- Types -->    
+    <wsdl:types>
+        <xsd:schema targetNamespace="urn:schemas-pelco-com:service:UserAndRole:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="urn:schemas-pelco-com:service:UserAndRole:1">
+
+            <xsd:complexType name="User">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a user account
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string" minOccurs="0" nillable="true" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the user name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dbId" type="xsd:int" minOccurs="0" nillable="true" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the user's unique identifier in the database
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Role">
+                <xsd:sequence>
+                    <xsd:element name="dbId" type="xsd:int" minOccurs="0" nillable="true" maxOccurs="1" />
+                    <xsd:element name="name" type="xsd:string" />
+                    <xsd:element name="priority" type="xsd:string" minOccurs="0" nillable="true" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="UsrPage">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" nillable="true" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="dbId" type="xsd:int" minOccurs="0" nillable="true" maxOccurs="1" />
+                                <xsd:element name="name" type="xsd:string" />
+                                <xsd:element name="maxLogins" type="xsd:int" minOccurs="0" nillable="true" maxOccurs="1" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="PASSWORD-TYPES">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents the available types of passwords
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UNDEFINED
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                DMPT_PRIMARY
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="2">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                DMPT_PIN_NUM
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Pswd">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a password
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="type" type="tns:PASSWORD-TYPES">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a PASSWORD-TYPES data type
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="data" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the actual value of the password.  250 max character count
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Attrs">
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string" />
+                    <xsd:element name="value"  type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="AttrPage">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:Attrs" minOccurs="0" nillable="true" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="AttrContext">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:Attrs" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Perm">
+                <xsd:sequence>
+                    <xsd:element name="dbId"   type="xsd:int" />
+                    <xsd:element name="roleDbId" type="xsd:int" />
+                    <xsd:element name="tokenSetDbId" type="xsd:int" />
+                    <xsd:element name="attrExprDbId" type="xsd:int" />
+                    <xsd:element name="attrExpr" type="tns:Attrs" />
+                    <xsd:element name="priority" type="xsd:int" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="PermPage">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:Perm" minOccurs="0" nillable="true" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="PermToken">
+                <xsd:sequence>
+                    <xsd:element name="dbId" type="xsd:int" />
+                    <xsd:element name="name" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PermTokenName">
+                <xsd:sequence>
+                    <xsd:element name="dbId" type="xsd:int" />
+                    <xsd:element name="name" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="TokenPage">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:PermToken" minOccurs="0" nillable="true" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="RolePage">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" nillable="true" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="dbId" type="xsd:int" />
+                                <xsd:element name="name" type="xsd:string" />
+                                <xsd:element name="priority" type="xsd:string" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="RoleFullPage">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" nillable="true" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="dbId" type="xsd:int" />
+                                <xsd:element name="roleDbId" type="xsd:int" />
+                                <xsd:element name="tokenSetDbId" type="xsd:int" />
+                                <xsd:element name="attrExpr" type="tns:Attrs" />
+                                <xsd:element name="priority" type="xsd:string" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="PermTokenSet">
+                <xsd:sequence>
+                    <xsd:element name="dbId" type="xsd:int" />
+                    <xsd:element name="name" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="TokenSetPage">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:PermTokenSet" minOccurs="0" nillable="true" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="UserLogin">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pswd" type="tns:Pswd"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserLoginResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="loginId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserLoginByDbId">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="dbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserLoginByDbIdResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="loginId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserLogout">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="loginId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserLogoutResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:UsrPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserCreate">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pswd" type="tns:Pswd"/>
+                        <xsd:element name="roleDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserCreateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="userDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserModify">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="userNew" type="tns:User"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserModifyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPswdSet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pswd" type="tns:Pswd"/>
+                        <xsd:element name="pswdNew" type="tns:Pswd"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPswdSetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPswdDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pswd" type="tns:Pswd"/>
+                        <xsd:element name="pswdToDelete" type="tns:Pswd"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPswdDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserHasAccess">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="loginId" type="xsd:int"/>
+                        <xsd:element name="attrContext" type="tns:AttrContext"/>
+                        <xsd:element name="permToken" type="tns:PermToken"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserHasAccessResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="priority" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrGet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrGetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="attrValue" type="xsd:string"/>
+                        <xsd:element name="attrFound" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:AttrPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrSet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                        <xsd:element name="attrValue" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrSetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserAttrDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserGetRoles">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserGetRolesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:RolePage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleGetUsers">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleGetUsersResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:UsrPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleUserAdd">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="user" type="tns:User"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleUserAddResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleUserDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="user" type="tns:User"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleUserDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RolePermIsDefined">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="perm" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RolePermIsDefinedResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isDefined" type="xsd:boolean"/>
+                        <xsd:element name="permDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RolePermGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RolePermGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:PermPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:RolePage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleCreate">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleCreateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="roleDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleModify">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="roleNew" type="tns:Role"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleModifyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="flagsIn" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="wasDeleted" type="xsd:boolean"/>
+                        <xsd:element name="flagsOut" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:AttrPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrGet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrGetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="attrValue" type="xsd:string"/>
+                        <xsd:element name="attrFound" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrSet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                        <xsd:element name="attrValue" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrSetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="attrIsNew" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="role" type="tns:Role"/>
+                        <xsd:element name="attrName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="RoleAttrDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPermGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="user" type="tns:User"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UserPermGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="userNew" type="tns:User"/>
+                        <xsd:element name="page" type="tns:PermPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermCreate">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="perm" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermCreateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="permDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermSet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="perm" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermSetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="permDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermModify">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="perm" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermModifyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="permNew" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="perm" type="tns:Perm"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="return" type="tns:TokenPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenIsDefined">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="token" type="tns:PermToken"/>
+                        <!-- TODO: is this the right type? -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenIsDefinedResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenDefine">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="token" type="tns:PermToken"/>
+                        <!-- TODO: is this the right type? -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenDefineResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="token" type="tns:PermToken"/>
+                        <!-- TODO: is this the right type? -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetGetAll">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetGetAllResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:TokenSetPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetsByTokenFilter">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="expression" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetsByTokenFilterResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:TokenSetPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetDefine">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSet" type="tns:PermTokenSet"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetDefineResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSetDbId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetIsDefined">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSet" type="tns:PermTokenSet"/>
+                        <!-- TODO: is this the right type? -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetIsDefinedResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isDefined" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetModify">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSet" type="tns:PermTokenSet"/>
+                        <!-- TODO: is this the right type? -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetModifyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSetNew" type="tns:PermTokenSet"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetDelete">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="tokenSet" type="tns:PermTokenSet"/>
+                        <!-- TODO: is this the right type? -->
+                        <xsd:element name="flagsIn" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PermTokenSetDeleteResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="wasDeleted" type="xsd:boolean"/>
+                        <xsd:element name="flagsOut" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    
+    <!-- Messages -->
+    <wsdl:message name="UserLogin">
+        <wsdl:part name="parameters" element="tns:UserLogin"/>
+    </wsdl:message>
+    <wsdl:message name="UserLoginResponse">
+        <wsdl:part name="parameters" element="tns:UserLoginResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserLoginByDbId">
+        <wsdl:part name="parameters" element="tns:UserLoginByDbId"/>
+    </wsdl:message>
+    <wsdl:message name="UserLoginByDbIdResponse">
+        <wsdl:part name="parameters" element="tns:UserLoginByDbIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserLogout">
+        <wsdl:part name="parameters" element="tns:UserLogout"/>
+    </wsdl:message>
+    <wsdl:message name="UserLogoutResponse">
+        <wsdl:part name="parameters" element="tns:UserLogoutResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserGetAll">
+        <wsdl:part name="parameters" element="tns:UserGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="UserGetAllResponse">
+        <wsdl:part name="parameters" element="tns:UserGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserCreate">
+        <wsdl:part name="parameters" element="tns:UserCreate"/>
+    </wsdl:message>
+    <wsdl:message name="UserCreateResponse">
+        <wsdl:part name="parameters" element="tns:UserCreateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserModify">
+        <wsdl:part name="parameters" element="tns:UserModify"/>
+    </wsdl:message>
+    <wsdl:message name="UserModifyResponse">
+        <wsdl:part name="parameters" element="tns:UserModifyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserDelete">
+        <wsdl:part name="parameters" element="tns:UserDelete"/>
+    </wsdl:message>
+    <wsdl:message name="UserDeleteResponse">
+        <wsdl:part name="parameters" element="tns:UserDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserPswdSet">
+        <wsdl:part name="parameters" element="tns:UserPswdSet"/>
+    </wsdl:message>
+    <wsdl:message name="UserPswdSetResponse">
+        <wsdl:part name="parameters" element="tns:UserPswdSetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserPswdDelete">
+        <wsdl:part name="parameters" element="tns:UserPswdDelete"/>
+    </wsdl:message>
+    <wsdl:message name="UserPswdDeleteResponse">
+        <wsdl:part name="parameters" element="tns:UserPswdDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserHasAccess">
+        <wsdl:part name="parameters" element="tns:UserHasAccess"/>
+    </wsdl:message>
+    <wsdl:message name="UserHasAccessResponse">
+        <wsdl:part name="parameters" element="tns:UserHasAccessResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrGet">
+        <wsdl:part name="parameters" element="tns:UserAttrGet"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrGetResponse">
+        <wsdl:part name="parameters" element="tns:UserAttrGetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrGetAll">
+        <wsdl:part name="parameters" element="tns:UserAttrGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrGetAllResponse">
+        <wsdl:part name="parameters" element="tns:UserAttrGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrSet">
+        <wsdl:part name="parameters" element="tns:UserAttrSet"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrSetResponse">
+        <wsdl:part name="parameters" element="tns:UserAttrSetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrDelete">
+        <wsdl:part name="parameters" element="tns:UserAttrDelete"/>
+    </wsdl:message>
+    <wsdl:message name="UserAttrDeleteResponse">
+        <wsdl:part name="parameters" element="tns:UserAttrDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserGetRoles">
+        <wsdl:part name="parameters" element="tns:UserGetRoles"/>
+    </wsdl:message>
+    <wsdl:message name="UserGetRolesResponse">
+        <wsdl:part name="parameters" element="tns:UserGetRolesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleGetUsers">
+        <wsdl:part name="parameters" element="tns:RoleGetUsers"/>
+    </wsdl:message>
+    <wsdl:message name="RoleGetUsersResponse">
+        <wsdl:part name="parameters" element="tns:RoleGetUsersResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleUserAdd">
+        <wsdl:part name="parameters" element="tns:RoleUserAdd"/>
+    </wsdl:message>
+    <wsdl:message name="RoleUserAddResponse">
+        <wsdl:part name="parameters" element="tns:RoleUserAddResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleUserDelete">
+        <wsdl:part name="parameters" element="tns:RoleUserDelete"/>
+    </wsdl:message>
+    <wsdl:message name="RoleUserDeleteResponse">
+        <wsdl:part name="parameters" element="tns:RoleUserDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RolePermIsDefined">
+        <wsdl:part name="parameters" element="tns:RolePermIsDefined"/>
+    </wsdl:message>
+    <wsdl:message name="RolePermIsDefinedResponse">
+        <wsdl:part name="parameters" element="tns:RolePermIsDefinedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RolePermGetAll">
+        <wsdl:part name="parameters" element="tns:RolePermGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="RolePermGetAllResponse">
+        <wsdl:part name="parameters" element="tns:RolePermGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleGetAll">
+        <wsdl:part name="parameters" element="tns:RoleGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="RoleGetAllResponse">
+        <wsdl:part name="parameters" element="tns:RoleGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleCreate">
+        <wsdl:part name="parameters" element="tns:RoleCreate"/>
+    </wsdl:message>
+    <wsdl:message name="RoleCreateResponse">
+        <wsdl:part name="parameters" element="tns:RoleCreateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleModify">
+        <wsdl:part name="parameters" element="tns:RoleModify"/>
+    </wsdl:message>
+    <wsdl:message name="RoleModifyResponse">
+        <wsdl:part name="parameters" element="tns:RoleModifyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleDelete">
+        <wsdl:part name="parameters" element="tns:RoleDelete"/>
+    </wsdl:message>
+    <wsdl:message name="RoleDeleteResponse">
+        <wsdl:part name="parameters" element="tns:RoleDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrGetAll">
+        <wsdl:part name="parameters" element="tns:RoleAttrGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrGetAllResponse">
+        <wsdl:part name="parameters" element="tns:RoleAttrGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrGet">
+        <wsdl:part name="parameters" element="tns:RoleAttrGet"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrGetResponse">
+        <wsdl:part name="parameters" element="tns:RoleAttrGetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrSet">
+        <wsdl:part name="parameters" element="tns:RoleAttrSet"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrSetResponse">
+        <wsdl:part name="parameters" element="tns:RoleAttrSetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrDelete">
+        <wsdl:part name="parameters" element="tns:RoleAttrDelete"/>
+    </wsdl:message>
+    <wsdl:message name="RoleAttrDeleteResponse">
+        <wsdl:part name="parameters" element="tns:RoleAttrDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserPermGetAll">
+        <wsdl:part name="parameters" element="tns:UserPermGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="UserPermGetAllResponse">
+        <wsdl:part name="parameters" element="tns:UserPermGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermCreate">
+        <wsdl:part name="parameters" element="tns:PermCreate"/>
+    </wsdl:message>
+    <wsdl:message name="PermCreateResponse">
+        <wsdl:part name="parameters" element="tns:PermCreateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermSet">
+        <wsdl:part name="parameters" element="tns:PermSet"/>
+    </wsdl:message>
+    <wsdl:message name="PermSetResponse">
+        <wsdl:part name="parameters" element="tns:PermSetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermModify">
+        <wsdl:part name="parameters" element="tns:PermModify"/>
+    </wsdl:message>
+    <wsdl:message name="PermModifyResponse">
+        <wsdl:part name="parameters" element="tns:PermModifyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermDelete">
+        <wsdl:part name="parameters" element="tns:PermDelete"/>
+    </wsdl:message>
+    <wsdl:message name="PermDeleteResponse">
+        <wsdl:part name="parameters" element="tns:PermDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenGetAll">
+        <wsdl:part name="parameters" element="tns:PermTokenGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenGetAllResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenIsDefined">
+        <wsdl:part name="parameters" element="tns:PermTokenIsDefined"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenIsDefinedResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenIsDefinedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenDefine">
+        <wsdl:part name="parameters" element="tns:PermTokenDefine"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenDefineResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenDefineResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenDelete">
+        <wsdl:part name="parameters" element="tns:PermTokenDelete"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenDeleteResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenDeleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetGetAll">
+        <wsdl:part name="parameters" element="tns:PermTokenSetGetAll"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetGetAllResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetGetAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetsByTokenFilter">
+        <wsdl:part name="parameters" element="tns:PermTokenSetsByTokenFilter"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetsByTokenFilterResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetsByTokenFilterResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetDefine">
+        <wsdl:part name="parameters" element="tns:PermTokenSetDefine"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetDefineResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetDefineResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetIsDefined">
+        <wsdl:part name="parameters" element="tns:PermTokenSetIsDefined"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetIsDefinedResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetIsDefinedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetModify">
+        <wsdl:part name="parameters" element="tns:PermTokenSetModify"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetModifyResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetModifyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetDelete">
+        <wsdl:part name="parameters" element="tns:PermTokenSetDelete"/>
+    </wsdl:message>
+    <wsdl:message name="PermTokenSetDeleteResponse">
+        <wsdl:part name="parameters" element="tns:PermTokenSetDeleteResponse"/>
+    </wsdl:message>
+    
+    <!-- Ports -->
+    
+    <!-- Port for User and Role Web APIs -->
+    <wsdl:portType  name="UserAndRolePortType">
+        <!-- Authentication  -->
+        <wsdl:operation  name="UserLogin">
+            <wsdl:documentation>
+                Logs into the System Manager
+            </wsdl:documentation>
+            <wsdl:input  message="tns:UserLogin" />
+            <wsdl:output  message="tns:UserLoginResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserLoginByDbId">
+            <wsdl:input  message="tns:UserLoginByDbId" />
+            <wsdl:output  message="tns:UserLoginByDbIdResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserLogout">
+            <wsdl:documentation>
+                Logs out of the System Manager
+            </wsdl:documentation>
+            <wsdl:input  message="tns:UserLogout" />
+            <wsdl:output  message="tns:UserLogoutResponse" />
+        </wsdl:operation>
+        <!-- User API  -->
+        <wsdl:operation  name="UserGetAll">
+            <wsdl:input  message="tns:UserGetAll" />
+            <wsdl:output  message="tns:UserGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserCreate">
+            <wsdl:input  message="tns:UserCreate" />
+            <wsdl:output  message="tns:UserCreateResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserModify">
+            <wsdl:input  message="tns:UserModify" />
+            <wsdl:output  message="tns:UserModifyResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserDelete">
+            <wsdl:input  message="tns:UserDelete" />
+            <wsdl:output  message="tns:UserDeleteResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserPswdSet">
+            <wsdl:input  message="tns:UserPswdSet" />
+            <wsdl:output  message="tns:UserPswdSetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserPswdDelete">
+            <wsdl:input  message="tns:UserPswdDelete" />
+            <wsdl:output  message="tns:UserPswdDeleteResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserHasAccess">
+            <wsdl:input  message="tns:UserHasAccess" />
+            <wsdl:output  message="tns:UserHasAccessResponse" />
+        </wsdl:operation>
+
+        <!-- User Attribute API  -->
+        <wsdl:operation  name="UserAttrGet">
+            <wsdl:input  message="tns:UserAttrGet" />
+            <wsdl:output  message="tns:UserAttrGetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrGetAll">
+            <wsdl:input  message="tns:UserAttrGetAll" />
+            <wsdl:output  message="tns:UserAttrGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrSet">
+            <wsdl:input  message="tns:UserAttrSet" />
+            <wsdl:output  message="tns:UserAttrSetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrDelete">
+            <wsdl:input  message="tns:UserAttrDelete" />
+            <wsdl:output  message="tns:UserAttrDeleteResponse" />
+        </wsdl:operation>
+
+        <!-- User Role API  -->
+        <wsdl:operation  name="UserGetRoles">
+            <wsdl:input  message="tns:UserGetRoles" />
+            <wsdl:output  message="tns:UserGetRolesResponse" />
+        </wsdl:operation>
+
+        <!-- Role User API  -->
+        <wsdl:operation  name="GetAllUserInARole">
+            <wsdl:input  message="tns:RoleGetUsers" />
+            <wsdl:output  message="tns:RoleGetUsersResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleUserAdd">
+            <wsdl:input  message="tns:RoleUserAdd" />
+            <wsdl:output  message="tns:RoleUserAddResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleUserDelete">
+            <wsdl:input  message="tns:RoleUserDelete" />
+            <wsdl:output  message="tns:RoleUserDeleteResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RolePermIsDefined">
+            <wsdl:input  message="tns:RolePermIsDefined" />
+            <wsdl:output  message="tns:RolePermIsDefinedResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RolePermGetAll">
+            <wsdl:input  message="tns:RolePermGetAll" />
+            <wsdl:output  message="tns:RolePermGetAllResponse" />
+        </wsdl:operation>
+
+        <!-- Role API  -->
+        <wsdl:operation  name="RoleGetAll">
+            <wsdl:input  message="tns:RoleGetAll" />
+            <wsdl:output  message="tns:RoleGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleCreate">
+            <wsdl:input  message="tns:RoleCreate" />
+            <wsdl:output  message="tns:RoleCreateResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleModify">
+            <wsdl:input  message="tns:RoleModify" />
+            <wsdl:output  message="tns:RoleModifyResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleDelete">
+            <wsdl:input  message="tns:RoleDelete" />
+            <wsdl:output  message="tns:RoleDeleteResponse" />
+        </wsdl:operation>
+
+        <!-- Role Attribute API  -->
+        <wsdl:operation  name="RoleAttrGetAll">
+            <wsdl:input  message="tns:RoleAttrGetAll" />
+            <wsdl:output  message="tns:RoleAttrGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrGet">
+            <wsdl:input  message="tns:RoleAttrGet" />
+            <wsdl:output  message="tns:RoleAttrGetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrSet">
+            <wsdl:input  message="tns:RoleAttrSet" />
+            <wsdl:output  message="tns:RoleAttrSetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrDelete">
+            <wsdl:input  message="tns:RoleAttrDelete" />
+            <wsdl:output  message="tns:RoleAttrDeleteResponse" />
+        </wsdl:operation>
+
+        <!-- Perm API  -->
+        <wsdl:operation  name="UserPermGetAll">
+            <wsdl:input  message="tns:UserPermGetAll" />
+            <wsdl:output  message="tns:UserPermGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermCreate">
+            <wsdl:input  message="tns:PermCreate" />
+            <wsdl:output  message="tns:PermCreateResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermSet">
+            <wsdl:input  message="tns:PermSet" />
+            <wsdl:output  message="tns:PermSetResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermModify">
+            <wsdl:input  message="tns:PermModify" />
+            <wsdl:output  message="tns:PermModifyResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermDelete">
+            <wsdl:input  message="tns:PermDelete" />
+            <wsdl:output  message="tns:PermDeleteResponse" />
+        </wsdl:operation>
+
+        <!-- Permanent Token API  -->
+        <wsdl:operation  name="PermTokenGetAll">
+            <wsdl:input  message="tns:PermTokenGetAll" />
+            <wsdl:output  message="tns:PermTokenGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenIsDefined">
+            <wsdl:input  message="tns:PermTokenIsDefined" />
+            <wsdl:output  message="tns:PermTokenIsDefinedResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenDefine">
+            <wsdl:input  message="tns:PermTokenDefine" />
+            <wsdl:output  message="tns:PermTokenDefineResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenDelete">
+            <wsdl:input  message="tns:PermTokenDelete" />
+            <wsdl:output  message="tns:PermTokenDeleteResponse" />
+        </wsdl:operation>
+
+        <!-- Permanent Token Set API  -->
+        <wsdl:operation  name="PermTokenSetGetAll">
+            <wsdl:input  message="tns:PermTokenSetGetAll" />
+            <wsdl:output  message="tns:PermTokenSetGetAllResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetsByTokenFilter">
+            <wsdl:input  message="tns:PermTokenSetsByTokenFilter" />
+            <wsdl:output  message="tns:PermTokenSetsByTokenFilterResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetDefine">
+            <wsdl:input  message="tns:PermTokenSetDefine" />
+            <wsdl:output  message="tns:PermTokenSetDefineResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetIsDefined">
+            <wsdl:input  message="tns:PermTokenSetIsDefined" />
+            <wsdl:output  message="tns:PermTokenSetIsDefinedResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetModify">
+            <wsdl:input  message="tns:PermTokenSetModify" />
+            <wsdl:output  message="tns:PermTokenSetModifyResponse" />
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetDelete">
+            <wsdl:input  message="tns:PermTokenSetDelete" />
+            <wsdl:output  message="tns:PermTokenSetDeleteResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    <!-- Bindings -->
+    
+    <wsdl:binding name="UserAndRole" type="tns:UserAndRolePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="UserLogin">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserLogin" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UserLogout">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserLogout" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserLoginByDbId">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserLoginByDbId" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- User API  -->
+        <wsdl:operation  name="UserGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserCreate">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserCreate" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserModify">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserModify" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserPswdSet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserPswdSet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserPswdDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserPswdDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserHasAccess">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserHasAccess" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- User Attribute API  -->
+        <wsdl:operation  name="UserAttrGet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserAttrGet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserAttrGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrSet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserAttrSet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="UserAttrDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserAttrDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- User Role API  -->
+        <wsdl:operation  name="UserGetRoles">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserGetRoles" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- Role User API  -->
+        <wsdl:operation  name="GetAllUserInARole">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#GetAllUserInARole" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleUserAdd">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleUserAdd" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleUserDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleUserDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RolePermIsDefined">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RolePermIsDefined" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RolePermGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RolePermGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- Role API  -->
+        <wsdl:operation  name="RoleGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleCreate">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleCreate" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleModify">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleModify" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- Role Attribute API  -->
+        <wsdl:operation  name="RoleAttrGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleAttrGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrGet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleAttrGet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrSet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleAttrSet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="RoleAttrDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#RoleAttrDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- Perm API  -->
+        <wsdl:operation  name="UserPermGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#UserPermGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermCreate">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermCreate" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermSet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermSet" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermModify">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermModify" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- Permanent Token API  -->
+        <wsdl:operation  name="PermTokenGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenIsDefined">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenIsDefined" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenDefine">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenDefine" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <!-- Permanent Token Set API  -->
+        <wsdl:operation  name="PermTokenSetGetAll">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetGetAll" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetsByTokenFilter">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetsByTokenFilter" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetDefine">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetDefine" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetIsDefined">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetIsDefined" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetModify">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetModify" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation  name="PermTokenSetDelete">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:UserAndRole:1#PermTokenSetDelete" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UserAndRole">
+        <wsdl:port name="UserAndRole" binding="tns:UserAndRole">
+            <soap:address location="http://localhost:60001/control/UserAndRole-1" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

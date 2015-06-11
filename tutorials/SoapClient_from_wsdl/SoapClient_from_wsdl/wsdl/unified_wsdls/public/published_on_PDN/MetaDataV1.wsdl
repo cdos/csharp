@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="MetaData"
+	targetNamespace="urn:schemas-pelco-com:service:MetaData:1"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:schemas-pelco-com:service:MetaData:1">
+
+	<wsdl:documentation>
+		$Id: MetaDataV1.wsdl 496 2011-01-17 22:46:22Z  $
+	</wsdl:documentation>
+
+	<!-- Types -->
+	<wsdl:types>
+		<xsd:schema attributeFormDefault="unqualified"
+			elementFormDefault="unqualified"
+			targetNamespace="urn:schemas-pelco-com:service:MetaData:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<!-- SetText -->
+			<xsd:element name="SetText">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the SetText action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="X" type="xsd:unsignedByte">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The position on the x-axis to place text to
+									display.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Y" type="xsd:unsignedByte">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The position on the y-axis to place text to
+									display.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="TIME" type="xsd:unsignedInt">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The amount of time in seconds to display the
+									text.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="TEXT" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									The text value to display.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetTextResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a SetText request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="ClearText">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A request to the ClearText action.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="ClearTextResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A response to a ClearText request.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- SetText -->
+	<wsdl:message name="SetText">
+		<wsdl:part name="parameters" element="tns:SetText" />
+	</wsdl:message>
+
+	<wsdl:message name="SetTextResponse">
+		<wsdl:part name="parameters" element="tns:SetTextResponse"/>
+	</wsdl:message>
+
+	<!-- ClearText -->
+	<wsdl:message name="ClearText">
+		<wsdl:part name="parameters" element="tns:ClearText" />
+	</wsdl:message>
+
+	<wsdl:message name="ClearTextResponse">
+		<wsdl:part name="parameters" element="tns:ClearTextResponse"/>
+	</wsdl:message>
+
+
+	<!-- Ports -->
+	<wsdl:portType name="MetaDataPortType">
+		<wsdl:operation name="SetText">
+			<wsdl:documentation>
+				Sets the text to be overlayed on a video frame.
+			</wsdl:documentation>
+			<wsdl:input message="tns:SetText" />
+			<wsdl:output message="tns:SetTextResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="ClearText">
+			<wsdl:documentation>
+				Clears the text to be overlayed on a video frame.
+			</wsdl:documentation>
+			<wsdl:input message="tns:ClearText" />
+			<wsdl:output message="tns:ClearTextResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="MetaData" type="tns:MetaDataPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="SetText">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MetaData:1#SetText" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ClearText">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:MetaData:1#ClearText" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Services -->
+
+	<wsdl:service name="MetaData">
+		<wsdl:documentation>
+			This service allows clients to insert text into the video stream.
+		</wsdl:documentation>
+		<wsdl:port binding="tns:MetaData" name="MetaData">
+			<soap:address
+				location="http://localhost:49152/control/MetaData-1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

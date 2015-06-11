@@ -1,0 +1,163 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>RelayArrayConfiguration - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		$Id: RelayArrayConfigurationV1.wsdl 433 2010-11-23 01:18:25Z  $
+	</div><div class="page"><div>The RelayArrayConfiguration service allows multiple relays to be controlled from a single service. Each relay in the service is individually identified by an relayId, which is an index into the relay array. Each RelayArrayConfiguration service should be contained within a RelayArray device.</div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.GetArraySize">GetArraySize</a></h2><div class="value">
+</div><div class="value">Returns the number of relays contained in the relay array.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetArraySize</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetArraySize]<div style="color:#1E3E66;">Represents a request to the GetArraySize action</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetArraySizeResponse]<div style="color:#1E3E66;">Represents a response from the GetArraySize action</div><ul type="square"><li><b>size</b> [int]<div style="color:#1E3E66;">The number of elements the array contains</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetConfiguration">GetConfiguration</a></h2><div class="value">
+</div><div class="value">Returns the configuration of the relay.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetConfiguration]<div style="color:#1E3E66;">Represents a request to the GetConfiguration action</div><ul type="square"><li><b>relayID</b> [int]<div style="color:#1E3E66;">The identifier of the relay to perform an operation upon. The index into the array.</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the GetConfiguration action</div><ul type="square"><li><b>relayConfig</b> [RelayConfig]<div style="color:#1E3E66;">A RelayConfig data element</div><ul type="square"><li><b>polarity</b> - optional;  [int]<div style="color:#1E3E66;"><p>The polarity of the relay. Valid values:
+                        		<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></p></div></li><li><b>enabled</b> [int]<div style="color:#1E3E66;">Set to 1 (True) for an active state, 0 (false) otherwise.</div></li><li><b>mode</b> [int]<div style="color:#1E3E66;"><p>The mode to be used if the the relay is AUTO triggered. The value may be one of the following:<ul><li>0 for OFF</li><li>1 for ON</li><li>2 for TOGGLE</li><li>3 for PULSE</li><li>4 for AUTO</li></ul></p></div></li><li><b>period</b> [int]<div style="color:#1E3E66;">Defines the total time for the relay control pulse. Units are in 100s of milliseconds. Value must be 5 (i.e. 1/2 second) or greater.</div></li><li><b>dutyCycle</b> [int]<div style="color:#1E3E66;">The percentage of time during the defined period that the relay will be in the ON state. Valid values ranges from 1 - 100.</div></li><li><b>pulses</b> [int]<div style="color:#1E3E66;">The number of times the relay will be pulsed when its mode setting is selected as pulse. Value must be 1 or greater.</div></li><li><b>physicalOutput</b> [int]<div style="color:#1E3E66;">This represents the number of physical relays with which this service is associated. Value must be 1 or greater.</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetRelayStates">GetRelayStates</a></h2><div class="value">
+</div><div class="value">Returns the current state and enabled state of the relays contained within the range indicated by relayStates.offset and relayStates.length.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#GetRelayStates</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetRelayStates]<div style="color:#1E3E66;">Represents a request to the GetRelayStates action</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetRelayStatesResponse]<div style="color:#1E3E66;">Represents a response from the GetRelayStatesResponse action</div><ul type="square"><li><b>relayStates</b> [RelayStates]<div style="color:#1E3E66;">A RelayStates data element</div><ul type="square"><li><b>offset</b> [string]<div style="color:#1E3E66;"><p>Zero based offset of the first relay contained in the contained bitmasks. The value must be 0 or greater (it represents the number of alarms - 1).</p><div class="notice">For Atlas IP Cameras, the value will always be 1 since it has only 1 alarm.</div></div></li><li><b>length</b> [int]<div style="color:#1E3E66;"><p>Number of relays states contained by the contained bitmasks. Value must be 1 or greater (this represents the number of alarms).</p><div class="notice">For Atlas IP Cameras, the value will always be 1 since it has only 1 alarm.</div></div></li><li><b>changed</b> [string]<div style="color:#1E3E66;">Bitmask of the change-of-state status of relays contained within the array range defined by offset and length. The bitmask is in base64 format, stored in little-endian, i.e. the bit array "1" is encoded as "AQA=" and not "gAA=".</div></li><li><b>state1</b> [string]<div style="color:#1E3E66;"><p>The state of each alarm is determined by 2 bits. Each bit of the state is stored in a different bit array. state1 contains the LSB and state2 contains the MSB. state1 contains a 1 if there is an error state on the alarm. The bitmask is in base64 format (little endian). Currently defined values are:
+								<ul><li>0 for OPEN</li><li>1 for CLOSED</li></ul></p></div></li><li><b>state2</b> [string]<div style="color:#1E3E66;"><p>The state of each alarm is determined by 2 bits. Each bit of the state is stored in a different bit array. state1 contains the LSB and state2 contains the MSB. The meaning of a bit in state2 is determined by the value of the corresponding bit in state1. If there is no error then state2 is:
+								<ul><li>0 for OPEN</li><li>1 for CLOSED</li></ul>
+								if there is an error then the meaning is:
+								<ul><li>0 for FAULT</li><li>1 for SHORT</li></ul> The bitmask is in base64 format (little endian).</p></div></li><li><b>enabled</b> [string]<div style="color:#1E3E66;">Bitmask of enabled states of relays contained within the range of the bitmask. The bitmask is in base64 format.</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.ResetConfiguration">ResetConfiguration</a></h2><div class="value">
+</div><div class="value">Resets the relay to its factory default settings.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#ResetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ResetConfiguration]<div style="color:#1E3E66;">Represents a request to the ResetConfiguration action</div><ul type="square"><li><b>relayID</b> [int]<div style="color:#1E3E66;"><p>The identifier of the relay to perform an operation upon. The index into the array.</p><div class="notice">A relayId of -1 resets the configuration of all relays in the array.</div></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ResetConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the ResetConfiguration action.</div></div></li><li class="operation"><h2><a name="op.SetConfiguration">SetConfiguration</a></h2><div class="value">
+</div><div class="value">Sets the configuration of the relay indicated by relayId.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#SetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetConfiguration]<div style="color:#1E3E66;">Represents a request to the SetConfiguration action.</div><ul type="square"><li><b>relayID</b> [int]<div style="color:#1E3E66;">The identifier of the relay to perform an operation upon. The index into the array.</div></li><li><b>relayConfig</b> [RelayConfig]<div style="color:#1E3E66;">A RelayConfig data element</div><ul type="square"><li><b>polarity</b> - optional;  [int]<div style="color:#1E3E66;"><p>The polarity of the relay. Valid values:
+                        		<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></p></div></li><li><b>enabled</b> [int]<div style="color:#1E3E66;">Set to 1 (True) for an active state, 0 (false) otherwise.</div></li><li><b>mode</b> [int]<div style="color:#1E3E66;"><p>The mode to be used if the the relay is AUTO triggered. The value may be one of the following:<ul><li>0 for OFF</li><li>1 for ON</li><li>2 for TOGGLE</li><li>3 for PULSE</li><li>4 for AUTO</li></ul></p></div></li><li><b>period</b> [int]<div style="color:#1E3E66;">Defines the total time for the relay control pulse. Units are in 100s of milliseconds. Value must be 5 (i.e. 1/2 second) or greater.</div></li><li><b>dutyCycle</b> [int]<div style="color:#1E3E66;">The percentage of time during the defined period that the relay will be in the ON state. Valid values ranges from 1 - 100.</div></li><li><b>pulses</b> [int]<div style="color:#1E3E66;">The number of times the relay will be pulsed when its mode setting is selected as pulse. Value must be 1 or greater.</div></li><li><b>physicalOutput</b> [int]<div style="color:#1E3E66;">This represents the number of physical relays with which this service is associated. Value must be 1 or greater.</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetConfigurationResponse]<div style="color:#1E3E66;">Represents a response from the SetConfiguration action.</div></div></li><li><h2><a name="op.TriggerRelay">TriggerRelay</a></h2><div class="value">
+</div><div class="value">Triggers the relay in the indicated mode.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:RelayArrayConfiguration:1#TriggerRelay</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [TriggerRelay]<div style="color:#1E3E66;">Represents a request to the TriggerRelay action.</div><ul type="square"><li><b>relayID</b> [int]<div style="color:#1E3E66;">The identifier of the relay to perform an operation upon. The index into the array.</div></li><li><b>mode</b> [int]<div style="color:#1E3E66;"><p>The operating mode of relay when triggered. The mode may be one of:<ul><li>0 for OFF</li><li>1 for ON</li><li>2 for TOGGLE</li><li>3 for PULSE</li><li>4 for AUTO</li></ul></p></div></li><li><b>relayConfig</b> - optional;  [RelayConfig]<div style="color:#1E3E66;">A RelayConfig data element. If relayConfig is supplied, it is applied as the current configuration of the output before the relay is triggered.</div><ul type="square"><li><b>polarity</b> - optional;  [int]<div style="color:#1E3E66;"><p>The polarity of the relay. Valid values:
+                        		<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></p></div></li><li><b>enabled</b> [int]<div style="color:#1E3E66;">Set to 1 (True) for an active state, 0 (false) otherwise.</div></li><li><b>mode</b> [int]<div style="color:#1E3E66;"><p>The mode to be used if the the relay is AUTO triggered. The value may be one of the following:<ul><li>0 for OFF</li><li>1 for ON</li><li>2 for TOGGLE</li><li>3 for PULSE</li><li>4 for AUTO</li></ul></p></div></li><li><b>period</b> [int]<div style="color:#1E3E66;">Defines the total time for the relay control pulse. Units are in 100s of milliseconds. Value must be 5 (i.e. 1/2 second) or greater.</div></li><li><b>dutyCycle</b> [int]<div style="color:#1E3E66;">The percentage of time during the defined period that the relay will be in the ON state. Valid values ranges from 1 - 100.</div></li><li><b>pulses</b> [int]<div style="color:#1E3E66;">The number of times the relay will be pulsed when its mode setting is selected as pulse. Value must be 1 or greater.</div></li><li><b>physicalOutput</b> [int]<div style="color:#1E3E66;">This represents the number of physical relays with which this service is associated. Value must be 1 or greater.</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [TriggerRelayResponse]<div style="color:#1E3E66;">Represents a response from the TriggerRelay action/</div></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

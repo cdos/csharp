@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:schemas-pelco-com:service:SoftwareUpdate:1"
+	targetNamespace="urn:schemas-pelco-com:service:SoftwareUpdate:1">
+
+    <wsdl:documentation>
+        $Id: SoftwareUpdateV1.wsdl 849 2013-04-30 23:56:42Z $
+        This service allows clients to query a device's current firmware, and to update a device's firmware.
+    </wsdl:documentation>
+    
+    <!-- Types -->
+    <wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:SoftwareUpdate:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<xsd:complexType name="ModuleCatalog">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represent catalog of a module. The catalog contains properties such as platform, os, etc. 
+            The catalog basically represent what is in a manifest file for a given module.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:sequence>
+          <xsd:element name="modules">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents child modules for the given catalog
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="modelName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Name of the model for the device
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="failInterval" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                The interval, in seconds, after which an update operation should be reported as failed if the device does not respond.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="forceUpdate" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                Forces the update for the whole manifest without any version checking.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="platform" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Platform for which the package is valid. May be one of the following:
+                <ul>
+                  <li>X86</li>
+                  <li>POWERPC</li>
+                </ul>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="os" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                OS Version for which the package is valid <!-- Need more information-->
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="packageVersion" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Version of the Software
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="resultURL" type="xsd:anyURI">
+            <xsd:annotation>
+              <xsd:documentation>
+                The URL to the manifest file
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+            <xsd:element name="Update">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a request to the update action
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="modelName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    The model name of the desired device to update
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="manifestURL" type="xsd:anyURI">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    The URL for the manifest
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="updateURL" type="xsd:anyURI">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    The URL for the path containing the firmware, used to update the device
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="backoffInterval" type="xsd:int">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    The back off interval, after which the update should be cancelled
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="UpdateResponse">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a response from the update action
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="updating" type="xsd:int">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    1 for successful update request, otherwise 0 for a failed request
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+
+			<xsd:element name="GetModules">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a request to the GetModules action
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetModulesResponse">
+        <xsd:annotation>
+          <xsd:documentation>
+            Represents a response from the GetModules action.
+          </xsd:documentation>
+        </xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+            <xsd:element name="moduleCatalog" type="tns:ModuleCatalog">
+              <xsd:annotation>
+                <xsd:documentation>
+                  The returned module catalog
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+    <!-- Update -->
+    <wsdl:message name="UpdateRequest">
+        <wsdl:part name="parameters" element="tns:Update"/>
+    </wsdl:message>
+
+    <wsdl:message name="UpdateResponse">
+        <wsdl:part name="parameters" element="tns:UpdateResponse"/>
+    </wsdl:message>
+
+	<!-- GetModules -->
+	<wsdl:message name="GetModulesRequest">
+		<wsdl:part name="parameters" element="tns:GetModules"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetModulesResponse">
+		<wsdl:part name="parameters" element="tns:GetModulesResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="SoftwareUpdatePortType">
+        <wsdl:operation name="Update">
+            <wsdl:documentation>
+                Informs the device that a software update is available for the given product at the given updateURL, resulting in:
+                <ul>
+                    <li>The package at updateURL should be retrieved and the necessary components installed</li>
+                    <li>This action returning a boolean 'updating' as either 1 (true) if the device is performing the update, or 0 (false)</li>
+                </ul>
+            </wsdl:documentation>
+            <wsdl:input message="tns:UpdateRequest"/>
+            <wsdl:output message="tns:UpdateResponse"/>
+        </wsdl:operation>
+        
+		<wsdl:operation name="GetModules">
+      <wsdl:documentation>
+        Returns the model name, version, and so forth, of the device.
+      </wsdl:documentation>
+			<wsdl:input message="tns:GetModulesRequest"/>
+			<wsdl:output message="tns:GetModulesResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="SoftwareUpdate" type="tns:SoftwareUpdatePortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="GetModules">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:SoftwareUpdate:1#GetModules" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+        <wsdl:operation name="Update">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:SoftwareUpdate:1#Update" />
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+	</wsdl:binding>
+
+    <!-- Services -->
+    <wsdl:service name="SoftwareUpdate">
+        <wsdl:documentation>
+            This service allows clients to query a device's current firmware, and to update a device's firmware.
+        </wsdl:documentation>
+        <wsdl:port binding="tns:SoftwareUpdate" name="SoftwareUpdate">
+            <soap:address location="http://localhost:49152/control/SoftwareUpdate-1"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
+

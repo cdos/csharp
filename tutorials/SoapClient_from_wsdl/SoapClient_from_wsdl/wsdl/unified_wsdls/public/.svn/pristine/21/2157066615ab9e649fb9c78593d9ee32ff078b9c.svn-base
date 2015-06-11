@@ -1,0 +1,2025 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="DeviceRegistry"
+    targetNamespace="urn:schemas-pelco-com:service:DeviceRegistry:1"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="urn:schemas-pelco-com:service:DeviceRegistry:1">
+    
+    <wsdl:documentation>
+        The DeviceRegistry Service provides the following operations:
+        <ul>
+            <li>Get Devices from the System Manager</li>
+            <li>Get Device Attributes from the System Manager</li>
+            <li>Get Device Service Information from the System Manager</li>
+            <li>Get Device Service Attributes from the System Manager</li>
+            <li>Get System Configuration Information from the System Manager</li>
+            <li>Get Devices that have a specified attribute value</li>
+            <li> Some other functions</li>
+        </ul>
+    </wsdl:documentation>
+    
+    <!-- Types -->
+    <wsdl:types>
+        <xsd:schema
+            targetNamespace="urn:schemas-pelco-com:service:DeviceRegistry:1"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+            <xsd:complexType name="ServiceInfoPage">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a page of results filled with service data
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="pageResp" nillable="true" type="tns:PageResp">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a response for the next page of results
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:ServiceInfoItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an item containing information about a Service
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ServiceInfoItem">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents information about a Service
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="id" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a Service's unique identification
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="type" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the type of the Service
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="state" nillable="true" type="tns:State">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the state of the Service
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="SvcInfo">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents information about a Service
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:ServiceInfoItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an item containing information about a Service
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Page">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a page of results filled with device data
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="pageResp" nillable="true" type="tns:PageResp">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a response for the next page of results
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an item containing device data
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:complexContent mixed="false">
+                                <xsd:extension base="tns:Item">
+                                    <xsd:all />
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Item">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents device data
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="dbId" nillable="true" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the item's unique database identification
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="udn" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the item's unique device name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="type" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the type of the item
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="state" nillable="true" type="tns:State">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the item's state
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="attrs" nillable="true" type="tns:Attrs">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the item's attributes
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="svcInfo" nillable="true" type="tns:SvcInfo">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Service Information relative to the item
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="PageReq">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a request for the next page of results
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="queryId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the query session's unique identification
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="next" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the next page number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="PageResp">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a response for the next page of results
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="queryId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the query session's unique identification
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="next" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the next page number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="total" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the total number of results
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="url" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the location of the actual query results
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Attrs">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a list of AttrItems
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:AttrItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an AttrItem data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="AttrItem">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a name value pair
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" name="name" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the name of the attribute.  Restricted to the following values:
+                                <ul>
+                                    <li>SYS_UpnpDevDescUrl - the url to a device's manifest description file</li>
+                                    <li>SYS_UpnpFriendlyName - friendly name ex. "Jim's Camera"</li>
+                                    <li>SYS_UpnpDeviceType - device type ex. camera</li>
+                                    <li>SYS_UpnpSerialNumber - device's serial number</li>
+                                    <li>SYS_UpnpModelNumber - device's model number ex. PT1260EX</li>
+                                    <li>SYS_UpnpModelDesc - description</li>
+                                    <li>SYS_UpnpManufacturerUrl - manufacturer's website</li>
+                                    <li>SYS_UpnpManufacturer - manufacturer name</li>
+                                    <li>SYS_UpnpModelName - model name ex. Espirit</li>
+                                    <li>SYS_UpnpParentDeviceUdn - parent device's unique device name</li>
+                                    <li>SYS_UpnpPelcoDeviceUdn - pelco device's unique device name</li>
+                                    <li>SYS_NvrAssoc - the url to the NVR that is associated with the device</li>
+                                    <li>SYS_UpnpScpdUrl - the url to a device's UPnP description file</li>
+                                    <li>SYS_UpnpControlUrl - not used</li>
+                                    <li>SYS_UpnpEventSubUrl - the url to a device's event service</li>
+                                </ul>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an attribute's value.  250 characters max
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Renewal">
+                <xsd:sequence>
+                    <xsd:element name="flags" type="xsd:int"/>
+                    <xsd:element name="udn" type="xsd:string"/>
+                    <xsd:element name="devDescUrl" type="xsd:string"/>
+                    <xsd:element name="timeout" type="xsd:string"/>
+                    <xsd:element name="sysCfgQuery" type="tns:SysCfgQuery"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="AttrQueryItem">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="str" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an attribute item
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="AttrQueryStrs" block="">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:AttrQueryItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an AttrQueryItem data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SysCfgQuery">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a system attribute query item
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:SysCfgItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a SysCfgItem data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SysCfgItem">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" name="str" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a system attribute
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PageResponse">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a response for the next page of results
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:AttrItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an AttrItem data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="State">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents the device's current state
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:int">
+                    <xsd:enumeration value="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: None
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: In Sync
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="2">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Online
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="3">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Offline
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="4">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Out Of Sync
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="5">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Invalid
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="UpnpDvcQuery">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a UPnP query for devices
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="queryFlags" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the type of query that will be performed.  This can be treated as a bit field, comprised of the following:
+                                <ul>
+                                    <li>Get Databaseb Ids = 1</li>
+                                    <li>Get Types = 2</li>
+                                    <li>Get States = 4</li>
+                                    <li>Root Only = 8</li>
+                                    <li>All Attributes = 16</li>
+                                    <li>All Service Info = 32</li>
+                                    <li>Get Expire Times = 64</li>
+                                </ul>
+                                Also see the QueryFlags type
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="unbounded" name="upnpStates" type="tns:UpnpStates">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a list of UPnP state values
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="stateDeltaSeqNum" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an attribute which stores the current revision number of a device's local device database.  This allows the device to update its list of operational devices by only retrieving relevant changes, as opposed to returning the entire device database.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="dvcTypeQueryStrs" type="tns:DvcTypeQueryStrs">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a DvcTypeQueryStrs data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="attrQueryStrs" type="tns:AttrQueryStrs">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents an AttrQueryStrs data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="UpnpStates">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a UPnP State value
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="upnpState" nillable="true" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the UPnP State.  Possible values are limited to:
+                                <ul>
+                                    <li>None = 0</li>
+                                    <li>In Sync = 1</li>
+                                    <li>Online = 2</li>
+                                    <li>Offline = 3</li>
+                                    <li> Out Of Sync = 4</li>
+                                    <li>Invalid = 5</li>
+                                </ul>
+                                Also see the UpnpState type
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DvcTypeQueryStrs">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents a container for device query strings
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:DvcTypeItem">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents a DvcTypeItem data element
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DvcTypeItem">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents the type of device to search
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" name="str" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents the device query string.  Only the following items are valid:
+                                <ul>
+                                    <li>urn:schemas-pelco-com:device:Alarm:1</li>
+                                    <li>urn:schemas-pelco-com:device:AlarmArray:1</li>
+                                    <li>urn:schemas-upnp-org:device:Basic:1</li>
+                                    <li>urn:schemas-pelco-com:device:Camera:1</li>
+                                    <li>urn:schemas-pelco-com:device:Decoder:1</li>
+                                    <li>urn:schemas-pelco-com:device:Encoder:1</li>
+                                    <li>urn:schemas-pelco-com:device:EventArbiter:1</li>
+                                    <li>urn:schemas-pelco-com:device:Gateway:1</li>
+                                    <li>urn:schemas-pelco-com:device:MappingUI:1</li>
+                                    <li>urn:schemas-pelco-com:device:MDD:1</li>
+                                    <li>urn:schemas-pelco-com:device:Monitor:1</li>
+                                    <li>urn:schemas-pelco-com:device:MDDMonitor:1</li>
+                                    <li>urn:schemas-pelco-com:device:NSD:1</li>
+                                    <li>urn:schemas-pelco-com:device:NetworkVideoRecorder:1</li>
+                                    <li>urn:schemas-pelco-com:device:NSM:1</li>
+                                    <li>urn:schemas-pelco-com:device:Pelco:1</li>
+                                    <li>urn:schemas-pelco-com:device:Relay:1</li>
+                                    <li>urn:schemas-pelco-com:device:RelayArray:1</li>
+                                    <li>urn:schemas-pelco-com:device:RemoteUI:1</li>
+                                    <li>urn:schemas-pelco-com:device:StorageExpansionBox:1</li>
+                                    <li>urn:schemas-pelco-com:device:SystemManagerLocatorDevice:1</li>
+                                    <li>urn:schemas-pelco-com:device:ScriptManager:1</li>
+                                    <li>urn:schemas-pelco-com:device:SystemManagerDevice:1</li>
+                                    <li>urn:schemas-pelco-com:device:SystemLogDevice:1</li>
+                                    <li>urn:schemas-pelco-com:device:Transcoder:1</li>
+                                    <li>urn:schemas-pelco-com:device:UniversalDeviceInput:1</li>
+                                    <li>urn:schemas-pelco-com:device:VirtualAlarmArray:1</li>
+                                </ul>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="QueryFlags">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents the type of query to be made
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:int">
+                    <xsd:enumeration value="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: Get Database Ids
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="2">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: Get Types
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="4">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: Get States
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="8">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: Root Only
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="16">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: All Attributes
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="32">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: All Service Info
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="64">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents Flag: Get Expire Times
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="UpnpState">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Represents Upnp State
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:int">
+                    <xsd:enumeration value="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: None
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="1">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: In Sync
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="2">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Online
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="3">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Offline
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="4">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Out Of Sync
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="5">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Represents device state: Invalid
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="Str">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:SystemManagerDevice:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:SystemManagerLocatorDevice:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Transcoder:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Decoder:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Pelco:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Camera:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Monitor:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:NetworkVideoRecorder:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Alarm:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:AlarmArray:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:Relay:1"/>
+                    <xsd:enumeration value="urn:schemas-pelco-com:device:RelayArray:1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:element name="SysCfgSet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="name" type="xsd:string"/>
+                        <xsd:element name="value" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgSetResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="SysCfgSetMulti">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sysCfgValues" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgSetMultiResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="SysCfgGet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="name" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgGetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="value" type="xsd:string"/>
+                        <xsd:element name="found" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgFilteredGet">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="name" type="xsd:string"/>
+                        <xsd:element name="value" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgFilteredGetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgGetMulti">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sysCfgQuery" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SysCfgGetMultiResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDeviceAttribute">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDeviceAttributeResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="found" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDeviceServiceAttribute">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="serviceId" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDeviceServiceAttributeResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="found" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceAttributes">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceAttributesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceAttributeValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceAttributeValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="found" type="xsd:string"/>
+                        <xsd:element name="attributeValue" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceAttributeValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="serviceId" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceAttributeValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="found" type="xsd:string"/>
+                        <xsd:element name="attributeValue" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevicesByAttrName">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevicesByAttrNameResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevicesByAttrValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                        <xsd:element name="attributeValue" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevicesByAttrValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceInfo">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="svcInfoFlags" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceInfoResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:ServiceInfoPage"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceType">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="serviceId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceServiceTypeResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="serviceType" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceTypeServiceTypes">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceType" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceTypeServiceTypesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceState">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDeviceStateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="upnpState" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevices">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="upnpDvcQuery" type="tns:UpnpDvcQuery"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDevicesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="stateDeltaSeqNum" type="xsd:string"/>
+                        <xsd:element name="page" type="tns:Page"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceAttribute">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                        <xsd:element name="reportChange" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceAttributeResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="eResult" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceAttributeValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                        <xsd:element name="attributeValue" type="xsd:string"/>
+                        <xsd:element name="reportChange" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceAttributeValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="eResult" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceServiceAttribute">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="serviceId" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceServiceAttributeResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="SetDeviceServiceAttributeValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="serviceId" type="xsd:string"/>
+                        <xsd:element name="attributeName" type="xsd:string"/>
+                        <xsd:element name="attributeValue" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetDeviceServiceAttributeValueResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="DeviceAlive">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="deviceDescUrl" type="xsd:string"/>
+                        <xsd:element name="timeout" type="xsd:string"/>
+                        <xsd:element name="recurse" type="xsd:string"/>
+                        <xsd:element name="sync" type="xsd:string"/>
+                        <xsd:element name="sysCfgQuery" type="tns:SysCfgQuery"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeviceAliveResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="eResult" type="xsd:string"/>
+                        <xsd:element name="page" type="tns:PageResponse"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeviceAlive2">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="renewal" type="tns:Renewal"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeviceAlive2Response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="eResult" type="xsd:string"/>
+                        <xsd:element name="page" type="tns:PageResponse"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeviceByeBye">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeviceByeByeResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="DeleteDevice">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDeviceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deleted" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDevices">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdns" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteDevicesResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetKeyRegWinState">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetKeyRegWinStateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="count" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetKeyRegWinState">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="count" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetKeyRegWinStateResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetKey">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="queryFlags" type="xsd:string"/>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetKeyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="key" type="xsd:string"/>
+                        <xsd:element name="found" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetKeys">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="queryFlags" type="xsd:string"/>
+                        <xsd:element name="acceptedState" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="tns:PageReq"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetKeysResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetKeys">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="keys" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetKeysResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetMaxNonAcceptedKeys">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetMaxNonAcceptedKeysResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="count" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetMaxNonAcceptedKeys">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="count" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetMaxNonAcceptedKeysResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="DeleteKey">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteKeyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deleted" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteKeys">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdns" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteKeysResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="GetPage">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="pageReq" type="tns:PageReq"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetPageResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="tns:Page"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDstOffset">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deviceUdn" type="xsd:string"/>
+                        <xsd:element name="queryTimeSec" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetDstOffsetResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="dstOffsetMin" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetTimeZones">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="offsetBaseSec" type="xsd:string"/>
+                        <xsd:element name="pageReq" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetTimeZonesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="page" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetTime">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="gmtTimeSec" type="xsd:string"/>
+                        <xsd:element name="tzCoord" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SetTimeResponse">
+                <xsd:complexType/>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="SysCfgSet">
+        <wsdl:part name="parameters" element="tns:SysCfgSet"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgSetResponse">
+        <wsdl:part name="parameters" element="tns:SysCfgSetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgSetMulti">
+        <wsdl:part name="parameters" element="tns:SysCfgSetMulti"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgSetMultiResponse">
+        <wsdl:part name="parameters" element="tns:SysCfgSetMultiResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgGet">
+        <wsdl:part name="parameters" element="tns:SysCfgGet"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgGetResponse">
+        <wsdl:part name="parameters" element="tns:SysCfgGetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgFilteredGet">
+        <wsdl:part name="parameters" element="tns:SysCfgFilteredGet"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgFilteredGetResponse">
+        <wsdl:part name="parameters" element="tns:SysCfgFilteredGetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgGetMulti">
+        <wsdl:part name="parameters" element="tns:SysCfgGetMulti"/>
+    </wsdl:message>
+    <wsdl:message name="SysCfgGetMultiResponse">
+        <wsdl:part name="parameters" element="tns:SysCfgGetMultiResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeviceAttribute">
+        <wsdl:part name="parameters" element="tns:DeleteDeviceAttribute"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeviceAttributeResponse">
+        <wsdl:part name="parameters" element="tns:DeleteDeviceAttributeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeviceServiceAttribute">
+        <wsdl:part name="parameters" element="tns:DeleteDeviceServiceAttribute"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeviceServiceAttributeResponse">
+        <wsdl:part name="parameters" element="tns:DeleteDeviceServiceAttributeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceAttributes">
+        <wsdl:part name="parameters" element="tns:GetDeviceAttributes"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceAttributesResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceAttributesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceAttributeValue">
+        <wsdl:part name="parameters" element="tns:GetDeviceAttributeValue"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceAttributeValueResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceAttributeValueResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceAttributeValue">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceAttributeValue"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceAttributeValueResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceAttributeValueResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevicesByAttrName">
+        <wsdl:part name="parameters" element="tns:GetDevicesByAttrName"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevicesByAttrNameResponse">
+        <wsdl:part name="parameters" element="tns:GetDevicesByAttrNameResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevicesByAttrValue">
+        <wsdl:part name="parameters" element="tns:GetDevicesByAttrValue"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevicesByAttrValueResponse">
+        <wsdl:part name="parameters" element="tns:GetDevicesByAttrValueResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceInfo">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceInfo"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceInfoResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceInfoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceType">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceType"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceServiceTypeResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceServiceTypeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceTypeServiceTypes">
+        <wsdl:part name="parameters" element="tns:GetDeviceTypeServiceTypes"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceTypeServiceTypesResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceTypeServiceTypesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceState">
+        <wsdl:part name="parameters" element="tns:GetDeviceState"/>
+    </wsdl:message>
+    <wsdl:message name="GetDeviceStateResponse">
+        <wsdl:part name="parameters" element="tns:GetDeviceStateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevices">
+        <wsdl:part name="parameters" element="tns:GetDevices"/>
+    </wsdl:message>
+    <wsdl:message name="GetDevicesResponse">
+        <wsdl:part name="parameters" element="tns:GetDevicesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceAttribute">
+        <wsdl:part name="parameters" element="tns:SetDeviceAttribute"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceAttributeResponse">
+        <wsdl:part name="parameters" element="tns:SetDeviceAttributeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceAttributeValue">
+        <wsdl:part name="parameters" element="tns:SetDeviceAttributeValue"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceAttributeValueResponse">
+        <wsdl:part name="parameters" element="tns:SetDeviceAttributeValueResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceServiceAttribute">
+        <wsdl:part name="parameters" element="tns:SetDeviceServiceAttribute"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceServiceAttributeResponse">
+        <wsdl:part name="parameters" element="tns:SetDeviceServiceAttributeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceServiceAttributeValue">
+        <wsdl:part name="parameters" element="tns:SetDeviceServiceAttributeValue"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeviceServiceAttributeValueResponse">
+        <wsdl:part name="parameters" element="tns:SetDeviceServiceAttributeValueResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceAlive">
+        <wsdl:part name="parameters" element="tns:DeviceAlive"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceAliveResponse">
+        <wsdl:part name="parameters" element="tns:DeviceAliveResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceAlive2">
+        <wsdl:part name="parameters" element="tns:DeviceAlive2"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceAlive2Response">
+        <wsdl:part name="parameters" element="tns:DeviceAlive2Response"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceByeBye">
+        <wsdl:part name="parameters" element="tns:DeviceByeBye"/>
+    </wsdl:message>
+    <wsdl:message name="DeviceByeByeResponse">
+        <wsdl:part name="parameters" element="tns:DeviceByeByeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDevice">
+        <wsdl:part name="parameters" element="tns:DeleteDevice"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeviceResponse">
+        <wsdl:part name="parameters" element="tns:DeleteDeviceResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDevices">
+        <wsdl:part name="parameters" element="tns:DeleteDevices"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDevicesResponse">
+        <wsdl:part name="parameters" element="tns:DeleteDevicesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetKeyRegWinState">
+        <wsdl:part name="parameters" element="tns:GetKeyRegWinState"/>
+    </wsdl:message>
+    <wsdl:message name="GetKeyRegWinStateResponse">
+        <wsdl:part name="parameters" element="tns:GetKeyRegWinStateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetKeyRegWinState">
+        <wsdl:part name="parameters" element="tns:SetKeyRegWinState"/>
+    </wsdl:message>
+    <wsdl:message name="SetKeyRegWinStateResponse">
+        <wsdl:part name="parameters" element="tns:SetKeyRegWinStateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetKey">
+        <wsdl:part name="parameters" element="tns:GetKey"/>
+    </wsdl:message>
+    <wsdl:message name="GetKeyResponse">
+        <wsdl:part name="parameters" element="tns:GetKeyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetKeys">
+        <wsdl:part name="parameters" element="tns:GetKeys"/>
+    </wsdl:message>
+    <wsdl:message name="GetKeysResponse">
+        <wsdl:part name="parameters" element="tns:GetKeysResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetKeys">
+        <wsdl:part name="parameters" element="tns:SetKeys"/>
+    </wsdl:message>
+    <wsdl:message name="SetKeysResponse">
+        <wsdl:part name="parameters" element="tns:SetKeysResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetMaxNonAcceptedKeys">
+        <wsdl:part name="parameters" element="tns:GetMaxNonAcceptedKeys"/>
+    </wsdl:message>
+    <wsdl:message name="GetMaxNonAcceptedKeysResponse">
+        <wsdl:part name="parameters" element="tns:GetMaxNonAcceptedKeysResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetMaxNonAcceptedKeys">
+        <wsdl:part name="parameters" element="tns:SetMaxNonAcceptedKeys"/>
+    </wsdl:message>
+    <wsdl:message name="SetMaxNonAcceptedKeysResponse">
+        <wsdl:part name="parameters" element="tns:SetMaxNonAcceptedKeysResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteKey">
+        <wsdl:part name="parameters" element="tns:DeleteKey"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteKeyResponse">
+        <wsdl:part name="parameters" element="tns:DeleteKeyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteKeys">
+        <wsdl:part name="parameters" element="tns:DeleteKeys"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteKeysResponse">
+        <wsdl:part name="parameters" element="tns:DeleteKeysResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetPage">
+        <wsdl:part name="parameters" element="tns:GetPage"/>
+    </wsdl:message>
+    <wsdl:message name="GetPageResponse">
+        <wsdl:part name="parameters" element="tns:GetPageResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetDstOffset">
+        <wsdl:part name="parameters" element="tns:GetDstOffset"/>
+    </wsdl:message>
+    <wsdl:message name="GetDstOffsetResponse">
+        <wsdl:part name="parameters" element="tns:GetDstOffsetResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetTimeZones">
+        <wsdl:part name="parameters" element="tns:GetTimeZones"/>
+    </wsdl:message>
+    <wsdl:message name="GetTimeZonesResponse">
+        <wsdl:part name="parameters" element="tns:GetTimeZonesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetTime">
+        <wsdl:part name="parameters" element="tns:SetTime"/>
+    </wsdl:message>
+    <wsdl:message name="SetTimeResponse">
+        <wsdl:part name="parameters" element="tns:SetTimeResponse"/>
+    </wsdl:message>
+    
+    <!-- Ports -->
+    
+    <wsdl:portType name="DeviceRegistryPortType">
+        <wsdl:operation name="SysCfgSet">
+            <wsdl:input message="tns:SysCfgSet"/>
+            <wsdl:output message="tns:SysCfgSetResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgSetMulti">
+            <wsdl:input message="tns:SysCfgSetMulti"/>
+            <wsdl:output message="tns:SysCfgSetMultiResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgGet">
+            <wsdl:documentation>
+                Returns a system attribute value
+            </wsdl:documentation>
+            <wsdl:input message="tns:SysCfgGet"/>
+            <wsdl:output message="tns:SysCfgGetResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgFilteredGet">
+            <wsdl:input message="tns:SysCfgFilteredGet"/>
+            <wsdl:output message="tns:SysCfgFilteredGetResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgGetMulti">
+            <wsdl:input message="tns:SysCfgGetMulti"/>
+            <wsdl:output message="tns:SysCfgGetMultiResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeviceAttribute">
+            <wsdl:input message="tns:DeleteDeviceAttribute"/>
+            <wsdl:output message="tns:DeleteDeviceAttributeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeviceServiceAttribute">
+            <wsdl:input message="tns:DeleteDeviceServiceAttribute"/>
+            <wsdl:output message="tns:DeleteDeviceServiceAttributeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceAttributes">
+            <wsdl:documentation>
+                Returns all attributes for a specified device
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDeviceAttributes"/>
+            <wsdl:output message="tns:GetDeviceAttributesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceAttributeValue">
+            <wsdl:documentation>
+                Returns a specific attribute value for a specified device
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDeviceAttributeValue"/>
+            <wsdl:output message="tns:GetDeviceAttributeValueResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceAttributeValue">
+            <wsdl:documentation>
+                Returns a specific attribute value for a specified device and service
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDeviceServiceAttributeValue"/>
+            <wsdl:output message="tns:GetDeviceServiceAttributeValueResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevicesByAttrName">
+            <wsdl:input message="tns:GetDevicesByAttrName"/>
+            <wsdl:output message="tns:GetDevicesByAttrNameResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevicesByAttrValue">
+            <wsdl:documentation>
+                Returns devices that have the specified attribute value
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDevicesByAttrValue"/>
+            <wsdl:output message="tns:GetDevicesByAttrValueResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceInfo">
+            <wsdl:documentation>
+                Returns specific information for a specified device's service
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDeviceServiceInfo"/>
+            <wsdl:output message="tns:GetDeviceServiceInfoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceType">
+            <wsdl:input message="tns:GetDeviceServiceType"/>
+            <wsdl:output message="tns:GetDeviceServiceTypeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceTypeServiceTypes">
+            <wsdl:input message="tns:GetDeviceTypeServiceTypes"/>
+            <wsdl:output message="tns:GetDeviceTypeServiceTypesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceState">
+            <wsdl:input message="tns:GetDeviceState"/>
+            <wsdl:output message="tns:GetDeviceStateResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevices">
+            <wsdl:documentation>
+                Returns configuration data on all devices with stored information.  The GetDevices action can be a process intensive task. It is highly recommended that you properly filter out off line devices in the search results, with the UpnpDvcQuery instance. Ideally you should also only search for recently updated or added devices to further help performance.
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetDevices"/>
+            <wsdl:output message="tns:GetDevicesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceAttribute">
+            <wsdl:input message="tns:SetDeviceAttribute"/>
+            <wsdl:output message="tns:SetDeviceAttributeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceAttributeValue">
+            <wsdl:input message="tns:SetDeviceAttributeValue"/>
+            <wsdl:output message="tns:SetDeviceAttributeValueResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceServiceAttribute">
+            <wsdl:input message="tns:SetDeviceServiceAttribute"/>
+            <wsdl:output message="tns:SetDeviceServiceAttributeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceServiceAttributeValue">
+            <wsdl:input message="tns:SetDeviceServiceAttributeValue"/>
+            <wsdl:output message="tns:SetDeviceServiceAttributeValueResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceAlive">
+            <wsdl:input message="tns:DeviceAlive"/>
+            <wsdl:output message="tns:DeviceAliveResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceAlive2">
+            <wsdl:input message="tns:DeviceAlive2"/>
+            <wsdl:output message="tns:DeviceAlive2Response"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceByeBye">
+            <wsdl:input message="tns:DeviceByeBye"/>
+            <wsdl:output message="tns:DeviceByeByeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDevice">
+            <wsdl:input message="tns:DeleteDevice"/>
+            <wsdl:output message="tns:DeleteDeviceResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDevices">
+            <wsdl:input message="tns:DeleteDevices"/>
+            <wsdl:output message="tns:DeleteDevicesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetKeyRegWinState">
+            <wsdl:input message="tns:GetKeyRegWinState"/>
+            <wsdl:output message="tns:GetKeyRegWinStateResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetKeyRegWinState">
+            <wsdl:input message="tns:SetKeyRegWinState"/>
+            <wsdl:output message="tns:SetKeyRegWinStateResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetKey">
+            <wsdl:input message="tns:GetKey"/>
+            <wsdl:output message="tns:GetKeyResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetKeys">
+            <wsdl:input message="tns:GetKeys"/>
+            <wsdl:output message="tns:GetKeysResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetKeys">
+            <wsdl:input message="tns:SetKeys"/>
+            <wsdl:output message="tns:SetKeysResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetMaxNonAcceptedKeys">
+            <wsdl:input message="tns:GetMaxNonAcceptedKeys"/>
+            <wsdl:output message="tns:GetMaxNonAcceptedKeysResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetMaxNonAcceptedKeys">
+            <wsdl:input message="tns:SetMaxNonAcceptedKeys"/>
+            <wsdl:output message="tns:SetMaxNonAcceptedKeysResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteKey">
+            <wsdl:input message="tns:DeleteKey"/>
+            <wsdl:output message="tns:DeleteKeyResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteKeys">
+            <wsdl:input message="tns:DeleteKeys"/>
+            <wsdl:output message="tns:DeleteKeysResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetPage">
+            <wsdl:documentation>
+                Returns a set of device results
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetPage"/>
+            <wsdl:output message="tns:GetPageResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDstOffset">
+            <wsdl:input message="tns:GetDstOffset"/>
+            <wsdl:output message="tns:GetDstOffsetResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTimeZones">
+            <wsdl:input message="tns:GetTimeZones"/>
+            <wsdl:output message="tns:GetTimeZonesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetTime">
+            <wsdl:input message="tns:SetTime"/>
+            <wsdl:output message="tns:SetTimeResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    <!-- Bindings -->
+    
+    <wsdl:binding name="DeviceRegistry" type="tns:DeviceRegistryPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="SysCfgSet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgSet"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgSetMulti">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgSetMulti"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgGet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgGet"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgFilteredGet">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgFilteredGet"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SysCfgGetMulti">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SysCfgGetMulti"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeviceAttribute">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteDeviceAttribute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeviceServiceAttribute">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteDeviceServiceAttribute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceAttributes">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceAttributes"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceAttributeValue">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceAttributeValue"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceAttributeValue">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceServiceAttributeValue"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevicesByAttrName">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDevicesByAttrName"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevicesByAttrValue">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDevicesByAttrValue"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceInfo">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceServiceInfo"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceServiceType">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceServiceType"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceTypeServiceTypes">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceTypeServiceTypes"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeviceState">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDeviceState"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDevices">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDevices"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceAttribute">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetDeviceAttribute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceAttributeValue">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetDeviceAttributeValue"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceServiceAttribute">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetDeviceServiceAttribute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetDeviceServiceAttributeValue">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetDeviceServiceAttributeValue"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceAlive">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeviceAlive"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceAlive2">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeviceAlive2"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeviceByeBye">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeviceByeBye"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDevice">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteDevice"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDevices">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteDevices"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetKeyRegWinState">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetKeyRegWinState"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetKeyRegWinState">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetKeyRegWinState"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetKey">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetKey"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetKeys">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetKeys"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetKeys">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetKeys"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMaxNonAcceptedKeys">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetMaxNonAcceptedKeys"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetMaxNonAcceptedKeys">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetMaxNonAcceptedKeys"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteKey">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteKey"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteKeys">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#DeleteKeys"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPage">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetPage"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDstOffset">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetDstOffset"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTimeZones">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#GetTimeZones"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetTime">
+            <soap:operation soapAction="urn:schemas-pelco-com:service:DeviceRegistry:1#SetTime"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DeviceRegistry">
+        <wsdl:port name="DeviceRegistry" binding="tns:DeviceRegistry">
+            <soap:address location="http://localhost:60001/control/DeviceRegistry-1" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

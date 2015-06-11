@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions name="PositioningControl"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:PositioningControl:1"
+	xmlns:tt="http://www.pelco.com/api/Pelco/1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:PositioningControl:1">
+
+	<!-- Services -->
+	
+	<wsdl:service name="PositioningControl">
+		<wsdl:documentation>This service allows control over a device's position by way of tilting and panning, along with the speed of movement and zoom level. In addition it allows setting the limits of both a device's position and speed of movement.</wsdl:documentation>
+		<wsdl:port binding="tns:PositioningControl" name="PositioningControl">
+			<soap:address
+				location="http://localhost:49152/control/PositioningControl-1" />
+		</wsdl:port>
+	</wsdl:service>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:PositioningControl:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.pelco.com/api/Pelco/1" schemaLocation="Pelco.xsd"/>      			
+
+			<xsd:complexType name="Velocity">
+				<xsd:annotation><xsd:documentation xml:lang="en">Describes the current translational/rotational speed of the device.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="translation" type="tns:Xyz" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This defines the translational parameters relative to the indicated axis. Measured in hundreds of centimeters per sec.</p><div class="notice">translation is currently not in use. It is reserved for future positioning systems.</div></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="rotation" type="tns:Xyz" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en">This represents a rotational velocity relative to the indicated axis. Units of measurement will depend on the camera model. (e.g. For Spectra IV this is a unitless value.)</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Xyz">
+				<xsd:annotation><xsd:documentation xml:lang="en"><p>This Xyz's elements will have different uses depending on the action, and whether or not movement is translational or rotational.</p><p>For position related actions, this represents a position in 2D space. For movement related actions, this represents velocity in 2D space.</p></xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="x" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This element will have different uses depending on the action:<ul>
+							<li>For SetPosition in the rotational context, this is the horizontal x coordinate value.</li>
+							<li>For SetVelocity in the rotational context, this is the speed the camera is using for panning. To pan left use a negative value, while panning right uses a positive value.</li>
+							<li>For ViewObject in the rotational context, this is used to move within a percentage of the current field of view of the camera on the X plane. For instance if the x parameter was 50, the camera's panning would move halfway to the edge of the field of view along the X axis from its present position.</li></ul></p></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="y" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This element will have different uses depending on the action:<ul>
+							<li>For SetPosition in the rotational context, this is the vertical y coordinate value.</li>
+							<li>For SetVelocity in the rotational context, this is the speed the camera is using for tilting. To tilt up use a positive value, while tilting down uses a negative value.</li>
+							<li>For ViewObject in the rotational context, this is used to move within a percentage of the current field of view of the camera on the Y plane. For instance, if the y parameter was -50, the camera's tilting would move halfway to the field of view along the negative Y axis from its present position.</li></ul></p></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="z" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This element will have different uses depending on the action:<ul>
+							<li>For SetPosition in the rotational context, this is used to rotate the current video frame. Its main purpose was to make it possible to flip the video frame 180 degrees (upside down).</li>
+							<li>For ViewObject in the translation context, This is used to zoom relative to the current position. It is expressed in terms of magnification * 100, such that if a user wished to zoom in 2X the current magnification, the value would be 200, 2.5X the current magnification would be 250. A negative number in this field may or may not be implemented as it is outside the bounds of the field of view.</li></ul></p><div class="notice"><p>z is currently only used for Spectra IV models.</p><p>z is an ignored parameter for SetVelocity. It is only used for SetPosition and ViewObject.</p></div></xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AxisLimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">Defines the limits of how many degrees a camera can rotate and tilt.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="translation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This parameter represents a translational limit relative to the indicated axis, measured in hundredths of a centimeter.</p><div class="notice">translation is currently not in use. It is reserved for future positioning systems.</div></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="rotation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>this parameter represents a rotational limit relative to the indicated axis.
+							<ul><div class="heading">unit of measurement</div>
+							<li>xMin and xMax is not needed. Most Pelco PTZ cameras including domes are not constrained by a x-axis rotation limit; they can rotate a full 360 degrees, continuously.</li>
+							<li>Typical limit ranges for tilting are: yMin = 0 and yMax = -9000, though this will vary by camera.</li></ul></p></xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="VelocityLimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">The current translational/rotational velocity limits of the device.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="translation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This parameter represents a translation velocity limit relative to the indicated axis, measured in centimeters per second.</p><div class="notice">translation is currently not in use. It is reserved for future positioning systems.</div></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="rotation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This parameter represents a rotational velocity limit relative to the indicated axis, measured in hundreds of degrees/sec This is an XyzLimits data element.
+							<ul><div class="heading">unit of measurement</div>
+							<li>For the Spectra product line: speed is a unitless value, where 0 is stopped, and max is the maximum user controlled speed (below turbo). It is also good to note the increasing speed is not linear, instead it is a logarithmic response.</li>
+							</ul></p>
+						</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AccelerationLimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">The current translational/rotational acceleration limits of the device.</xsd:documentation></xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="translation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This parameter represents a translation acceleration limit relative to the indicated axis, measured in centimeters per second.</p><div class="notice">translation is currently not in use. It is reserved for future positioning systems.</div></xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="rotation" type="tns:Xyzlimits" minOccurs="0" nillable="true" >
+						<xsd:annotation><xsd:documentation xml:lang="en"><p>This parameter represents a rotational acceleration limit relative to the indicated axis, measured in hundreds of degrees/sec This is an XyzLimits data element.
+							<ul><div class="heading">unit of measurement</div>
+								<li>For the Spectra product line: speed is a unitless value, where 0 is stopped, and max is the maximum user controlled speed (below turbo). It is also good to note the increasing speed is not linear, instead it is a logarithmic response.</li>
+								<li>For IP110: units are measured in hundredths of a degree</li></ul></p>
+						</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Xyzlimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">The translational/rotational position limits of the device. </xsd:documentation></xsd:annotation>
+				<xsd:all>
+					<xsd:element name="xMin" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">This is the minimum horizontal value limit. This only applies to translational movement, since most Pelco PTZ cameras can rotate 360 degrees.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="xMax" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">This is the maximum horizontal value limit. Typically most cameras have no horizontal value limit since they can rotate 360 degrees.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="yMin" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">For rotational movement, this is the minimum vertical tilt level.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="yMax" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">For rotational movement, this is the maximum vertical tilt level.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="zMin" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">This is the minimum movement allowed on the Z plane. This only applies to translational movement.</xsd:documentation></xsd:annotation></xsd:element>
+					<xsd:element name="zMax" type="xsd:int" minOccurs="0" >
+						<xsd:annotation><xsd:documentation xml:lang="en">This is the maxium movement allowed on the Z plane. This only applies to translational movement.</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:all>
+			</xsd:complexType>
+			
+			<!-- Speed Profiles -->
+			<xsd:complexType name="SpeedProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The speed profiles allow the user to select the amount of voltage the motors in the pan/tilt receive, therefore, allowing the user to increase or decrease the motor torque, thereby, increasing or decreasing the speed of the unit. This is useful in situations such as high winds.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Name" type="tt:Name">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Name of the profile. Name should be unique. No two profiles can have the same name.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="VelocityLimits" type="tns:VelocityLimits"/>
+					<xsd:element name="AccelerationLimits" type="tns:AccelerationLimits"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="tt:Guid" use="required">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Uniquely identifies a Speed profile. The id should be unique and is required.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:complexType>
+			
+			<xsd:element name="EnableSpeedProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ProfileId" type="tt:Guid">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Id of the profile to enable</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="EnableSpeedProfileResponse">
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="RestoreDefaultSpeedProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to enable the default speed profile.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<xsd:element name="RestoreDefaultSpeedProfileResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Response to enable the default speed profile.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<xsd:element name="RestoreDefaultPositionLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to enable the default position limits.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<xsd:element name="RestoreDefaultPositionLimitsResponse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Response to enable the default position limits.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType />
+			</xsd:element>
+			
+			<xsd:element name="GetSpeedProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ProfileId" type="tt:Guid">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Id of the profile to retrieve</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="GetSpeedProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="SpeedProfile" type="tns:SpeedProfile">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">The retrieved speed profile for the given id</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="GetAllSpeedProfiles">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request to get a list of available speed profiles.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetAllSpeedProfilesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="SpeedProfile" type="tns:SpeedProfile" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">List of available speed profiles.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="GetEnabledSpeedProfile">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Get the currently enabled speed profile.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			<xsd:element name="GetEnabledSpeedProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="EnabledSpeedProfile" type="tns:SpeedProfile">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">The currently enabled speed profile.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetPosition -->
+			<xsd:element name="GetPosition">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetPosition Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetPositionResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetPosition Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="position" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en">A Velocity data element. </xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetPositionEventInterval -->
+			<xsd:element name="GetPositionEventInterval">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetPositionEventInterval Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetPositionEventIntervalResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetPositionEventInterval Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="positionEventInterval" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>A Velocity data element that represents the interval at which events corresponding to a rotational/translation change associated with each axis should be reported.
+								<ul><div class="heading">unit of measurement</div>
+								<li>For the Spectra product line: speed is a unitless value, where 0 is stopped, and max is the maximum user controlled speed (below turbo). It is also good to note the increasing speed is not linear, instead it is a logarithmic response.</li>
+								</ul>
+								<div class="notice"><p>It provides for a "eventing hysteresis," preventing network storms due to large numbers of events generated by numerous positioning related commands.</p>
+								<ul>	
+								<li>Example: An event interval of 600 associated with the rotational position of the X-axis would imply that the service instance should generate an event for every 6 degree per second change in the rotational position of the device relative to the X-axis.</li>
+								<li>Minimum eventing hysteresis is 500 (5 degrees).</li></ul>
+								</div></p></xsd:documentation></xsd:annotation></xsd:element> <!-- xsd:int? -->
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetPositionLimits -->
+			<xsd:element name="GetPositionLimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetPositionLimits Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetPositionLimitsResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetPositionLimits Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="positionLimits" type="tns:AxisLimits">
+							<xsd:annotation><xsd:documentation xml:lang="en">An AxisLimits data element. </xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetVelocity -->
+			<xsd:element name="GetVelocity">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetVelocity Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetVelocityResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetVelocity Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="velocity" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en">Represents a Velocity data element. </xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetVelocityLimits -->
+			<xsd:element name="GetVelocityLimits">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetVelocityLimits Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetVelocityLimitsResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetVelocityLimits Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="velocityLimits" type="tns:VelocityLimits">
+							<xsd:annotation><xsd:documentation xml:lang="en">A VelocityLimits data element.</xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetVelocityURL -->
+			<xsd:element name="GetVelocityURL">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a GetVelocityURL Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<xsd:element name="GetVelocityURLResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a *GetVelocityURL Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="velocityURL" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en">The URL to which SetVelocity commands must be issued.</xsd:documentation></xsd:annotation></xsd:element> <!-- xsd:anyURI? -->
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- InitializePosition -->
+			<xsd:element name="InitializePosition">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a InitializePosition Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="position" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en">A Velocity data element. </xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="InitializePositionResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a InitializePosition Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- SetPosition -->
+			<xsd:element name="SetPosition">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a SetPosition Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="position" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>A Velocity data element.</p>
+								<div class="notice">You only need only to specify the fields needed to achieve the target position. Given the current position and a desired position, which can be achieved by a translation in x and a rotation in z, the caller would only have to specify the following:<code>
+									&lt;axisParameters>
+									  &lt;translation>   
+									    &lt;x>33.45&lt;/x>
+									  &lt;/translation>
+									  &lt;rotation>
+									    &lt;z>67.89&lt;/z>
+									  &lt;/rotation>
+									&lt;/axisParameters>		
+								</code></div></xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetPositionResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a SetPosition Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- SetPositionEventInterval -->
+			<xsd:element name="SetPositionEventInterval">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a SetPositionEventInterval Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="positionEventInterval" type="xsd:string">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>A Velocity data element that represents the interval at which events corresponding to a rotational/translation change associated with each axis should be reported.
+						<ul><div class="heading">unit of measurement</div>
+						<li>For the Spectra product line: speed is a unitless value, where 0 is stopped, and max is the maximum user controlled speed (below turbo). It is also good to note the increasing speed is not linear, instead it is a logarithmic response.</li>
+						</ul>
+								<div class="notice"><p>It provides for a "eventing hysteresis," preventing network storms due to large numbers of events generated by numerous positioning related commands.
+							<ul>		
+								<li>Example: An event interval of 600 associated with the rotational position of the x-axis would imply that the service instance should generate an event for every 6 degree per second change in the rotational position of the device relative to the x-axis.</li>
+								<li>Minimum eventing hysteresis is 500 (5 degrees).</li></ul></p>
+								</div></p> </xsd:documentation></xsd:annotation></xsd:element> <!-- xsd:int? -->
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetPositionEventIntervalResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a SetPositionEventInterval Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- SetVelocity -->
+			<xsd:element name="SetVelocity">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a SetVelocity Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="velocity" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>A Velocity data element.
+								<div class="notice"><p>You only need to specify the fields needed to achieve the target velocity. For instance if given a current velocity and a desired velocity, that can be achieved by a change in the translational velocity of x and the rotation velocity of z, the caller would only have to specify the following:</p>
+									<code>
+									&lt;axisParameters>
+									  &lt;translation>
+									    &lt;x>33.45&lt;/x>
+									  &lt;/translation>
+									  &lt;rotation>
+									    &lt;z>5.00&lt;/z>
+								      &lt;/rotation>
+								    &lt;/axisParameters></code></div></p> </xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="SetVelocityResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a SetVelocity Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- ViewObject -->
+			<xsd:element name="ViewObject">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to a ViewObject Action. </xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="position" type="tns:Velocity">
+							<xsd:annotation><xsd:documentation xml:lang="en">a Velocity data element.</xsd:documentation></xsd:annotation></xsd:element>  <!-- ??? -->
+						<xsd:element name="radius" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en"><div class="caution">DEPRECATED. This has been deprecated and is only used for backwards compatibility. This should be set to 0.</div><p>The length of a line segment between the center and circumference of a circle.</p></xsd:documentation></xsd:annotation></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="ViewObjectResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a ViewObject Action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+			
+			<!-- GetAzimuthZero --> 
+			<xsd:element name="GetAzimuthZero"> 
+				<xsd:annotation><xsd:documentation xml:lang="en">Request to get the internal position of the current AzimuthZero setting. Azimuth Zero is defined as north on the x-axis in the spherical coordinate system. It is an angular measurement with centidegrees for units (from 0-36000). There is no y or z component.</xsd:documentation></xsd:annotation> 
+				<xsd:complexType /> 
+			</xsd:element> 
+			
+			<xsd:element name="GetAzimuthZeroResponse"> 
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetAzimuthZero request.</xsd:documentation></xsd:annotation> 
+				<xsd:complexType> 
+					<xsd:sequence> 
+						<xsd:element name="AzimuthZero" type="xsd:int"> 
+							<xsd:annotation><xsd:documentation xml:lang="en">The internal position in centidegrees of the current azimuth zero setting.</xsd:documentation></xsd:annotation></xsd:element> 
+					</xsd:sequence> 
+				</xsd:complexType> 
+			</xsd:element> 
+			
+			<!-- SetAzimuthZero --> 
+			<xsd:element name="SetAzimuthZero"> 
+				<xsd:annotation><xsd:documentation xml:lang="en">Request to set the AzimuthZero, rather than use the internal position 0. Azimuth Zero is defined as north on the x-axis in the spherical coordinate system. It is an angular measurement with centidegrees for units (from 0-36000). There is no y or z component. This basically sets "North" in the device.</xsd:documentation></xsd:annotation> 
+				<xsd:complexType> 
+					<xsd:sequence> 
+						<xsd:element name="AzimuthZero" type="xsd:int"> 
+							<xsd:annotation><xsd:documentation xml:lang="en">The internal position in centidegrees of the current azimuth zero setting.</xsd:documentation></xsd:annotation></xsd:element> 
+					</xsd:sequence> 
+				</xsd:complexType>  
+			</xsd:element> 
+			
+			<xsd:element name="SetAzimuthZeroResponse"> 
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from a GetAzimuthZero request.</xsd:documentation></xsd:annotation> 
+				<xsd:complexType />
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	
+	<!--Speed Profiles-->
+	<wsdl:message name="EnableSpeedProfile">
+		<wsdl:part name="parameters" element="tns:EnableSpeedProfile"/>
+	</wsdl:message>
+	<wsdl:message name="EnableSpeedProfileResponse">
+		<wsdl:part name="parameters" element="tns:EnableSpeedProfileResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="RestoreDefaultSpeedProfile">
+		<wsdl:part name="parameters" element="tns:RestoreDefaultSpeedProfile"/>
+	</wsdl:message>
+	<wsdl:message name="RestoreDefaultSpeedProfileResponse">
+		<wsdl:part name="parameters" element="tns:RestoreDefaultSpeedProfileResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="RestoreDefaultPositionLimits">
+		<wsdl:part name="parameters" element="tns:RestoreDefaultPositionLimits"/>
+	</wsdl:message>
+	<wsdl:message name="RestoreDefaultPositionLimitsResponse">
+		<wsdl:part name="parameters" element="tns:RestoreDefaultPositionLimitsResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetSpeedProfile">
+		<wsdl:part name="parameters" element="tns:GetSpeedProfile"/>
+	</wsdl:message>
+	<wsdl:message name="GetSpeedProfileResponse">
+		<wsdl:part name="parameters" element="tns:GetSpeedProfileResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetAllSpeedProfiles">
+		<wsdl:part name="parameters" element="tns:GetAllSpeedProfiles"/>
+	</wsdl:message>
+	<wsdl:message name="GetAllSpeedProfilesResponse">
+		<wsdl:part name="parameters" element="tns:GetAllSpeedProfilesResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetEnabledSpeedProfile">
+		<wsdl:part name="parameters" element="tns:GetEnabledSpeedProfile"/>
+	</wsdl:message>
+	<wsdl:message name="GetEnabledSpeedProfileResponse">
+		<wsdl:part name="parameters" element="tns:GetEnabledSpeedProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetPosition -->
+	<wsdl:message name="GetPosition">
+		<wsdl:part name="parameters" element="tns:GetPosition"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetPositionResponse">
+		<wsdl:part name="parameters" element="tns:GetPositionResponse"/>	
+	</wsdl:message>
+
+	<!-- GetAzimuthZero -->
+	<wsdl:message name="GetAzimuthZero">
+		<wsdl:part name="parameters" element="tns:GetAzimuthZero"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetAzimuthZeroResponse">
+		<wsdl:part name="parameters" element="tns:GetAzimuthZeroResponse"/>	
+	</wsdl:message>
+
+	<!-- GetPositionEventInterval -->
+	<wsdl:message name="GetPositionEventInterval">
+		<wsdl:part name="parameters" element="tns:GetPositionEventInterval"/>	
+	</wsdl:message>
+
+	<wsdl:message name="GetPositionEventIntervalResponse">
+		<wsdl:part name="parameters" element="tns:GetPositionEventIntervalResponse"/>
+	</wsdl:message>
+
+	<!-- GetPositionLimits -->
+	<wsdl:message name="GetPositionLimits">
+		<wsdl:part name="parameters" element="tns:GetPositionLimits"/>
+	</wsdl:message>
+	<wsdl:message name="GetPositionLimitsResponse">
+		<wsdl:part name="parameters" element="tns:GetPositionLimitsResponse"/>
+	</wsdl:message>
+
+	<!-- GetVelocity -->
+	<wsdl:message name="GetVelocity">
+		<wsdl:part name="parameters" element="tns:GetVelocity"/>
+	</wsdl:message>
+	<wsdl:message name="GetVelocityResponse">
+		<wsdl:part name="parameters" element="tns:GetVelocityResponse"/>
+	</wsdl:message>
+
+	<!-- GetVelocityLimits -->
+	<wsdl:message name="GetVelocityLimits">
+		<wsdl:part name="parameters" element="tns:GetVelocityLimits"/>
+	</wsdl:message>
+	<wsdl:message name="GetVelocityLimitsResponse">
+		<wsdl:part name="parameters" element="tns:GetVelocityLimitsResponse"/>
+	</wsdl:message>
+
+<!--GetVelocityURL-->
+	<wsdl:message name="GetVelocityURL">
+		<wsdl:part name="parameters" element="tns:GetVelocityURL"/>
+	</wsdl:message>
+	<wsdl:message name="GetVelocityURLResponse">
+		<wsdl:part name="parameters" element="tns:GetVelocityURLResponse"/>
+	</wsdl:message>
+
+<!--InitializePosition-->
+	<wsdl:message name="InitializePosition">
+		<wsdl:part name="parameters" element="tns:InitializePosition"/>
+	</wsdl:message>
+	<wsdl:message name="InitializePositionResponse">
+		<wsdl:part name="parameters" element="tns:InitializePositionResponse"/>
+	</wsdl:message>
+
+	<!-- SetAzimuthZero -->
+	<wsdl:message name="SetAzimuthZero">
+		<wsdl:part name="parameters" element="tns:SetAzimuthZero"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetAzimuthZeroResponse">
+		<wsdl:part name="parameters" element="tns:SetAzimuthZeroResponse"/>	
+	</wsdl:message>
+
+<!--SetPosition-->
+	<wsdl:message name="SetPosition">
+		<wsdl:part name="parameters" element="tns:SetPosition"/>
+	</wsdl:message>
+	<wsdl:message name="SetPositionResponse">
+		<wsdl:part name="parameters" element="tns:SetPositionResponse"/>
+	</wsdl:message>
+
+<!--SetPositionEventInterval-->
+	<wsdl:message name="SetPositionEventInterval">
+		<wsdl:part name="parameters" element="tns:SetPositionEventInterval"/>
+	</wsdl:message>
+	<wsdl:message name="SetPositionEventIntervalResponse">
+		<wsdl:part name="parameters" element="tns:SetPositionEventIntervalResponse"/>
+	</wsdl:message>
+
+<!--SetVelocity-->
+	<wsdl:message name="SetVelocity">
+		<wsdl:part name="parameters" element="tns:SetVelocity"/>
+	</wsdl:message>
+	<wsdl:message name="SetVelocityResponse">
+		<wsdl:part name="parameters" element="tns:SetVelocityResponse"/>
+	</wsdl:message>
+
+<!--ViewObject-->
+	<wsdl:message name="ViewObject">
+		<wsdl:part name="parameters" element="tns:ViewObject"/>
+	</wsdl:message>
+	<wsdl:message name="ViewObjectResponse">
+		<wsdl:part name="parameters" element="tns:ViewObjectResponse"/>
+	</wsdl:message>
+	
+	<!-- Ports -->
+	<wsdl:portType name="PositioningControlPortType">
+			<wsdl:operation name="EnableSpeedProfile">
+				<wsdl:documentation>Enables a speed profile.</wsdl:documentation>
+				<wsdl:input message="tns:EnableSpeedProfile"></wsdl:input>
+				<wsdl:output message="tns:EnableSpeedProfileResponse"></wsdl:output>
+			</wsdl:operation>
+			<wsdl:operation name="RestoreDefaultSpeedProfile">
+				<wsdl:documentation>Enables the default speed profile</wsdl:documentation>
+				<wsdl:input message="tns:RestoreDefaultSpeedProfile"></wsdl:input>
+				<wsdl:output message="tns:RestoreDefaultSpeedProfileResponse"></wsdl:output>
+			</wsdl:operation>
+		<wsdl:operation name="RestoreDefaultPositionLimits">
+			<wsdl:documentation>Enables the default position limits</wsdl:documentation>
+			<wsdl:input message="tns:RestoreDefaultPositionLimits"></wsdl:input>
+			<wsdl:output message="tns:RestoreDefaultPositionLimitsResponse"></wsdl:output>
+		</wsdl:operation>
+			<wsdl:operation name="GetSpeedProfile">
+				<wsdl:documentation>Retrieves a Speed profile for a given profile id</wsdl:documentation>
+				<wsdl:input message="tns:GetSpeedProfile"></wsdl:input>
+				<wsdl:output message="tns:GetSpeedProfileResponse"></wsdl:output>
+			</wsdl:operation>
+			<wsdl:operation name="GetAllSpeedProfiles">
+				<wsdl:documentation>Retrieves all available Speed Profiles.</wsdl:documentation>
+				<wsdl:input message="tns:GetAllSpeedProfiles"></wsdl:input>
+				<wsdl:output message="tns:GetAllSpeedProfilesResponse"></wsdl:output>
+			</wsdl:operation>
+		<wsdl:operation name="GetEnabledSpeedProfile">
+			<wsdl:documentation>Retrieves the currently enabled Speed Profile.</wsdl:documentation>
+			<wsdl:input message="tns:GetEnabledSpeedProfile"></wsdl:input>
+			<wsdl:output message="tns:GetEnabledSpeedProfileResponse"></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetAzimuthZero">
+			<wsdl:documentation>The internal position (in centidegrees) of the current azimuth zero setting.</wsdl:documentation>
+			<wsdl:input message="tns:GetAzimuthZero"></wsdl:input>
+			<wsdl:output message="tns:GetAzimuthZeroResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPosition">
+			<wsdl:documentation><div class="caution"><p>This value is only based on what is stored locally on the device based on the last call to the SetPosition action. Therefore it may not always return accurate data if it was moved using another action, service, or other means.</p><p>If the SetPosition action has never been called (the device has just been activated), then GetPosition will just return 0 for x and 0 for y.</p></div><p>Returns the current translational/rotational position coordinates of the device.</p></wsdl:documentation>
+			<wsdl:input message="tns:GetPosition"></wsdl:input>
+			<wsdl:output message="tns:GetPositionResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPositionEventInterval">
+			<wsdl:documentation><div class="notice"><p>While this action is advertised via UPNP, it is still not currently operational. This serves as a developer preview.</p><p>You will need to subscribe to this action through the EventArbitor service to receive related events. Calling the action directly will only return when related events will fire.</p></div><p>This action returns the interval at which events associated with translational/rotational changes associated with axis will be reported. For example, an event interval of 600 associated with the rotational position of the x-axis would imply that the service instance should generate an event for every 6 degree change in the rotational position of the device relative to the x-axis. In other words, the event interval provides for a "eventing hystresis", preventing network storms due to large numbers of events generated by numerous positioning related commands. The minimum eventing hystresis is 500 (5 degrees).</p></wsdl:documentation>
+			<wsdl:input message="tns:GetPositionEventInterval"></wsdl:input>
+			<wsdl:output message="tns:GetPositionEventIntervalResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPositionLimits">
+			<wsdl:documentation>Gets the position limits associated with the device.</wsdl:documentation>
+			<wsdl:input message="tns:GetPositionLimits"></wsdl:input>
+			<wsdl:output message="tns:GetPositionLimitsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocity">
+			<wsdl:documentation><div class="caution">Concerning SetVelocity, Spectra IV IP cameras will time out after approximately 15 seconds of not receiving another SetVelocity request. Once they time out, Spectra IV IP cameras will no longer respond to new SetVelocity requests. For SetVelocity to become operational once more, you need to send a Spectra IV IP camera a SetVelocity request with zero values.</div><p>Returns the current translational/rotational velocity of the device.</p><div class="notice"><p>This service is only available in cameras that support Protocol D.</p><p>Also note that calls to SetVelocity must be issued to the (possibly) 'out-of-band' URL returned by a call to GetVelocityURL.</p></div></wsdl:documentation>
+			<wsdl:input message="tns:GetVelocity"></wsdl:input>
+			<wsdl:output message="tns:GetVelocityResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocityLimits">
+			<wsdl:documentation>Returns the current translational/rotational velocity limits of the device.</wsdl:documentation>
+			<wsdl:input message="tns:GetVelocityLimits"></wsdl:input>
+			<wsdl:output message="tns:GetVelocityLimitsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocityURL">
+			<wsdl:documentation>Returns the URL to which SetVelocity commands can be issued through UDP.</wsdl:documentation>
+			<wsdl:input message="tns:GetVelocityURL"></wsdl:input>
+			<wsdl:output message="tns:GetVelocityURLResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InitializePosition">
+			<wsdl:documentation>Initializes the current position of the device to its absolute position within a global coordinate system. </wsdl:documentation>
+			<wsdl:input message="tns:InitializePosition"></wsdl:input>
+			<wsdl:output message="tns:InitializePositionResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetAzimuthZero">
+			<wsdl:documentation>Azimuth Zero is defined as north on the x-axis in the spherical coordinate system. It is an angular measurement with centidegrees for units (from 0-36000). There is no y or z component. This basically sets "North" in the device.</wsdl:documentation>
+			<wsdl:input message="tns:SetAzimuthZero"></wsdl:input>
+			<wsdl:output message="tns:SetAzimuthZeroResponse"></wsdl:output>			
+		</wsdl:operation>
+		<wsdl:operation name="SetPosition">
+			<wsdl:documentation>Translates/Rotates the device to the absolute position coordinates indicated by the request's Velocity instance.</wsdl:documentation>
+			<wsdl:input message="tns:SetPosition"></wsdl:input>
+			<wsdl:output message="tns:SetPositionResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetPositionEventInterval">
+			<wsdl:documentation><div class="notice">While this action is advertised via UPNP, it is still not currently operational. This serves as a developer preview.</div><p>Updates the interval at which events associated with translational/rotational changes associated with axis will be reported. </p></wsdl:documentation>
+			<wsdl:input message="tns:SetPositionEventInterval"></wsdl:input>
+			<wsdl:output message="tns:SetPositionEventIntervalResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetVelocity">
+			<wsdl:documentation><p>Updates the service provider's velocity limits.</p><div class="notice"><p>Calls to SetVelocity must be issued to the (possibly) 'out-of-band' URL returned by a call to GetVelocityURL.</p></div></wsdl:documentation>
+			<wsdl:input message="tns:SetVelocity"></wsdl:input>
+			<wsdl:output message="tns:SetVelocityResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ViewObject">
+			<wsdl:documentation><p>Orients the device relative to the sphere whose center is at the translational position specified by position and whose radius is radius.</p><div class="notice"><p>The main difference between ViewObject and the SetPosition action is that the SetPosition action is an absolute move to specific coordinates, while the ViewObject action is a relative move based on the camera's current position.</p><p>This feature applies to SpectraIV-IP cameras set to DProtocol, as well as evo and SpectraIV H264 (regardless of controlMode).</p></div><p>The rotational x and y parameters are used to move within a percentage of the current field of view of the camera. For instance, if the x parameter were 50 and the y parameter were -50, the pan/tilt would move halfway to the edge of the field of view along the x axis and halfway to the field of view along the negative y axis from its present position.</p><p>The translational z value is used to zoom relative to the current position. It is expressed in terms of magnification * 100, such that if a user wished to zoom in 2X the current magnification, the value would be 200, 2.5X the current magnification would be 250. A negative number in this field may or may not be implemented as it is outside the bounds of the field of view.</p></wsdl:documentation>
+			<wsdl:input message="tns:ViewObject"></wsdl:input>
+			<wsdl:output message="tns:ViewObjectResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<!-- Bindings -->
+
+	<wsdl:binding name="PositioningControl"
+		type="tns:PositioningControlPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="EnableSpeedProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#EnableSpeedProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RestoreDefaultSpeedProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#RestoreDefaultSpeedProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="RestoreDefaultPositionLimits">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#RestoreDefaultPositionLimits" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSpeedProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetSpeedProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllSpeedProfiles">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetAllSpeedProfiles" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetEnabledSpeedProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetEnabledSpeedProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAzimuthZero">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetAzimuthZero" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPosition">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetPosition" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPositionEventInterval">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetPositionEventInterval" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPositionLimits">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetPositionLimits" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocity">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetVelocity" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocityLimits">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetVelocityLimits" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVelocityURL">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#GetVelocityURL" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InitializePosition">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#InitializePosition" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetAzimuthZero">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#SetAzimuthZero" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetPosition">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#SetPosition" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetPositionEventInterval">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#SetPositionEventInterval" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetVelocity">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#SetVelocity" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ViewObject">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:PositioningControl:1#ViewObject" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+</wsdl:definitions>

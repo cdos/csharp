@@ -1,0 +1,184 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>CameraConfiguration - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		$Id: CameraConfigurationV1.wsdl 595 2011-05-17 17:49:38Z  $
+	</div><div class="page"><div><p>This service allows a client to: 
+			<ul><li>query a camera device's current configuration state</li><li>update a camera device's configuration state</li><li>reset a camera device's configuration state to factory defaults</li></ul></p><div class="notice">Pelco IP-based devices use the newer StreamConfiguration service instead, except in cases where contrast, saturation, and brightness settings need to be modified.</div></div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:CameraConfiguration:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.GetConfiguration">GetConfiguration</a></h2><div class="value">
+</div><div class="value">Returns a given camera's current configuration.</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:CameraConfiguration:1#GetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetConfiguration]<div style="color:#1E3E66;">Request to return the values for the currently active mode of the camera.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetConfigurationResponse]<div style="color:#1E3E66;">Returns the values for the currently active mode of the camera</div><ul type="square"><li><b>cameraConfig</b> [CameraConfig]<ul type="square"><li><b>videoproperties</b> - optional;  [VideoProperties]<ul type="square"><li><b>brightness</b> - optional;  [MVElement]<div style="color:#1E3E66;">The amount of light in the frame.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>contrast</b> - optional;  [MVElement]<div style="color:#1E3E66;">Contrast is defined as the separation between the darkest and brightest areas of the frame. As contrast is increased, the separation between dark and bright is increased, making shadows darker and highlights brighter. As contrast is decreased, the shadows increase and the highlights are decreased to make the values closer to one another. </div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>hue</b> - optional;  [MVElement]<div style="color:#1E3E66;">A specific color range classification.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>saturation</b> - optional;  [MVElement]<div style="color:#1E3E66;">The intensity of a hue.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>filterLevel</b> [int]<div style="color:#1E3E66;"><p>The noise filter level to be applied. Must be one of the following values: 
+								<ul><li>0 for LOW</li><li>1 for MEDIUM</li><li>2 for HIGH 0 is a typical value.</li></ul></p></div></li> </ul></li><li><b>videoQuality</b> - optional; <div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;">Determines the quality of video recordings.</div></li><li><b>coaxMode</b> - optional;  [int]<div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;"><p>The coaxitron mode to be used to control the camera. Currently acceptable values are: 
+								<ul><li>0 for DISABLED</li><li>1 for STANDARD</li><li>2 for EXTENDED</li></ul></p></div></li><li><b>controlMode</b> - optional;  [ConfigurableInt]<div style="color:#1E3E66;"><p>Describes the type of camera control. This is restricted to the following values:
+							<ul><li>0 for DISABLED</li><li>1 for COAXITRON (BNC COAX)</li><li>2 for EXCOAXITRON (BNC COAX)</li><li>3 for DPROTOCOL (2 wire RS485 or 4 wire RS422)</li><li>4 for PPROTOCOL (deprecated)</li></ul></p></div></li><li><b>cameraAddress</b> [int]<div style="color:#1E3E66;">An index of the camera's location within a group of cameras.</div></li><li><b>cameraType</b> - optional;  [ConfigurableInt]<div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;"><p>Describes the type of camera.    
+								<ul><li>configurable - set to 1 (true) if configurable, 0 (false) otherwise. This is restricted to the following values:
+									<ul><li>0 for FIXED - unmovable camera</li><li>1 for PANTILT - a movable camera that has a greater range of motion</li><li>2 for DOME - a camera that utlizes a dome enclosure</li></ul></li></ul></p></div></li><li><b>distinguishers</b> - optional;  [Distinguishers]<ul type="square"><li><b>viewobject</b> - optional;  [int]<div style="color:#1E3E66;">For cameras supporting the view object command set this value to 1, otherwise set it to 0 or omit the viewobject sub element entirely.</div></li><li><b>dome</b> - optional;  [int]<div style="color:#1E3E66;">For dome cameras set this value to 1, otherwise set it to 0 or omit the dome sub element entirely.</div></li><li><b>ptz</b> - optional;  [int]<div style="color:#1E3E66;">For ptz cameras set this value to 1, otherwise set it to 0 or omit the ptz sub element entirely.</div></li><li><b>fixed</b> - optional;  [int]<div style="color:#1E3E66;">For fixed cameras set this value to 1, otherwise set it to 0 or omit the fixed sub element entirely.</div></li> </ul></li><li><b>motionDetectionEnable</b> [int]<div style="color:#1E3E66;"><p>Enable or disable motion detection service. This is restricted to the following values: 
+								<ul><li>-1 for unsupported</li><li>0 for disabled</li><li>1 for enabled</li></ul></p></div></li><li><b>motionAlarmDwellSecs</b> - optional;  [int]<div style="color:#1E3E66;">The amount of time the motion alarm should stay “high” after it is activated.</div></li><li><b>audioEnable</b> [int]<div style="color:#1E3E66;"><p>Determines the camera's current audio status. Must be one of the following values: 
+								<ul><li>-1 for TS_UNSUPPORTED</li><li>0 for TS_DISABLED</li><li>1 for TS_ENABLED</li></ul></p></div></li><li><b>termination</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to enable termination, 0 (false) otherwise.</div></li><li><b>audioHardwareInput</b> - optional;  [int]<div style="color:#1E3E66;"><p>Indicates what source to use for audio input. This setting is primarily used by encoders that do not have a DIP switch that controls this setting. Must be set to one of the following:
+							<ul><li>-1 for TS_AUDIO_HW_INPUT_UNSUPPORTED: If the input cannot be configured through software then it this should be set to unsupported.</li><li>0 for TS_AUDIO_HW_INPUT_LINE_IN: To use the line in for input.</li><li>1 for TS_AUDIO_HW_INPUT_MIC: To use the mic port as the input.</li></ul></p></div></li><li><b>ttl</b> [int]<div style="color:#1E3E66;"><p>The time to live of the IP datagrams of RTPpackets. 
+								<ul><li>Valid range is 1 - 255.</li><li>255 is the average value used</li><li>TTL value gets subtracted by 1 for each router it goes through. When zero is reached, the package is discarded.</li></ul></p></div></li><li><b>packetsize</b> [int]<div style="color:#1E3E66;">The size of each network packet.</div></li><li><b>videopair</b> - optional;  [VideoPair]<ul type="square"><li><b>name</b> - optional, nillable;  [string]<div style="color:#1E3E66;">This defines the properties for both video channels (primary and secondary). This attribute is limited to the following values defined in Video Pair Values.</div></li><li><b>primary</b> - optional, nillable;  [VideoChannel]<div style="color:#1E3E66;">Represents a VideoChannel data element. The primary video channel's settings correlate to the secondary video channel's settings.</div><ul type="square"><li><b>framerate</b> [double]<div style="color:#1E3E66;">The number of video frames captured in a given space of time.</div></li><li><b>bitrate</b> [int]<div style="color:#1E3E66;">The average number of bits that one second of video or audio data will consume.</div></li><li><b>format</b> - optional, nillable;  [string]<div style="color:#1E3E66;"><p>The file format of the video stream. Must be one of the following values: 
+								<ul><li>Mpeg-4</li><li>H.264</li></ul></p></div></li><li><b>videosize</b> [int]<div style="color:#1E3E66;"><p>The resolution of the camera's generated video stream. Can be one of the following values: 
+								<ul><li>0 for QCIF  NTSC:176x112  PAL:176x144</li><li>1 for CIF   NTSC:352×240  PAL:352x288</li><li>2 for 2CIF  NTSC:704x240  PAL:704x288</li><li>3 for 4CIF  NTSC:704x480  PAL:704x576</li><li>4 for D1    NTSC:720x480  PAL:720x576</li></ul></p></div></li><li><b>tvformat</b> [int]<div style="color:#1E3E66;"><p>The TV Format of the camera's generated video stream. Must be one of the following values: 
+								<ul><li>0 for NTSC</li><li>1 for PAL</li></ul></p></div></li><li><b>pruneStoredVideo</b> - optional;  [int]<div style="color:#1E3E66;">This configuration values is stored on the camera but has no effect on it. The value is read by a NSD/NVR which can then change its recording behavior based on the value of this setting.</div></li><li><b>gop</b> [double]<div style="color:#1E3E66;">The number of frames in one GOP (Group of Pictures). The typical value ranges from 4-20 frames.</div></li> </ul></li><li><b>secondary</b> - optional, nillable;  [VideoChannel]<div style="color:#1E3E66;">Represents a VideoChannel data element. The secondary video channel's settings correlate to the primary video channel's settings.</div><ul type="square"><li><b>framerate</b> [double]<div style="color:#1E3E66;">The number of video frames captured in a given space of time.</div></li><li><b>bitrate</b> [int]<div style="color:#1E3E66;">The average number of bits that one second of video or audio data will consume.</div></li><li><b>format</b> - optional, nillable;  [string]<div style="color:#1E3E66;"><p>The file format of the video stream. Must be one of the following values: 
+								<ul><li>Mpeg-4</li><li>H.264</li></ul></p></div></li><li><b>videosize</b> [int]<div style="color:#1E3E66;"><p>The resolution of the camera's generated video stream. Can be one of the following values: 
+								<ul><li>0 for QCIF  NTSC:176x112  PAL:176x144</li><li>1 for CIF   NTSC:352×240  PAL:352x288</li><li>2 for 2CIF  NTSC:704x240  PAL:704x288</li><li>3 for 4CIF  NTSC:704x480  PAL:704x576</li><li>4 for D1    NTSC:720x480  PAL:720x576</li></ul></p></div></li><li><b>tvformat</b> [int]<div style="color:#1E3E66;"><p>The TV Format of the camera's generated video stream. Must be one of the following values: 
+								<ul><li>0 for NTSC</li><li>1 for PAL</li></ul></p></div></li><li><b>pruneStoredVideo</b> - optional;  [int]<div style="color:#1E3E66;">This configuration values is stored on the camera but has no effect on it. The value is read by a NSD/NVR which can then change its recording behavior based on the value of this setting.</div></li><li><b>gop</b> [double]<div style="color:#1E3E66;">The number of frames in one GOP (Group of Pictures). The typical value ranges from 4-20 frames.</div></li> </ul></li> </ul></li><li><b>localQuality</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to use the configuration settings found on camera itself; otherwise set to 0 (false) to use global settings found on the local Endura System Manager.</div></li><li><b>maxUnicast</b> - optional; <div style="color:#1E3E66;">The maximum number of concurrent unicast video streams.</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.ResetConfiguration">ResetConfiguration</a></h2><div class="value">
+</div><div class="value"><p>Resets a camera's configuration to factory defaults.</p><div class="caution">It is not recommended to use this action for PTZ cameras, since the factory default is to disable PTZ functionality.</div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:CameraConfiguration:1#ResetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ResetConfiguration]<div style="color:#1E3E66;">Represents the data for a ResetConfiguration request.</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ResetConfigurationResponse]<div style="color:#1E3E66;">Represents the data for a ResetConfiguration response.</div></div></li><li><h2><a name="op.SetConfiguration">SetConfiguration</a></h2><div class="value">
+</div><div class="value"><p>Sets the current camera configuration to the configuration indicated by cameraConfig.</p><div class="caution">Every time you attempt to modify the camera's configuration, you must send a full camera config parameter. (Preferably, one you just retreived from GetConfiguration and modified.) Failure to do so will result in settings (specifically the ones that were not initialized in the CameraConfig instance) being reverted to factory defaults.<p>Failure to use known valid settings may cause unexpected camera behavior.</p><p>The configuration changes apply to the currently active camera mode (e.g., normal vs. low-light, etc.).</p></div></div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:CameraConfiguration:1#SetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetConfiguration]<div style="color:#1E3E66;">Applies a specific set of configurations to the currently active mode of the camera.</div><ul type="square"><li><b>cameraConfig</b> [CameraConfig]<ul type="square"><li><b>videoproperties</b> - optional;  [VideoProperties]<ul type="square"><li><b>brightness</b> - optional;  [MVElement]<div style="color:#1E3E66;">The amount of light in the frame.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>contrast</b> - optional;  [MVElement]<div style="color:#1E3E66;">Contrast is defined as the separation between the darkest and brightest areas of the frame. As contrast is increased, the separation between dark and bright is increased, making shadows darker and highlights brighter. As contrast is decreased, the shadows increase and the highlights are decreased to make the values closer to one another. </div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>hue</b> - optional;  [MVElement]<div style="color:#1E3E66;">A specific color range classification.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>saturation</b> - optional;  [MVElement]<div style="color:#1E3E66;">The intensity of a hue.</div><ul type="square"><li><b>mode</b> [int]<div style="color:#1E3E66;">0 for manual, 1 for automatic</div></li><li><b>value</b> [int]<div style="color:#1E3E66;">0 - 100, 50 is a typical value. This is only used if the mode value is 0 (manual).</div></li> </ul></li><li><b>filterLevel</b> [int]<div style="color:#1E3E66;"><p>The noise filter level to be applied. Must be one of the following values: 
+								<ul><li>0 for LOW</li><li>1 for MEDIUM</li><li>2 for HIGH 0 is a typical value.</li></ul></p></div></li> </ul></li><li><b>videoQuality</b> - optional; <div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;">Determines the quality of video recordings.</div></li><li><b>coaxMode</b> - optional;  [int]<div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;"><p>The coaxitron mode to be used to control the camera. Currently acceptable values are: 
+								<ul><li>0 for DISABLED</li><li>1 for STANDARD</li><li>2 for EXTENDED</li></ul></p></div></li><li><b>controlMode</b> - optional;  [ConfigurableInt]<div style="color:#1E3E66;"><p>Describes the type of camera control. This is restricted to the following values:
+							<ul><li>0 for DISABLED</li><li>1 for COAXITRON (BNC COAX)</li><li>2 for EXCOAXITRON (BNC COAX)</li><li>3 for DPROTOCOL (2 wire RS485 or 4 wire RS422)</li><li>4 for PPROTOCOL (deprecated)</li></ul></p></div></li><li><b>cameraAddress</b> [int]<div style="color:#1E3E66;">An index of the camera's location within a group of cameras.</div></li><li><b>cameraType</b> - optional;  [ConfigurableInt]<div style="color:#1E3E66;"><div class="caution">DEPRECATED. Available only for backwards compatibility.</div></div><div style="color:#1E3E66;"><p>Describes the type of camera.    
+								<ul><li>configurable - set to 1 (true) if configurable, 0 (false) otherwise. This is restricted to the following values:
+									<ul><li>0 for FIXED - unmovable camera</li><li>1 for PANTILT - a movable camera that has a greater range of motion</li><li>2 for DOME - a camera that utlizes a dome enclosure</li></ul></li></ul></p></div></li><li><b>distinguishers</b> - optional;  [Distinguishers]<ul type="square"><li><b>viewobject</b> - optional;  [int]<div style="color:#1E3E66;">For cameras supporting the view object command set this value to 1, otherwise set it to 0 or omit the viewobject sub element entirely.</div></li><li><b>dome</b> - optional;  [int]<div style="color:#1E3E66;">For dome cameras set this value to 1, otherwise set it to 0 or omit the dome sub element entirely.</div></li><li><b>ptz</b> - optional;  [int]<div style="color:#1E3E66;">For ptz cameras set this value to 1, otherwise set it to 0 or omit the ptz sub element entirely.</div></li><li><b>fixed</b> - optional;  [int]<div style="color:#1E3E66;">For fixed cameras set this value to 1, otherwise set it to 0 or omit the fixed sub element entirely.</div></li> </ul></li><li><b>motionDetectionEnable</b> [int]<div style="color:#1E3E66;"><p>Enable or disable motion detection service. This is restricted to the following values: 
+								<ul><li>-1 for unsupported</li><li>0 for disabled</li><li>1 for enabled</li></ul></p></div></li><li><b>motionAlarmDwellSecs</b> - optional;  [int]<div style="color:#1E3E66;">The amount of time the motion alarm should stay “high” after it is activated.</div></li><li><b>audioEnable</b> [int]<div style="color:#1E3E66;"><p>Determines the camera's current audio status. Must be one of the following values: 
+								<ul><li>-1 for TS_UNSUPPORTED</li><li>0 for TS_DISABLED</li><li>1 for TS_ENABLED</li></ul></p></div></li><li><b>termination</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to enable termination, 0 (false) otherwise.</div></li><li><b>audioHardwareInput</b> - optional;  [int]<div style="color:#1E3E66;"><p>Indicates what source to use for audio input. This setting is primarily used by encoders that do not have a DIP switch that controls this setting. Must be set to one of the following:
+							<ul><li>-1 for TS_AUDIO_HW_INPUT_UNSUPPORTED: If the input cannot be configured through software then it this should be set to unsupported.</li><li>0 for TS_AUDIO_HW_INPUT_LINE_IN: To use the line in for input.</li><li>1 for TS_AUDIO_HW_INPUT_MIC: To use the mic port as the input.</li></ul></p></div></li><li><b>ttl</b> [int]<div style="color:#1E3E66;"><p>The time to live of the IP datagrams of RTPpackets. 
+								<ul><li>Valid range is 1 - 255.</li><li>255 is the average value used</li><li>TTL value gets subtracted by 1 for each router it goes through. When zero is reached, the package is discarded.</li></ul></p></div></li><li><b>packetsize</b> [int]<div style="color:#1E3E66;">The size of each network packet.</div></li><li><b>videopair</b> - optional;  [VideoPair]<ul type="square"><li><b>name</b> - optional, nillable;  [string]<div style="color:#1E3E66;">This defines the properties for both video channels (primary and secondary). This attribute is limited to the following values defined in Video Pair Values.</div></li><li><b>primary</b> - optional, nillable;  [VideoChannel]<div style="color:#1E3E66;">Represents a VideoChannel data element. The primary video channel's settings correlate to the secondary video channel's settings.</div><ul type="square"><li><b>framerate</b> [double]<div style="color:#1E3E66;">The number of video frames captured in a given space of time.</div></li><li><b>bitrate</b> [int]<div style="color:#1E3E66;">The average number of bits that one second of video or audio data will consume.</div></li><li><b>format</b> - optional, nillable;  [string]<div style="color:#1E3E66;"><p>The file format of the video stream. Must be one of the following values: 
+								<ul><li>Mpeg-4</li><li>H.264</li></ul></p></div></li><li><b>videosize</b> [int]<div style="color:#1E3E66;"><p>The resolution of the camera's generated video stream. Can be one of the following values: 
+								<ul><li>0 for QCIF  NTSC:176x112  PAL:176x144</li><li>1 for CIF   NTSC:352×240  PAL:352x288</li><li>2 for 2CIF  NTSC:704x240  PAL:704x288</li><li>3 for 4CIF  NTSC:704x480  PAL:704x576</li><li>4 for D1    NTSC:720x480  PAL:720x576</li></ul></p></div></li><li><b>tvformat</b> [int]<div style="color:#1E3E66;"><p>The TV Format of the camera's generated video stream. Must be one of the following values: 
+								<ul><li>0 for NTSC</li><li>1 for PAL</li></ul></p></div></li><li><b>pruneStoredVideo</b> - optional;  [int]<div style="color:#1E3E66;">This configuration values is stored on the camera but has no effect on it. The value is read by a NSD/NVR which can then change its recording behavior based on the value of this setting.</div></li><li><b>gop</b> [double]<div style="color:#1E3E66;">The number of frames in one GOP (Group of Pictures). The typical value ranges from 4-20 frames.</div></li> </ul></li><li><b>secondary</b> - optional, nillable;  [VideoChannel]<div style="color:#1E3E66;">Represents a VideoChannel data element. The secondary video channel's settings correlate to the primary video channel's settings.</div><ul type="square"><li><b>framerate</b> [double]<div style="color:#1E3E66;">The number of video frames captured in a given space of time.</div></li><li><b>bitrate</b> [int]<div style="color:#1E3E66;">The average number of bits that one second of video or audio data will consume.</div></li><li><b>format</b> - optional, nillable;  [string]<div style="color:#1E3E66;"><p>The file format of the video stream. Must be one of the following values: 
+								<ul><li>Mpeg-4</li><li>H.264</li></ul></p></div></li><li><b>videosize</b> [int]<div style="color:#1E3E66;"><p>The resolution of the camera's generated video stream. Can be one of the following values: 
+								<ul><li>0 for QCIF  NTSC:176x112  PAL:176x144</li><li>1 for CIF   NTSC:352×240  PAL:352x288</li><li>2 for 2CIF  NTSC:704x240  PAL:704x288</li><li>3 for 4CIF  NTSC:704x480  PAL:704x576</li><li>4 for D1    NTSC:720x480  PAL:720x576</li></ul></p></div></li><li><b>tvformat</b> [int]<div style="color:#1E3E66;"><p>The TV Format of the camera's generated video stream. Must be one of the following values: 
+								<ul><li>0 for NTSC</li><li>1 for PAL</li></ul></p></div></li><li><b>pruneStoredVideo</b> - optional;  [int]<div style="color:#1E3E66;">This configuration values is stored on the camera but has no effect on it. The value is read by a NSD/NVR which can then change its recording behavior based on the value of this setting.</div></li><li><b>gop</b> [double]<div style="color:#1E3E66;">The number of frames in one GOP (Group of Pictures). The typical value ranges from 4-20 frames.</div></li> </ul></li> </ul></li><li><b>localQuality</b> [int]<div style="color:#1E3E66;">Set to 1 (true) to use the configuration settings found on camera itself; otherwise set to 0 (false) to use global settings found on the local Endura System Manager.</div></li><li><b>maxUnicast</b> - optional; <div style="color:#1E3E66;">The maximum number of concurrent unicast video streams.</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetConfigurationResponse]<div style="color:#1E3E66;">Represents the data for a SetConfiguration response.</div></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>

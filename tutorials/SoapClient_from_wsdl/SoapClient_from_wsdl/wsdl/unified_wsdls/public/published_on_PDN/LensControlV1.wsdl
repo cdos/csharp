@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="urn:schemas-pelco-com:service:LensControl:1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="urn:schemas-pelco-com:service:LensControl:1">
+
+	<wsdl:documentation>
+		<p>$Id: LensControlV1.wsdl 607 2011-08-23 23:56:33Z  $</p>
+		<div class="revhistory">
+			<div class="revision">
+				<div class="revnumber">1.0</div>
+				<div class="date">22 Nov 2010</div>
+				<div class="revremark">Updated documentation, incorporated review comments, changed unsignedInt to float for magnification.</div>
+			</div>
+			<div class="revision">
+				<div class="revnumber">1.1</div>
+				<div class="date">11 Mar 2011</div>
+				<div class="revremark">Removed interpretation of zoom factor as singular values rather than centidegrees, due to current product implementations.</div>
+			</div>
+		</div>
+	</wsdl:documentation>
+	
+	<!-- Services -->
+	
+	<wsdl:service name="LensControl">
+		<wsdl:documentation><p>This service allows control of a camera's lens. Specifically the following elements are configurable:
+			<ul>
+				<li>configuration of the iris</li>
+				<li>configuration of lens focus</li>
+				<li>magnification level of the lens</li>
+				<li>maximum angle of view of the lens</li></ul>
+		</p></wsdl:documentation>
+		<wsdl:port binding="tns:LensControl" name="LensControl">
+			<soap:address
+				location="http://localhost:49152/control/LensControl-1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	<!-- Types -->
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:LensControl:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<!-- AutoFocus -->
+			<xsd:element name="AutoFocus">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the AutoFocus action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="onOff" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>State of the auto focus setting of the lens. Controls which aspects of a picture are sharp. Must be one of:
+								<ul>
+								<li>0 for OFF</li>
+								<li>1 for ON</li></ul></p>
+							</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="AutoFocusResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the AutoFocus action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- AutoIris -->
+			<xsd:element name="AutoIris">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the AutoIris action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="onOff" type="xsd:int">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>State of the auto iris setting of the lens. The iris controls exposure or how bright the video frames will appear. Must be one of:
+								<ul>
+									<li>0 for OFF</li>
+									<li>1 for ON</li></ul></p></xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="AutoIrisResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the AutoIris action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- Focus -->
+			<xsd:element name="Focus">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the Focus action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="nearFar" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>This action sets the state of the focus setting of the lens, which moves the focus motor in a particular direction. The motor keeps moving until it hits a limit or stop is called. Must be one of:
+								<ul>
+								<li>0 for STOP</li>
+								<li>1 for NEAR</li>
+								<li>2 for FAR</li></ul></p>
+							</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="FocusResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the Focus action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetMag -->
+			<xsd:element name="GetMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the GetMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the GetMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">State of the focus setting of the lens. The higher the value, the higher the magnification.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetMaxAOV -->
+			<xsd:element name="GetMaxAOV">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the GetMaxAOV action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMaxAOVResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the GetMaxAOV action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="aovMax" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">Maximum possible angle-of-view of the lens. Determines the maximum possible area that the camera can capture. Units are in centidegrees, so an aov of 90 degrees would be 9000.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetMaxDigitalMag -->
+			<xsd:element name="GetMaxDigitalMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the GetMaxDigitalMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMaxDigitalMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the GetMaxDigitalMag action</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">The maximum digital magnification of the lens. This determines the ability to see near and far.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetMaxMag -->
+			<xsd:element name="GetMaxMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the GetMaxMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMaxMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the GetMaxMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">The maximum magnification of the lens. This determines the ability to see near and far.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetMaxOpticalMag -->
+			<xsd:element name="GetMaxOpticalMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the GetMaxOpticalMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetMaxOpticalMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Respresents a response from the GetMaxOpticalMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">The maximum optical magnification of the lens. This determines the ability to see near and far.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- Iris -->
+			<xsd:element name="Iris">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the Iris action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="openClose" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>Sets the state of the iris of the lens, which starts moving the iris in a particular direction. Movement continues until a limit is reached or STOP is called. Must be one of:
+								<ul>
+								<li>0 for STOP</li>
+								<li>1 for CLOSE</li>
+								<li>2 for OPEN</li></ul></p>
+							</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="IrisResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the Iris action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- SetMag -->
+			<xsd:element name="SetMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the SetMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">The maximum optical magnification of the lens. This determines the ability to see near and far.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the SetMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- SetMaxMag -->
+			<xsd:element name="SetMaxMag">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the SetMaxMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="magnification" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en">The maximum magnification value. Must be between 1 and DigitalMaxMag value.</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetMaxMagResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a respones from the SetMaxMag action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- Stop -->
+			<xsd:element name="Stop">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the Stop action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="StopResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the Stop action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- Zoom -->
+			<xsd:element name="Zoom">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a request to the Zoom action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="inOut" type="xsd:unsignedInt">
+							<xsd:annotation><xsd:documentation xml:lang="en"><p>Controls the lens zoom in and out. Must be one of:
+								<ul>
+								<li>0 for STOP</li>
+								<li>1 for OUT</li>
+								<li>2 for IN</li></ul></p>
+							</xsd:documentation></xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ZoomResponse">
+				<xsd:annotation><xsd:documentation xml:lang="en">Represents a response from the Zoom action.</xsd:documentation></xsd:annotation>
+				<xsd:complexType/>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- AutoFocus -->	
+	<wsdl:message name="AutoFocus">
+		<wsdl:part name="parameters" element="tns:AutoFocus"/>
+	</wsdl:message>
+	<wsdl:message name="AutoFocusResponse">
+		<wsdl:part name="parameters" element="tns:AutoFocusResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="AutoIris">
+		<wsdl:part name="parameters" element="tns:AutoIris"/>
+	</wsdl:message>
+	<wsdl:message name="AutoIrisResponse">
+		<wsdl:part name="parameters" element="tns:AutoIrisResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Focus">
+		<wsdl:part name="parameters" element="tns:Focus"/>
+	</wsdl:message>
+	<wsdl:message name="FocusResponse">
+		<wsdl:part name="parameters" element="tns:FocusResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetMag">
+		<wsdl:part name="parameters" element="tns:GetMag"/>
+	</wsdl:message>
+	<wsdl:message name="GetMagResponse">
+		<wsdl:part name="parameters" element="tns:GetMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetMaxAOV">
+		<wsdl:part name="parameters" element="tns:GetMaxAOV"/>
+	</wsdl:message>
+	<wsdl:message name="GetMaxAOVResponse">
+		<wsdl:part name="parameters" element="tns:GetMaxAOVResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetMaxDigitalMag">
+		<wsdl:part name="parameters" element="tns:GetMaxDigitalMag"/>
+	</wsdl:message>
+	<wsdl:message name="GetMaxDigitalMagResponse">
+		<wsdl:part name="parameters" element="tns:GetMaxDigitalMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetMaxMag">
+		<wsdl:part name="parameters" element="tns:GetMaxMag"/>
+	</wsdl:message>
+	<wsdl:message name="GetMaxMagResponse">
+		<wsdl:part name="parameters" element="tns:GetMaxMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetMaxOpticalMag">
+		<wsdl:part name="parameters" element="tns:GetMaxOpticalMag"/>
+	</wsdl:message>
+	<wsdl:message name="GetMaxOpticalMagResponse">
+		<wsdl:part name="parameters" element="tns:GetMaxOpticalMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Iris">
+		<wsdl:part name="parameters" element="tns:Iris"/>
+	</wsdl:message>
+	<wsdl:message name="IrisResponse">
+		<wsdl:part name="parameters" element="tns:IrisResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetMag">
+		<wsdl:part name="parameters" element="tns:SetMag"/>
+	</wsdl:message>
+	<wsdl:message name="SetMagResponse">
+		<wsdl:part name="parameters" element="tns:SetMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetMaxMag">
+		<wsdl:part name="parameters" element="tns:SetMaxMag"/>
+	</wsdl:message>
+	<wsdl:message name="SetMaxMagResponse">
+		<wsdl:part name="parameters" element="tns:SetMaxMagResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Stop">
+		<wsdl:part name="parameters" element="tns:Stop"/>
+	</wsdl:message>
+	<wsdl:message name="StopResponse">
+		<wsdl:part name="parameters" element="tns:StopResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="Zoom">
+		<wsdl:part name="parameters" element="tns:Zoom"/>
+	</wsdl:message>
+	<wsdl:message name="ZoomResponse">
+		<wsdl:part name="parameters" element="tns:ZoomResponse"/>
+	</wsdl:message>
+
+	<!-- Ports -->
+
+	<wsdl:portType name="LensControlPortType">
+		<wsdl:operation name="AutoFocus">
+			<wsdl:documentation>Turns auto focus on/off.</wsdl:documentation>
+			<wsdl:input message="tns:AutoFocus"></wsdl:input>
+			<wsdl:output message="tns:AutoFocusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AutoIris">
+			<wsdl:documentation>Turns auto iris on/off.</wsdl:documentation>
+			<wsdl:input message="tns:AutoIris"></wsdl:input>
+			<wsdl:output message="tns:AutoIrisResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Focus">
+			<wsdl:documentation>Focuses the lens near/far, continuously until a limit is reached.</wsdl:documentation>
+			<wsdl:input message="tns:Focus"></wsdl:input>
+			<wsdl:output message="tns:FocusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMag">
+			<wsdl:documentation><p>Gets the current magnification of the lens.</p></wsdl:documentation>
+			<wsdl:input message="tns:GetMag"></wsdl:input>
+			<wsdl:output message="tns:GetMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxAOV">
+			<wsdl:documentation>Returns the maximum possible angle-of-view of the lens.</wsdl:documentation>
+			<wsdl:input message="tns:GetMaxAOV"></wsdl:input>
+			<wsdl:output message="tns:GetMaxAOVResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxDigitalMag">
+			<wsdl:documentation><p>Returns the maximum digital magnification of the lens.</p></wsdl:documentation>
+			<wsdl:input message="tns:GetMaxDigitalMag"></wsdl:input>
+			<wsdl:output message="tns:GetMaxDigitalMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxMag">
+			<wsdl:documentation>Gets the total maximum magnification of the lens (GetMaxMag = GetMaxOpticalMag * GetMaxDigitalMag). Total zoom magnification is calculated by multiplying the optical zoom by the digital zoom.</wsdl:documentation>
+			<wsdl:input message="tns:GetMaxMag"></wsdl:input>
+			<wsdl:output message="tns:GetMaxMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxOpticalMag">
+			<wsdl:documentation>Returns the maximum optical magnification of the lens.</wsdl:documentation>
+			<wsdl:input message="tns:GetMaxOpticalMag"></wsdl:input>
+			<wsdl:output message="tns:GetMaxOpticalMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Iris">
+			<wsdl:documentation>Opens/closes the lens iris, continuously until a limit is reached.</wsdl:documentation>
+			<wsdl:input message="tns:Iris"></wsdl:input>
+			<wsdl:output message="tns:IrisResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetMag">
+			<wsdl:documentation>Sets the current magnification of the lens. Magnification must be between 1 and MaxMag value.</wsdl:documentation>
+			<wsdl:input message="tns:SetMag"></wsdl:input>
+			<wsdl:output message="tns:SetMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetMaxMag">
+			<wsdl:documentation>Sets the current maximum magnification limit of the lens.</wsdl:documentation>
+			<wsdl:input message="tns:SetMaxMag"></wsdl:input>
+			<wsdl:output message="tns:SetMaxMagResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Stop">
+			<wsdl:documentation><p>Stops all currently executing lens operations.</p>
+				<div class="notice">Anytime you explicitly call the Iris, Focus, or Zoom actions; the camera will continue executing them (opening the iris, zooming in, ...) regardless of whether the camera has reached the maximum or minimum state (maximum zoom or focus value). At some point, this action must be called.</div></wsdl:documentation>
+			<wsdl:input message="tns:Stop"></wsdl:input>
+			<wsdl:output message="tns:StopResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Zoom">
+			<wsdl:documentation>Changes the magnification of the lens, continuously zooming in or out until a limit is reached.</wsdl:documentation>
+			<wsdl:input message="tns:Zoom"></wsdl:input>
+			<wsdl:output message="tns:ZoomResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="LensControl" type="tns:LensControlPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="AutoFocus">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#AutoFocus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AutoIris">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#AutoIris" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Focus">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#Focus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#GetMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxAOV">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#GetMaxAOV" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxDigitalMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#GetMaxDigitalMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#GetMaxMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMaxOpticalMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#GetMaxOpticalMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Iris">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#Iris" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#SetMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SetMaxMag">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#SetMaxMag" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Stop">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#Stop" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Zoom">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:LensControl:1#Zoom" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+</wsdl:definitions>

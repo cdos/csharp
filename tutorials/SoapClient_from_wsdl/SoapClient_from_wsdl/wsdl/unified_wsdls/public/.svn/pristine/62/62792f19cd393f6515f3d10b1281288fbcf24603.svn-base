@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wsdl-viewer.xsl"?>
+
+<wsdl:definitions
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:schemas-pelco-com:service:VideoAnalytics:1"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:schemas-pelco-com:service:VideoAnalytics:1">
+
+	<wsdl:documentation>
+		Pelco Video Analytics service definition.
+	</wsdl:documentation>
+
+	<!-- Types -->
+
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="urn:schemas-pelco-com:service:VideoAnalytics:1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+			<!-- Common types -->
+			<xsd:complexType name="Profile">
+				<xsd:sequence>
+					<xsd:element name="analyticConfig" type="xsd:anyType"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="ProfileSummary">
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attribute name="id" type="xsd:int" use="required" />
+						<xsd:attribute name="active" type="xsd:boolean" use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+
+			<xsd:complexType name="ProfileList">
+				<xsd:sequence>
+					<xsd:element name="profile" type="tns:ProfileSummary" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Behavior">
+				<xsd:sequence>
+					<xsd:element name="type" type="xsd:string"/>
+					<xsd:element name="userName" type="xsd:string"/>
+					<xsd:element name="uiFile" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="BehaviorList">
+				<xsd:sequence>
+					<xsd:element name="mode" type="tns:Behavior" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<!-- GetProfile & GetProfileResponse types -->
+			<xsd:element name="GetProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="config" type="xsd:anyType"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<!-- GetActiveProfile & GetActiveProfileResponse types -->
+			<xsd:element name="GetActiveProfile">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetActiveProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- ExecuteProfile & ExecuteProfileResponse types -->
+			<xsd:element name="ExecuteProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ExecuteProfileResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetProfileList & GetProfileListResponse types -->
+			<xsd:element name="GetProfileList">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetProfileListResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profileList" type="tns:ProfileList"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- StopProfile & StopProfileResponse types -->
+			<xsd:element name="StopProfile">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="StopProfileResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- AlgorithmControl & AlgorithmControlResponse types -->
+			<xsd:element name="AlgorithmControl">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="command" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="AlgorithmControlResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- DeleteProfile & DeleteProfileResponse types -->
+			<xsd:element name="DeleteProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="DeleteProfileResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<!-- GetDefaultConfiguration & GetDefaultConfigurationResponse types -->
+			<xsd:element name="GetDefaultConfiguration">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="modeId" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="GetDefaultConfigurationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="config" type="xsd:anyType"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- GetSupportedModes & GetSupportedModesResponse types -->
+			<xsd:element name="GetSupportedModes">
+				<xsd:complexType/>
+			</xsd:element>
+
+			<xsd:element name="GetSupportedModesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="supportedModes" type="tns:BehaviorList"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- SetProfile & SetProfileResponse types -->
+			<xsd:element name="SetProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"/>
+						<xsd:element name="config" type="xsd:anyType"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SetProfileResponse">
+				<xsd:complexType/>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+
+	<!-- GetProfile -->
+	<wsdl:message name="GetProfileRequest">
+		<wsdl:part name="parameters" element="tns:GetProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetProfileResponse">
+		<wsdl:part name="parameters" element="tns:GetProfileResponse"/>
+	</wsdl:message>
+
+	<!-- ExecuteProfile -->
+	<wsdl:message name="ExecuteProfileRequest">
+		<wsdl:part name="parameters" element="tns:ExecuteProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="ExecuteProfileResponse">
+		<wsdl:part name="parameters" element="tns:ExecuteProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetActiveProfile -->
+	<wsdl:message name="GetActiveProfileRequest">
+		<wsdl:part name="parameters" element="tns:GetActiveProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetActiveProfileResponse">
+		<wsdl:part name="parameters" element="tns:GetActiveProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetProfileList -->
+	<wsdl:message name="GetProfileListRequest">
+		<wsdl:part name="parameters" element="tns:GetProfileList"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetProfileListResponse">
+		<wsdl:part name="parameters" element="tns:GetProfileListResponse"/>
+	</wsdl:message>
+
+	<!-- StopProfile -->
+	<wsdl:message name="StopProfileRequest">
+		<wsdl:part name="parameters" element="tns:StopProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="StopProfileResponse">
+		<wsdl:part name="parameters" element="tns:StopProfileResponse"/>
+	</wsdl:message>
+
+	<!-- AlgorithmControl -->
+	<wsdl:message name="AlgorithmControlRequest">
+		<wsdl:part name="parameters" element="tns:AlgorithmControl"/>
+	</wsdl:message>
+
+	<wsdl:message name="AlgorithmControlResponse">
+		<wsdl:part name="parameters" element="tns:AlgorithmControlResponse"/>
+	</wsdl:message>
+
+	<!-- DeleteProfile -->
+	<wsdl:message name="DeleteProfileRequest">
+		<wsdl:part name="parameters" element="tns:DeleteProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="DeleteProfileResponse">
+		<wsdl:part name="parameters" element="tns:DeleteProfileResponse"/>
+	</wsdl:message>
+
+	<!-- GetDefaultConfiguration -->
+	<wsdl:message name="GetDefaultConfigurationRequest">
+		<wsdl:part name="parameters" element="tns:GetDefaultConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDefaultConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:GetDefaultConfigurationResponse"/>
+	</wsdl:message>
+
+	<!-- GetSupportedBehaviors -->
+	<wsdl:message name="GetSupportedModesRequest">
+		<wsdl:part name="parameters" element="tns:GetSupportedModes"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSupportedModesResponse">
+		<wsdl:part name="parameters" element="tns:GetSupportedModesResponse"/>
+	</wsdl:message>
+
+	<!-- SetProfile -->
+	<wsdl:message name="SetProfileRequest">
+		<wsdl:part name="parameters" element="tns:SetProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetProfileResponse">
+		<wsdl:part name="parameters" element="tns:SetProfileResponse"/>
+	</wsdl:message>
+
+	
+	<!-- Ports -->
+
+	<wsdl:portType name="VideoAnalyticsPortType">
+
+		<wsdl:operation name="GetProfile">
+			<wsdl:input message="tns:GetProfileRequest"/>
+			<wsdl:output message="tns:GetProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="ExecuteProfile">
+			<wsdl:input message="tns:ExecuteProfileRequest"/>
+			<wsdl:output message="tns:ExecuteProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveProfile">
+			<wsdl:input message="tns:GetActiveProfileRequest"/>
+			<wsdl:output message="tns:GetActiveProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileList">
+			<wsdl:input message="tns:GetProfileListRequest"/>
+			<wsdl:output message="tns:GetProfileListResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopProfile">
+			<wsdl:input message="tns:StopProfileRequest"/>
+			<wsdl:output message="tns:StopProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="AlgorithmControl">
+			<wsdl:input message="tns:AlgorithmControlRequest"/>
+			<wsdl:output message="tns:AlgorithmControlResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfile">
+			<wsdl:input message="tns:DeleteProfileRequest"/>
+			<wsdl:output message="tns:DeleteProfileResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultConfiguration">
+			<wsdl:input message="tns:GetDefaultConfigurationRequest"/>
+			<wsdl:output message="tns:GetDefaultConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSupportedBehaviors">
+			<wsdl:input message="tns:GetSupportedModesRequest"/>
+			<wsdl:output message="tns:GetSupportedModesResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfile">
+			<wsdl:input message="tns:SetProfileRequest"/>
+			<wsdl:output message="tns:SetProfileResponse"/>
+		</wsdl:operation>
+
+
+	</wsdl:portType>
+
+	<!-- Bindings -->
+
+	<wsdl:binding name="VideoAnalytics" type="tns:VideoAnalyticsPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="GetProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#GetProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ExecuteProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#ExecuteProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetActiveProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#GetActiveProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetProfileList">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#GetProfileList" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#StopProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSupportedBehaviors">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#GetSupportedModes" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="AlgorithmControl">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#AlgorithmControl" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#DeleteProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDefaultConfiguration">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#GetDefaultConfiguration" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProfile">
+			<soap:operation soapAction="urn:schemas-pelco-com:service:VideoAnalytics:1#SetProfile" />
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<!-- Services -->
+
+	<wsdl:service name="VideoAnalytics">
+		<wsdl:port binding="tns:VideoAnalytics" name="VideoAnalytics">
+			<soap:address location="localhost:49152/control/VideoAnalytics-1" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

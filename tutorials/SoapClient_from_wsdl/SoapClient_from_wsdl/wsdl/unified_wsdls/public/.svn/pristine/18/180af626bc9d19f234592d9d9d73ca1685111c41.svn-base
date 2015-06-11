@@ -1,0 +1,428 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="header"><img align="top" class="floatLeft" src="http://www.pelco.com/images/pelco.gif" alt="Pelco" width="142" height="60"/><h1>MonitorConfiguration - Web Service</h1><br/></div><style xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" type="text/css">
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+	}
+
+li {
+	list-style-image: none;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	}
+	
+/**
+=========================================
+	Content formatting
+=========================================
+*/
+.port {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.operation {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed silver;
+}
+
+.revhistory:before { 
+font-weight: bold;
+content: "Revision History: " }
+
+.revhistory {
+margin-left: 1.5em;
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+}
+
+.revision {
+text-align: left;
+padding-bottom: .5em;
+margin-right: 0;
+color: #1E3E66;
+border-top: 1px dashed silver;
+border-bottom: 1px dashed silver;
+}
+
+.revnumber:before { content: "Revision: " }
+.date:before { content: "Date: " }
+.revremark:before { content: "Comment: " }
+
+.notice:before { content: "NOTICE: " }
+
+.notice {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #BDE5F8;
+border-left: 10px solid #42B4E6; /* Schneider Electric Sky Blue */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('notice.png');
+padding: 5px 5px 5px 50px;
+}
+
+.caution:before { content: "CAUTION: " }
+
+.caution {
+margin: 5px 0px; 
+border: 1px solid #aaa;
+color: black;
+background-color: #FFFF99;
+border-left: 10px solid #FFDE00; /*Schneider Electric Sunflower Yellow */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('caution.png');
+padding: 5px 5px 5px 50px;
+}
+
+.warning:before { content: "WARNING: " }
+
+.warning {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFCC66;
+border-left: 10px solid #E47F00; /*Schneider Electric Honeysuckle Orange */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('warning.png');
+padding: 5px 5px 5px 50px;
+}
+
+.danger:before { content: "DANGER: " }
+
+.danger {
+margin: 5px 0px;
+border: 1px solid #aaa;
+color: black;
+background-color: #FFBABA;
+border-left: 10px solid #E7473C; /*Schneider Electric Pantone Warm Red */
+background-repeat: no-repeat;
+background-position: 10px center;
+background-image: url('danger.png');
+padding: 5px 5px 5px 50px;
+}
+
+.box {
+-moz-border-radius-bottomleft:3px;
+-moz-border-radius-bottomright:3px;
+-moz-border-radius-topleft:3px;
+-moz-border-radius-topright:3px;
+background-color:#EAEAEA;
+border-bottom-color:green;
+border-bottom-style:none;
+border-bottom-width:1px;
+border-left-color-ltr-source:physical;
+border-left-color-rtl-source:physical;
+border-left-color-value:#7994CB;
+border-left-style-ltr-source:physical;
+border-left-style-rtl-source:physical;
+border-left-style-value:solid;
+border-left-width-ltr-source:physical;
+border-left-width-rtl-source:physical;
+border-left-width-value:1px;
+border-right-color-ltr-source:physical;
+border-right-color-rtl-source:physical;
+border-right-color-value:#7994CB;
+border-right-style-ltr-source:physical;
+border-right-style-rtl-source:physical;
+border-right-style-value:solid;
+border-right-width-ltr-source:physical;
+border-right-width-rtl-source:physical;
+border-right-width-value:1px;
+border-top-color:green;
+border-top-style:none;
+border-top-width:1px;
+padding-left:6px;
+padding-right:4px;
+padding-top:6px;
+max-width: 70em;
+}</style><div xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" id="outer_box"><div id="inner_box" onload="pagingInit()"><div id="content"><div>
+		$Id: MonitorConfigurationV1.wsdl 474 2010-12-22 19:25:11Z  $
+	</div><div class="page"><div>
+			This service is used to configure user settings for an Endura Monitor device. 
+		</div><div class="indent"><div class="label">Target Namespace:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1</div><div class="value"/>[toc]</div></div><div class="page"><h1>Operations</h1><ul><div><ol><li class="operation"><h2><a name="op.ClearAlert">ClearAlert</a></h2><div class="value">
+</div><div class="value">
+				Clears any alert text associated with the channel identified by channelId.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#ClearAlert</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ClearAlert]<div style="color:#1E3E66;">
+						A request to the ClearAlert action.
+					</div><ul type="square"><li><b>channelId</b> [int]<div style="color:#1E3E66;">
+									The unique identifier of the channel.
+								</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ClearAlertResponse]<div style="color:#1E3E66;">
+						A response to a ClearAlert request.
+					</div></div></li><li class="operation"><h2><a name="op.GetActiveChannel">GetActiveChannel</a></h2><div class="value">
+</div><div class="value">
+				Returns the currently active channel number.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#GetActiveChannel</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetActiveChannel]<div style="color:#1E3E66;">
+						A request to the GetActiveChannel action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetActiveChannelResponse]<div style="color:#1E3E66;">
+						A response to a GetActiveChannel request.
+					</div><ul type="square"><li><b>activeChannel</b> [int]<div style="color:#1E3E66;">
+									A number that represents the currently active channel.
+								</div></li> </ul></div></li><li class="operation"><h2><a name="op.GetChannelConfiguration">GetChannelConfiguration</a></h2><div class="value">
+</div><div class="value">
+				Returns a given channel's current configuration.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#GetChannelConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetChannelConfiguration]<div style="color:#1E3E66;">
+						A request to the GetChannelConfiguration action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetChannelConfigurationResponse]<div style="color:#1E3E66;">
+						A response to a GetChannelConfiguration request.
+					</div><ul type="square"><li><b>channelConfig</b> [ChannelConfig]<ul type="square"><li><b>channelId</b> [int]<div style="color:#1E3E66;">
+								The unique identifier of the channel.
+							</div></li><li><b>nameStamping</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where which any label text associated 
+								with the video should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>timeStamping</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where which the time stamp associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>motionDetection</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								Set to 1 to display motion detection data 
+								associated with the video; set to 0 otherwise.
+							</div></li><li><b>alertTextLocation</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The position where the alert text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>nameFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel name's font.
+							</div></li><li><b>dateTimeFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel's date timestamp's font.
+							</div></li><li><b>alertFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel's alert text's font.
+							</div></li><li><b>outputURI</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The channel's destination.
+							</div></li><li><b>sourceURI</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The channel's source.
+							</div></li><li><b>recordingStatusLocation</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where the recording status's text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>metadataTextLocation</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where meta-data text, associated 
+								with the channel, should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>showAnalyticsOverlay</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								Set to 1 to display analytics related data 
+								associated with the video; set to 0 otherwise.
+							</div></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetLayout">GetLayout</a></h2><div class="value">
+</div><div class="value">
+				Returns the current monitor layout.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#GetLayout</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetLayout]<div style="color:#1E3E66;">
+						A request to the GetLayout action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetLayoutResponse]<div style="color:#1E3E66;">
+						A response to a GetLayout request.
+					</div><ul type="square"><li><b>layout</b> [int]<div style="color:#1E3E66;">
+									A type of arrangement for channels on a screen. 
+									
+									Valid values are the following:
+									<ul><li>0 for one viewable channel per monitor</li><li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li><li>2 for nine viewable channels per monitor(s)</li><li>3 for sixteen viewable channels per two monitor; four per monitor</li></ul></div></li> </ul></div></li><li class="operation"><h2><a name="op.GetMonitorConfiguration">GetMonitorConfiguration</a></h2><div class="value">
+</div><div class="value">
+				Returns a given monitors's current configuration.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#GetMonitorConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetMonitorConfiguration]<div style="color:#1E3E66;">
+						A request to the GetMonitorConfiguration action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetMonitorConfigurationResponse]<div style="color:#1E3E66;">
+						A response to a GetMonitorConfiguration request.
+					</div><ul type="square"><li><b>monitorConfig</b> [MonitorConfig]<ul type="square"><li><b>displayType</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The display type of the monitor. 
+								
+								Valid values are the following:
+								<ul><li>0 for NTSC</li><li>1 for PAL</li><li>2 for VGA</li></ul></div></li><li><b>borderColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the border separating channels in a 
+								non-singular layout. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>activeBorderColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the border surrounding the currently 
+								active channel. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>textColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of any displayed text. Use color code 
+								values without the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>textBackgroundColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the background of any displayed text. 
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The current color of text related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextBackgroundColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of backgrounds related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextBlinkFrequency</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The number of times alert text blinks within a
+								set time. Use color code values without the 
+								pound sign (#) e.g. 00ffffff
+							</div></li><li><b>timeDisplayMode</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The display mode for any displayed time stamps. Must be one of the following:
+								<ul><li>0 for the local workstation's time</li><li>1 for the camera's time</li><li>2 for universal time (UTC)</li></ul></div></li><li><b>zoomIndicator</b> - optional, nillable;  [int]<div style="color:#1E3E66;"/></li><li><b>statusIndicator</b> - optional, nillable;  [int]<div style="color:#1E3E66;"/></li><li><b>audioEnable</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								Set to 1 to enable audio, and set to 0 to disable audio.
+							</div></li><li><b>layouts</b> - optional, nillable;  [Layouts]<ul type="square"><li><b>layout</b> - unbounded;  [string]<div style="color:#1E3E66;">
+								A type of arrangement for channels on a screen. 
+								
+								Valid values are the following:
+								<ul><li>0 for one viewable channel per monitor</li><li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li><li>2 for nine viewable channels per monitor(s)</li><li>3 for sixteen viewable channels per two monitor; four per monitor</li></ul></div></li> </ul></li> </ul></li> </ul></div></li><li class="operation"><h2><a name="op.GetVolume">GetVolume</a></h2><div class="value">
+</div><div class="value">
+				Returns the current volume.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#GetVolume</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [GetVolume]<div style="color:#1E3E66;">
+						A request to the GetVolume action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [GetVolumeResponse]<div style="color:#1E3E66;">
+						A response to a GetVolume request.
+					</div><ul type="square"><li><b>volume</b> [int]<div style="color:#1E3E66;">
+									The channel's current level of sound.
+								</div></li> </ul></div></li><li class="operation"><h2><a name="op.Identify">Identify</a></h2><div class="value">
+</div><div class="value">
+				Instructs the monitor to visually identify itself on screen
+				for maintenance purposes.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#Identify</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [Identify]<div style="color:#1E3E66;">
+						A request to the Identify action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [IdentifyResponse]<div style="color:#1E3E66;">
+						A response to a Identify request.
+					</div><ul type="square"><li><b>displayName</b> [string]<div style="color:#1E3E66;">
+									A channel's name to be displayed on a screen.
+								</div></li> </ul></div></li><li class="operation"><h2><a name="op.ResetConfiguration">ResetConfiguration</a></h2><div class="value">
+</div><div class="value">
+				Returns a given monitor's configuration to factory defaults.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#ResetConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [ResetConfiguration]<div style="color:#1E3E66;">
+						A request to the ResetConfiguration action.
+					</div></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [ResetConfigurationResponse]<div style="color:#1E3E66;">
+						A response to a ResetConfiguration request.
+					</div></div></li><li class="operation"><h2><a name="op.SetActiveChannel">SetActiveChannel</a></h2><div class="value">
+</div><div class="value">
+				Makes a desired channel active.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#SetActiveChannel</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetActiveChannel]<div style="color:#1E3E66;">
+						A request to the SetActiveChannel action.
+					</div><ul type="square"><li><b>activeChannel</b> [int]<div style="color:#1E3E66;">
+									A number that represents the desired channel to make active.
+								</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetActiveChannelResponse]<div style="color:#1E3E66;">
+						A request to the SetActiveChannel action.
+					</div></div></li><li class="operation"><h2><a name="op.SetChannelConfiguration">SetChannelConfiguration</a></h2><div class="value">
+</div><div class="value">
+				Updates a given channel's configuration.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#SetChannelConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetChannelConfiguration]<div style="color:#1E3E66;">
+						A request to the SetChannelConfiguration action.
+					</div><ul type="square"><li><b>channelConfig</b> [ChannelConfig]<ul type="square"><li><b>channelId</b> [int]<div style="color:#1E3E66;">
+								The unique identifier of the channel.
+							</div></li><li><b>nameStamping</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where which any label text associated 
+								with the video should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>timeStamping</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where which the time stamp associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>motionDetection</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								Set to 1 to display motion detection data 
+								associated with the video; set to 0 otherwise.
+							</div></li><li><b>alertTextLocation</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The position where the alert text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>nameFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel name's font.
+							</div></li><li><b>dateTimeFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel's date timestamp's font.
+							</div></li><li><b>alertFontSize</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The size of the channel's alert text's font.
+							</div></li><li><b>outputURI</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The channel's destination.
+							</div></li><li><b>sourceURI</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The channel's source.
+							</div></li><li><b>recordingStatusLocation</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where the recording status's text associated 
+								with the channel should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>metadataTextLocation</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The position where meta-data text, associated 
+								with the channel, should be displayed. 
+								
+								Valid values are the following:
+								<ul><li>0 for none</li><li>1 for top left</li><li>2 for top right</li><li>3 for bottom left</li><li>4 for bottom right</li></ul></div></li><li><b>showAnalyticsOverlay</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								Set to 1 to display analytics related data 
+								associated with the video; set to 0 otherwise.
+							</div></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetChannelConfigurationResponse]<div style="color:#1E3E66;">
+						A response to a SetChannelConfiguration request.
+					</div></div></li><li class="operation"><h2><a name="op.SetLayout">SetLayout</a></h2><div class="value">
+</div><div class="value">
+				Sets the desired monitor layout.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#SetLayout</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetLayout]<div style="color:#1E3E66;">
+						A request to the SetLayout action.
+					</div><ul type="square"><li><b>layout</b> [int]<div style="color:#1E3E66;">
+									A type of arrangement for channels on a screen. 
+									
+									Valid values are the following:
+									<ul><li>0 for one viewable channel per monitor</li><li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li><li>2 for nine viewable channels per monitor(s)</li><li>3 for sixteen viewable channels per two monitor; four per monitor</li></ul></div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetLayoutResponse]<div style="color:#1E3E66;">
+						A response to a SetLayout request.
+					</div></div></li><li class="operation"><h2><a name="op.SetMonitorConfiguration">SetMonitorConfiguration</a></h2><div class="value">
+</div><div class="value">
+				Sets a given monitor's configuration.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#SetMonitorConfiguration</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetMonitorConfiguration]<div style="color:#1E3E66;">
+						A request to the SetMonitorConfiguration action.
+					</div><ul type="square"><li><b>monitorConfig</b> [MonitorConfig]<ul type="square"><li><b>displayType</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The display type of the monitor. 
+								
+								Valid values are the following:
+								<ul><li>0 for NTSC</li><li>1 for PAL</li><li>2 for VGA</li></ul></div></li><li><b>borderColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the border separating channels in a 
+								non-singular layout. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>activeBorderColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the border surrounding the currently 
+								active channel. Use color code values without
+								the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>textColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of any displayed text. Use color code 
+								values without the pound sign (#) e.g. 00ffffff
+							</div></li><li><b>textBackgroundColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of the background of any displayed text. 
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The current color of text related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextBackgroundColor</b> - optional, nillable;  [string]<div style="color:#1E3E66;">
+								The color of backgrounds related to alert displays.
+								Use color code values without the pound sign (#) 
+								e.g. 00ffffff
+							</div></li><li><b>alertTextBlinkFrequency</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The number of times alert text blinks within a
+								set time. Use color code values without the 
+								pound sign (#) e.g. 00ffffff
+							</div></li><li><b>timeDisplayMode</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								The display mode for any displayed time stamps. Must be one of the following:
+								<ul><li>0 for the local workstation's time</li><li>1 for the camera's time</li><li>2 for universal time (UTC)</li></ul></div></li><li><b>zoomIndicator</b> - optional, nillable;  [int]<div style="color:#1E3E66;"/></li><li><b>statusIndicator</b> - optional, nillable;  [int]<div style="color:#1E3E66;"/></li><li><b>audioEnable</b> - optional, nillable;  [int]<div style="color:#1E3E66;">
+								Set to 1 to enable audio, and set to 0 to disable audio.
+							</div></li><li><b>layouts</b> - optional, nillable;  [Layouts]<ul type="square"><li><b>layout</b> - unbounded;  [string]<div style="color:#1E3E66;">
+								A type of arrangement for channels on a screen. 
+								
+								Valid values are the following:
+								<ul><li>0 for one viewable channel per monitor</li><li>1 for four viewable channels per monitor(s) (one of the most common layouts)</li><li>2 for nine viewable channels per monitor(s)</li><li>3 for sixteen viewable channels per two monitor; four per monitor</li></ul></div></li> </ul></li> </ul></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetMonitorConfigurationResponse]<div style="color:#1E3E66;">
+						A response to a SetMonitorConfiguration request.
+					</div></div></li><li><h2><a name="op.SetVolume">SetVolume</a></h2><div class="value">
+</div><div class="value">
+				Sets the desired volume.
+			</div><div class="label">SOAP action:</div><div class="value">urn:schemas-pelco-com:service:MonitorConfiguration:1#SetVolume</div><div class="label">Input:</div><div class="value box" style="margin: 3px"> [SetVolume]<div style="color:#1E3E66;">
+						A request to the SetVolume action.
+					</div><ul type="square"><li><b>volume</b> [int]<div style="color:#1E3E66;">
+									The channel's desired level of sound to set.
+								</div></li> </ul></div><div class="label">Output:</div><div class="value box" style="margin: 3px"> [SetVolumeResponse]<div style="color:#1E3E66;">
+						A response to a SetMonitorConfiguration request.
+					</div></div></li></ol></div></ul></div></div><div id="footer">
+	 Page generation based on wsdl-viewer.xsl (<a href="http://tomi.vanek.sk">http://tomi.vanek.sk</a>)
+</div></div></div>
