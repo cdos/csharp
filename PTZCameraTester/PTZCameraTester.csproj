@@ -57,10 +57,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D1B172E1465755277BA40064C0D4DE67530C70DE</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>552F65A79046C4CE8062D3EA831852D16CE45F9C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PTZCameraTester_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PTZCameraTester_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -159,6 +159,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="PTZCameraTester_1_TemporaryKey.pfx" />
     <None Include="PTZCameraTester_TemporaryKey.pfx" />
     <None Include="Service References\PositioningControl\Pelco.xsd" />
     <None Include="Service References\PositioningControl\PositioningControl.wsdl" />

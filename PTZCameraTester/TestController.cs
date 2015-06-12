@@ -21,6 +21,7 @@ namespace PTZCameraTester
 {
     class TestController : ServiceLib
     {
+        //Variables
         TestView _oMainView;
         string _sCameraModel;
         PTZCameraConfig _CameraConfig;
@@ -33,35 +34,45 @@ namespace PTZCameraTester
         {
             get
             {
+                //Method that returns camera information.  References methods below.
                 return _CameraConfig;
             }
         }
 
+        //Method that takes in data from other class and converts to its own variable.
         public TestController(TestView iMV, string CameraIP, string reportfile, string _logPath)
             : base(CameraIP)
         {
+            //Variables
             _oMainView = iMV;
             _reportFileName = reportfile;
             stopFlag = false;
             logPath = _logPath;
         }
 
+        //The start camera tests.
         public void StartTest()
         {
+            //API method get model Number which takes model and assign to camera model.
             try
             {
                 _sCameraModel = PelcoClient.GetModelNumber();
             }
             catch (Exception e)
-            {
+            {   
+                //If soap error it will return this information.
                 ConsoleAppendLine("Error: Cannot Communitcate with Camera. ", e.Data);
                 return;
             }
 
+            //Appends the console with Model Number and Model Name.
             ConsoleAppendLine(String.Format("Camera Model Number, Name: {0}, {1}", PelcoClient.GetModelNumber(), PelcoClient.GetModelName()));
             ConsoleAppendLine("Loading Camera Defaults and Limits...");
 
+            //new struct. CameraDetails is an object from CameraDetailsLoader.cs. How is it loaded into this app?
             _CameraConfig = CameraDetails.loadConfig(_sCameraModel, this);
+            
+            //Checks if _cameraconfig from 
             if (!_CameraConfig.validCamera)
             {
                 ConsoleAppendLine(ConForm.AddColor("Error: Invalid Camera Type. ", "red")

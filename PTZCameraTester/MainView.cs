@@ -115,10 +115,14 @@ namespace PTZCameraTester
             Properties.Settings.Default.PreviousIPAddress = this.CameraIpAddress.Text;
             Properties.Settings.Default.Save();
 
+            //When start button is pressed it starts Test View form.
+            //The second big program.
             test = new TestView(CameraAddress, path);
             test.Setup();
             test.Show();
             test.Run();
+
+            //After form loads it pauses the controls.
             test.onComplete += new TestCompleteEvent(endTestDelegate);
             //TestThread = new Thread(new ThreadStart(ThreadInitFunction));
             //TestThread.Start();
