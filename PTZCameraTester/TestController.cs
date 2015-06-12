@@ -53,7 +53,7 @@ namespace PTZCameraTester
         //The start camera tests.
         public void StartTest()
         {
-            //API method get model Number which takes model and assign to camera model.
+            //API method. Get model Number which takes model and assign to camera model.
             try
             {
                 _sCameraModel = PelcoClient.GetModelNumber();
@@ -65,14 +65,14 @@ namespace PTZCameraTester
                 return;
             }
 
-            //Appends the console with Model Number and Model Name.
+            //Appends the console with Model Number and Model Name.  Obtain from PelcoConfiguratoin - GetModel and GetModelName.
             ConsoleAppendLine(String.Format("Camera Model Number, Name: {0}, {1}", PelcoClient.GetModelNumber(), PelcoClient.GetModelName()));
             ConsoleAppendLine("Loading Camera Defaults and Limits...");
 
             //new struct. CameraDetails is an object from CameraDetailsLoader.cs. How is it loaded into this app?
             _CameraConfig = CameraDetails.loadConfig(_sCameraModel, this);
             
-            //Checks if _cameraconfig from 
+            //Checks if _cameraconfig from PelcoClient.GetModelNumber.
             if (!_CameraConfig.validCamera)
             {
                 ConsoleAppendLine(ConForm.AddColor("Error: Invalid Camera Type. ", "red")
@@ -80,6 +80,7 @@ namespace PTZCameraTester
                     );
                 return;
             }
+            //Checks the xml of the camera.  Part of the xml parsing under CameraDetails Class.
             if (_CameraConfig.badConfig)
             {
                 ConsoleAppendLine(ConForm.AddColor("Error: Invalid Configuration File. ", "red")
@@ -87,6 +88,8 @@ namespace PTZCameraTester
                     );
                 return;
             }
+
+            //If not false then proceed to this line.
             else
             {
                 ConsoleAppendLine(ConForm.AddColor("Valid Camera Type. ", "green")
@@ -95,8 +98,11 @@ namespace PTZCameraTester
             }
             try
             {
+                //Execute this test and if its an error kick off an exception. 
                 ExecuteTests();
             }
+
+            //If there is an exception it will follow this step.
             catch (ThreadAbortException exp)
             {
                 ConsoleAppendLine(ConForm.AddColor("Abort Request Received. ", "red")
@@ -106,21 +112,28 @@ namespace PTZCameraTester
             }
         }
 
+        //This is the heart of the execution.
         private void ExecuteTests(){
+            
+            //Variables.
             string log = "";
             ResultCounter counter = new ResultCounter();
+            
+            //assigns variable to object call TestBase Program.  Located in Tests folder of this project.
             Queue<TestBase> tq = new Queue<TestBase>();
 
-            tq.Enqueue(new StartTest(this));
-            tq.Enqueue(new AutoFlipTest(this));
-            tq.Enqueue(new PositionTest(this));
-            tq.Enqueue(new PresetTest(this));
-            //tq.Enqueue(new IrisTest(this));
-            tq.Enqueue(new VelocityTest(this));
-            tq.Enqueue(new ZoomTest(this));
+            //Runs through all the tests.
+            tq.Enqueue(new StartTest(this)); // Runs AutoFlip to invert flag.  Also test limits.
+            tq.Enqueue(new AutoFlipTest(this)); //Runs everything in this class. Assigning TestBase.  Reads values from xml.
+            tq.Enqueue(new PositionTest(this)); //Runs everything in this class.  There are limit tests, seek limits, azimuth zero.  More functional tests.
+            tq.Enqueue(new PresetTest(this)); //Runs everythinbg in this class.  Max Presets, Preset with limits, and checking if camera reaches coordinate.
+            //tq.Enqueue(new IrisTest(this)); //Test is skipped.  Howver it can be added from LensControl Test.
+            tq.Enqueue(new VelocityTest(this)); //Velocity Test.  Uses Positioning Control for test.
+            tq.Enqueue(new ZoomTest(this)); //Lens Control for test.
 
             while (tq.Count > 0)
             {
+                //Sets the order of tests from above.
                 activeTest = tq.Dequeue();
                 activeTest.Run();
                 counter.Combine(activeTest._counter);
@@ -130,23 +143,27 @@ namespace PTZCameraTester
                     break;
             }
 
+
             //output to file
             File.WriteAllText((logPath + "\\" + _reportFileName), ConForm.ResultsCSS + ConForm.ParseHeaderIntoTemplate(counter.success, counter.warning, counter.failure, counter.disabled) + log);
             //ClearForShutdown();
         }
 
 
+        //Commonly used through out hte text.  Writes to console with string format and arguments.
         public void ConsoleAppendLine(string format, params object[] args)
         {
             object[] obj = { format };
             _oMainView.Invoke(_oMainView.AddLineToConsole, obj);
         }
 
+        //Clears everything before shutdown.
         public void ClearForShutdown()
         {
             _oMainView.Invoke(_oMainView.ThreadClearForShutdown);
         }
-
+        
+        //Gets JPEG stream from device.  Need to pass it jpeg url.
         public void ConsoleAppendCurrentFrame()
         {
             Image retVal = null;
@@ -161,10 +178,13 @@ namespace PTZCameraTester
                 DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
                 TimeSpan span = (DateTime.Now - epoch);
 
+                //string variable of where to save the jpeg.
                 string path = logPath + "\\" + span.TotalSeconds+".jpg";
 
+                //Call up the old path information.
                 retVal.Save(path);
 
+                //Writes to the text box.
                 ConsoleAppendLine(ConForm.AddImage(path));
             }
             catch (Exception)
@@ -173,6 +193,7 @@ namespace PTZCameraTester
             }
         }
 
+        //Function used to stop the program.
         public void Shutdown()
         {
             ConsoleAppendLine(ConForm.AddColor("Test Thread Abort Request Recieved.  Shutting Down...", "red"));

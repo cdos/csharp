@@ -21,6 +21,7 @@ using System.Net;
 
 namespace PTZCameraTester.Tests
 {
+    //Runs through all methods in this class.
     class VelocityTest: TestBase
     {
         public VelocityTest(TestController c) 
@@ -34,6 +35,7 @@ namespace PTZCameraTester.Tests
             XmlNode node;
             try
             {
+                //Reads xml and looks for velocity.
                 node = _cConfig.test.SelectSingleNode("Velocity");
             }
             catch
@@ -114,6 +116,7 @@ namespace PTZCameraTester.Tests
             // Runaway Check
             try
             {
+                //Reads xml to see if there is a velocity and runaway test.
                 node = _cConfig.test.SelectSingleNode("Velocity/Runaway");
                 if (String.Equals(node.InnerText, "enabled", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -152,11 +155,13 @@ namespace PTZCameraTester.Tests
         {
             _controller.ConsoleAppendLine(ConForm.AddColor("Starting Movement Verification Test.", "purple"));
 
+            //Variable
             bool failed = false;
             int i;
             Random _r = new Random();
             Velocity pos,pos2;
 
+            //loop.  Uses PelcoAPI, Postioning Control - GetPosition.
             for (i = 0; i < trials; i++)
             {
                 PositionMove(true, true, _cConfig.pos.max_x / 2, true, _cConfig.pos.min_y / 2, true, _cConfig.zoom.min);

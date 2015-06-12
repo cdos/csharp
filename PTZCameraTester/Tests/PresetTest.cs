@@ -22,48 +22,63 @@ namespace PTZCameraTester.Tests
 {
     class PresetTest : TestBase
     {
+        //Container for presets.  
         private List<PresetContainer> presets;
 
+        //A base for presetTest.  Used to run everything in this class.
         public PresetTest(TestController c)
             : base(c)
         {
+            //Writes to log and text box.
             _testResults = ConForm.ParseGroupIntoTemplate("Preset Test Group");
+            //Declares an array from the PresetContainer class.
             presets = new List<PresetContainer>();
         }
 
         public override void Run()
         {
+            //Reads from xml.
             XmlNode node;      
             try
             {
+                //Looks for preset tag.
                 node = _cConfig.test.SelectSingleNode("Preset");
             }
             catch
             {
+                //If fails it disables the test.
                 _controller.ConsoleAppendLine(ConForm.AddColor("Preset Test Group Disabled.", "grey"));
                 return;
             }
 
+            //If preset is disabled.
             if (!_cConfig.preset.enabled)
             {
+                //Output to log and text box.
                 _controller.ConsoleAppendLine(ConForm.AddColor("Camera does not support presets.  Disabling Preset Tests.", "grey"));
                 return;
             }
 
+            //Write the console line to the big text box.
             _controller.ConsoleAppendLine(ConForm.AddColor(ConForm.AddBold("Starting Preset Test Group..."), "blue"));
             ClearLimits();
 
             // Random Seek
             try
             {
+                //Reads form xml to find Preset and then sub node of SetAndCheck.
                 node = _cConfig.test.SelectSingleNode("Preset/SetAndCheck");
+
+                //If value is enabled continue to read the next node.
                 if (String.Equals(node.InnerText, "enabled", StringComparison.CurrentCultureIgnoreCase))
                 {
                     try
                     {
+                        //Read xml for the number of trials.
                         XmlAttributeCollection atts = node.Attributes;
                         SetAndCheck(Convert.ToInt32(atts.GetNamedItem("Trials").Value));
                     }
+                    //Else returns error.
                     catch
                     {
                         AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Failure, "Preset Set and Check Test",
@@ -88,9 +103,10 @@ namespace PTZCameraTester.Tests
             }
 
 
-            // With Limits
+            // Preset Test with Limits.
             try
             {
+                //Reads from xml.
                 node = _cConfig.test.SelectSingleNode("Preset/WithLimits");
                 if (String.Equals(node.InnerText, "enabled", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -124,7 +140,10 @@ namespace PTZCameraTester.Tests
             // Max Presets
             try
             {
+                //Reads xml for preset/MaxPresets.  Not currently in the xml document.  
                 node = _cConfig.test.SelectSingleNode("Preset/MaxPresets");
+
+                //If enabled look for RealPresets value.
                 if (String.Equals(node.InnerText, "enabled", StringComparison.CurrentCultureIgnoreCase))
                 {
                     try
@@ -161,47 +180,70 @@ namespace PTZCameraTester.Tests
         }
 
 
+        //Checks the preset location.
         private void SetAndCheck(int trials)
         {
+            
+            //Adds text to the big form.
             _controller.ConsoleAppendLine(ConForm.AddColor("Starting Preset Set and Check Test.", "purple"));
+            
+            //Variables
             bool failed = false, warning = false;
             int i, x, y;
             uint z;
             Random _r = new Random();
             Velocity pos;
 
+            //Container for presets
             presets = new List<PresetContainer>();
             String prefix = "PTZTEST_";
             
-
+            //Loop. Keep looping until is is greater than trials.  Iterate i.
             for (i = 0; i < trials; i++)
             {
+                //Reads boolean, stopFlag, it true then loops stops.
                 if (stopFlag) break;
+
+                //Fill xmin and xmax with random numbers
                 x = _r.Next(_cConfig.pos.min_x, _cConfig.pos.max_x);
-                y = _r.Next(_cConfig.pos.min_y, _cConfig.pos.max_y);
-                z = (uint)_r.Next((int)_cConfig.zoom.min, (int)_cConfig.zoom.max);
-
                 
+                //Fill ymin and ymax with random numbers
+                y = _r.Next(_cConfig.pos.min_y, _cConfig.pos.max_y);
+                
+                //Fill zoom min and zoom max with random numbers.
+                z = (uint)_r.Next((int)_cConfig.zoom.min, (int)_cConfig.zoom.max);                
 
+                //convert i to string.  Counter
                 String name = prefix + i.ToString();
                 _controller.ConsoleAppendLine(String.Format("Sending Camera to ({0}, {1})", x, y));
 
+                //Moves the camera with the given x, y and z values.
                 PositionMove(true, true, x, true, y, true, z);
-
+                
+                //Sleep
                 Thread.Sleep(500);
+                
+                //uses PositioningControl - GetPosition to get current position.
                 pos = _controller.PositionClient.GetPosition();
 
+                //Checks and compares the assign position with the real position.
                 if (rangeCompare(pos.rotation.x, x, _cConfig.global.PTAccuracy) && rangeCompare(pos.rotation.y, y, _cConfig.global.PTAccuracy) && rangeCompare(_controller.LensClient.GetMag(), z, _cConfig.global.zoomAccuracy))
                 {
+                    //If true write to log and text box.
                     _controller.ConsoleAppendLine(ConForm.AddColor("Camera Arrived at Position.", "green"));
                     _controller.ConsoleAppendLine(String.Format("Creating Preset...", x, y));
+                    
+                    //Variable
                     string id;
+                    
+                    //If condition is true from above it will save the preset positions.
                     try
                     {
                         id = _controller.PresetClient.SetPreset(new SetPreset { name = name, autoFocus = false });
                     }
                     catch (Exception)
                     {
+                        //If error, wait a little and Set again.
                         System.Threading.Thread.Sleep(50);
                         try
                         {
@@ -209,31 +251,50 @@ namespace PTZCameraTester.Tests
                         }
                         catch (Exception ex2)
                         {
+                            //Write to console if there is another error after second attempt.
                             Console.WriteLine(ex2.Message);
                             return;
                         }
                     }
+                    
+                    //The preset controls.  Runs GetPresets.  String is and array and collects the id starting with 0.
                     Preset preset = _controller.PresetClient.GetPresets(new string[] { id })[0];
+
+                    //Writes to Log.
                     _controller.ConsoleAppendLine("Preset Created.  Now Testing...");
+                    
+                    //Goes to home position.
                     ResetMotion(true);
+
+                    //Goes to the new preset.
                     _controller.PresetClient.GotoPreset(new GotoPreset { id = id });
+                    
+                    //Waits 6 seconds
                     Thread.Sleep(6000);
+                    
+                    //Gets Coordinate of preset location.
                     pos = _controller.PositionClient.GetPosition();
+                    
+                    //Compares the coordinate.
                     if (rangeCompare(pos.rotation.x, x, _cConfig.global.PTAccuracy) && rangeCompare(pos.rotation.y, y, _cConfig.global.PTAccuracy) && rangeCompare(_controller.LensClient.GetMag(), z, _cConfig.global.zoomAccuracy))
                     {
+                        //Writes to Text Box
                         _controller.ConsoleAppendLine(ConForm.AddColor("Preset Arrived Successfully.", "green"));
                     }
                     else
                     {
+                        //If fails write to text box.
                         _controller.ConsoleAppendLine(ConForm.AddColor("Preset Did not Arrive at location.", "red"));
                         failed = true;
                     }
                     
+                    //Puts all the list of presets into container.  Array call presets.
                     presets.Add(new PresetContainer {x = x, y = y, z = z, preset = preset} );
                     
                 }
                 else
                 {
+                    //Log and write to text box if fail.
                     warning = true;
                     _controller.ConsoleAppendLine(ConForm.AddColor("Camera did not reach requested position.  ", "orange") + String.Format("Actual Position: ({0}, {1})", pos.rotation.x, pos.rotation.y));
                 }
@@ -241,6 +302,8 @@ namespace PTZCameraTester.Tests
                 if (stopFlag)
                     return;
             }
+            
+            //If the test fails write to log and text box. Fail Condition.
             if (failed)
             {
                 AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Failure, "Preset Set and Check",
@@ -249,20 +312,25 @@ namespace PTZCameraTester.Tests
             }
             else if (warning)
             {
+                //Warning Condition
                 AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Warning, "Preset Set and Check",
                     String.Format("Test Warning. Camera did not initailly reach position required for preset, however all other presets were acquired succesfully.  See log for details.")));
                 _counter.incW();
             }
             else
             {
+                //If did not fail then provide Success
                 AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Success, "Preset Set and Check",
                     String.Format("Test Completed Successfully. Camera reached all requested positions.")));
                 _counter.incS();
             }
+
+            //Writes to Text Box
             _controller.ConsoleAppendLine(ConForm.AddColor("Preset Set and Check Test Complete.", "purple"));
         }
 
 
+        //Preset with limits test.  
         private void PresetWithLimits()
         {
             _controller.ConsoleAppendLine(ConForm.AddColor("Starting Preset With Limits Test.", "purple"));
@@ -362,6 +430,8 @@ namespace PTZCameraTester.Tests
                 if (stopFlag)
                     return;
             }
+           
+            //Pain, Tilt and Zoom fail conditions.
             if (panFail || tiltFail || zoomFail)
             {
                 AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Failure, "Preset With Limits Test",

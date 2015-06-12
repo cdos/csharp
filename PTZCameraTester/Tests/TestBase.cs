@@ -79,6 +79,7 @@ namespace PTZCameraTester
             return result;
         }
 
+        //Comparison of range values.  Range gives it wiggle room.  Returns 2 booleans.
         public static bool rangeCompare(double arg1, double arg2, double range)
         {
             bool test1 = (arg1 <= (arg2 + range));
@@ -223,6 +224,7 @@ namespace PTZCameraTester
            
         }
 
+        //Pelco API - Positioning Control - GetPositionLimits
         public void SetLimits(int xl, int xh, int yl, int yh)
         {
             if (stopFlag) return; 

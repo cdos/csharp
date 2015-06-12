@@ -19,6 +19,7 @@ using System.Net;
 
 namespace PTZCameraTester.Tests
 {
+    //Positoining Control Class.  There are edge tests in this class.
     class PositionTest : TestBase
     {
         public PositionTest(TestController c)
@@ -29,18 +30,24 @@ namespace PTZCameraTester.Tests
 
         public override void Run()
         {
+            //Variable node read from xml.
             XmlNode node;      
             try
             {
+                //Reads the position tag.
                 node = _cConfig.test.SelectSingleNode("Position");
             }
             catch
             {
+                //If it can't read it then it turns off test.
                 _controller.ConsoleAppendLine(ConForm.AddColor("Positioning Test Group Disabled.", "grey"));
                 return;
             }
-
+               
+            //Reads the test Positioning tests.
             _controller.ConsoleAppendLine(ConForm.AddColor(ConForm.AddBold("Starting Positioning Test Group..."), "blue"));
+            
+            //Resets the limits.
             ClearLimits();
             
 
@@ -52,11 +59,13 @@ namespace PTZCameraTester.Tests
                 {
                     try
                     {
+                        //Reads the number of trials from xml.
                         XmlAttributeCollection atts = node.Attributes;
                         RandomSeek(Convert.ToInt32(atts.GetNamedItem("Trials").Value));
                     }
                     catch
                     {
+                        //If fails to find the trial node then it writes to log and window.
                         AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Failure, "Random Seek Test",
                         "Could not start test, invalid config file values. "));
                         _counter.incF();

@@ -40,6 +40,8 @@
             this.EditConfigButton = new System.Windows.Forms.Button();
             this.logLocationButton = new System.Windows.Forms.Button();
             this.changelogButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // AboutButton
@@ -155,12 +157,32 @@
             this.changelogButton.UseVisualStyleBackColor = true;
             this.changelogButton.Click += new System.EventHandler(this.changelogButton_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(77, 189);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(137, 48);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(241, 189);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(278, 97);
+            this.richTextBox1.TabIndex = 15;
+            this.richTextBox1.Text = "";
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 148);
+            this.ClientSize = new System.Drawing.Size(534, 311);
             this.ControlBox = false;
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.changelogButton);
             this.Controls.Add(this.logLocationButton);
             this.Controls.Add(this.EditConfigButton);
@@ -198,5 +220,7 @@
         private System.Windows.Forms.Button EditConfigButton;
         private System.Windows.Forms.Button logLocationButton;
         private System.Windows.Forms.Button changelogButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

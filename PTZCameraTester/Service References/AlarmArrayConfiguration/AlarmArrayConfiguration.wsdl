@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1" name="AlarmArrayConfiguration" targetNamespace="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		$Id: AlarmArrayConfigurationV1.wsdl 433 2010-11-23 01:18:25Z $
+	</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="AlarmStates">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The current state of selected alarms within the array.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="objId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en" />
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="offset" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Zero based offset of the first alarm contained in the contained bitmasks. int 32. The range is 0 to (# of alarms - 1).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="length" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Number of relays states contained by the contained bitmasks. The range is 1 to (# of alarms)</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="changed" nillable="true" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Bitmask of the change-of-state status of alarm contained within the array range defined by offset and length. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco base64 always appends an equal sign (=) at the end.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="state1" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Bitmask of the first state bit for alarms contained within the range of the bitmask. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco	base64 always appends an equal sign (=) at the end. Currently defined values are: 
+								<ul><li>0 for INACTIVE</li><li>1 for ACTIVE</li><li>2 for FAULT</li><li>3 for SHORT</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="state2" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Bitmask of the second state bit for alarms contained within the range of the bitmask. The bitmask is in Pelco's base64 format. Pelco base64 is identical to defacto base64 encoding, except that Pelco	base64 always appends an equal sign (=) at the end. Currently defined values are: 
+								<ul><li>0 for INACTIVE</li><li>1 for ACTIVE</li><li>2 for FAULT</li><li>3 for SHORT</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="enabled" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Bitmask of enabled states of alarm contained within the range of the bitmask. Pelco base64 is identical to defacto base64 encoding, except that Pelco base64 always appends an equal sign (=) at the end. Live data will be in Pelco's base64.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlarmConfig">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The current configuration state of the alarm input.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="severity" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The level of importance of the alarm output.</p>
+                <div class="notice">
+                  <p>Within Endura systems, this value is ignored. Instead the System Manager completely handles alarm severity.</p>
+                  <p>This value does not correspond to severity values entered by the user through the workstation. Workstation entered severity values are only stored on System Managers, and do not update the severity values in the AlarmArray device itself.</p>
+                </div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="polarity" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The polarity of the alarm output. Valid values are:
+								<ul><li>0 for NORMAL</li><li>1 for REVERSE</li></ul></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="enabled" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The active state of the alarm output. Valid values are:
+								<ul><li>0 for DISABLED (An alarm output that is disabled will not event the alarm state in response to a state change.)</li><li>1 for ENABLED</li></ul></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="supervised" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>Determines whether or not the alarm is operating in supervised mode. More specifically it determines whether or not the alarm input should be driven such that a loss of voltage to the input results in an alarm condition.
+								<ul><li>0 for unsupervised</li><li>1 for supervised</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="dwellTime" type="xsd:double">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The time, in 100s milliseconds, that the alarm input should be reported as active when triggered, regardless of the actual state of the physical input. The value must be between 0 to 0.5.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="physicalInput" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>An integer representing the physical alarm input with which this service is associated. Valid values:<ul><li>0 - indicates that the service maps to a physical alarm input</li><li>-1 - indicates that the service instance does not map to a physical alarm input. The alarm is software based. (e.g. Sarix returns this value, as they are software based).</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="combinedEventEntry" type="tns:COMBINED_EVENT_ENTRY">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A COMBINED_EVENT_ENTRY data element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="COMBINED_EVENT_ENTRY">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">If not empty, this field defines the events and event properties to be compared to determine the output of the associated alarm point in the array.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="opStack" type="tns:OPSTACK">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Represents an OPSTACK data element.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EVENT_ENTRIES">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of event entries.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="eventEntry" type="tns:EVENT_ENTRY">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EVENT_ENTRY">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						Defines an event to perform an operation upon.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="uid" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The event's unique identifier.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="eventURI" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The event's URI.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="eventType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The event's Type.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="serviceType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								A service type URN.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="propertySet" type="tns:PROPERTY_SET">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OPSTACK">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">An operation stack for the combinedEventEntry. It determines the order in which to process the contained elements. An argument consists of either another operator or an eventEntry.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="operator" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The operator needed for a combined event. Valid values:
+								<ul><li>AND - expects two arguments</li><li>OR - expects two arguments</li><li>NOT - expects one argument</li><li>NOP - expects one argument</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="event_entries" type="tns:EVENT_ENTRIES">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Represents an EventEntries data element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PROPERTY_SET">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A list of properties.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="property" type="tns:PROPERTY">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Represents a PROPERTY data element</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PROPERTY">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A trigger condition for an event. An event is considered "active" when the current value of each listed property, compared via the comparator to the defined value, yields true.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The name of the property of the value to compare against. 250 max characters.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="value" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The value to compare against. i.e. The event is considered "active" when the current value of each listed property, compared, via the comparator, to the defined value yields true.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="comparator" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The comparison operator to utilize.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetAlarmStates">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the GetAlarmStates action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetAlarmStatesResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the GetAlarmStates action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmStates" type="tns:AlarmStates" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetArraySize">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the GetArraySize action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetArraySizeResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the GetArraySize action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="size" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The size / length of the alarm array.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetAlarmState">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the SetAlarmState action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmID" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">An alarm's index location within an alarm array.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="alarmState" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Set to 1 (enabled), set to 0 (disabled) otherwise.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetAlarmStateResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the SetAlarmState action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a request to the GetConfiguration action .</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmID" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">An alarm's index location within an alarm array</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a response from the GetConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmConfig" type="tns:AlarmConfig">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Represents an AlarmConfig data element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a request to the SetConfiguration action .</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmID" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">An alarm's index location within an alarm array.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="alarmConfig" type="tns:AlarmConfig">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">Represents an AlarmConfig data element.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a response from the SetConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="ResetConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a request to the ResetConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmID" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">An alarm's index location within an alarm array. An alarmID of 0 resets the configuration of all alarms in the array.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResetConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Respresents a response from the ResetConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GetAlarmStates">
+    <wsdl:part name="parameters" element="tns:GetAlarmStates" />
+  </wsdl:message>
+  <wsdl:message name="GetAlarmStatesResponse">
+    <wsdl:part name="parameters" element="tns:GetAlarmStatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetArraySize">
+    <wsdl:part name="parameters" element="tns:GetArraySize" />
+  </wsdl:message>
+  <wsdl:message name="GetArraySizeResponse">
+    <wsdl:part name="parameters" element="tns:GetArraySizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetAlarmState">
+    <wsdl:part name="parameters" element="tns:SetAlarmState" />
+  </wsdl:message>
+  <wsdl:message name="SetAlarmStateResponse">
+    <wsdl:part name="parameters" element="tns:SetAlarmStateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConfiguration">
+    <wsdl:part name="parameters" element="tns:GetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:GetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetConfiguration">
+    <wsdl:part name="parameters" element="tns:SetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="SetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:SetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetConfiguration">
+    <wsdl:part name="parameters" element="tns:ResetConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="ResetConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:ResetConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AlarmArrayConfigurationPortType">
+    <wsdl:operation name="GetAlarmStates">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This action is now deprecated. It is not recommended for production usage. The recommended method is now using the Event Arbiter Library to subscribe to this service's events and alarms OR subscribing directly to the GENA events.</div>
+        <p>Returns the current state of the all alarms in the service in bitmapped string.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetAlarmStates" />
+      <wsdl:output message="tns:GetAlarmStatesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArraySize">
+      <wsdl:documentation>Returns the number of alarms contained in the alarm array.</wsdl:documentation>
+      <wsdl:input message="tns:GetArraySize" />
+      <wsdl:output message="tns:GetArraySizeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAlarmState">
+      <wsdl:documentation>Sets the current state of the alarm input indicated by alarmed to either 1 or 0.</wsdl:documentation>
+      <wsdl:input message="tns:SetAlarmState" />
+      <wsdl:output message="tns:SetAlarmStateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfiguration">
+      <wsdl:documentation>Get the configuration of the alarm input.</wsdl:documentation>
+      <wsdl:input message="tns:GetConfiguration" />
+      <wsdl:output message="tns:GetConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetConfiguration">
+      <wsdl:documentation>Sets the configuration of the alarm input.</wsdl:documentation>
+      <wsdl:input message="tns:SetConfiguration" />
+      <wsdl:output message="tns:SetConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetConfiguration">
+      <wsdl:documentation>Returns the alarm input to the default configuration state.</wsdl:documentation>
+      <wsdl:input message="tns:ResetConfiguration" />
+      <wsdl:output message="tns:ResetConfigurationResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AlarmArrayConfiguration" type="tns:AlarmArrayConfigurationPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAlarmStates">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetAlarmStates" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArraySize">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetArraySize" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAlarmState">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#SetAlarmState" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#GetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#SetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:AlarmArrayConfiguration:1#ResetConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AlarmArrayConfiguration">
+    <wsdl:documentation>The AlarmArrayConfiguration service allows multiple alarms to be evented from a single service. Each alarm in the service is individually identified by an alarmID, which in essence is an index into the array. Each AlarmArrayConfiguration service should be wrapped up by an AlarmArray device, much like an AlarmControl service is wrapped up by an Alarm device.</wsdl:documentation>
+    <wsdl:port name="AlarmArrayConfiguration" binding="tns:AlarmArrayConfiguration">
+      <soap:address location="http://localhost:49152/control/AlarmArrayConfiguration-1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

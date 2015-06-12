@@ -204,6 +204,19 @@ namespace PTZCameraTester
         private void MainView_Load(object sender, EventArgs e)
         {
 
+        }
+
+        //Pan Left button
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string excited = " Fuck Yeah";
+            //Pan left Test
+
+            //Gets the addres from the text box.
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            string modelname = svlib.PelcoClient.GetModelNumber();
+            richTextBox1.Text = modelname + excited;
+
         }      
     }
 }

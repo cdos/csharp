@@ -21,7 +21,7 @@ namespace PTZCameraTester.Tests
 {
     class AutoFlipTest : TestBase
     {
-
+        //Controls the autoflip test.
         public AutoFlipTest(TestController c) : base(c)
         {
             _testResults = ConForm.ParseGroupIntoTemplate("AutoFlip Test Group");
@@ -29,6 +29,7 @@ namespace PTZCameraTester.Tests
 
         public override void Run()
         {
+            //Writes everything to console controller. For logging.
             XmlNode node;      
             try
             {
@@ -44,19 +45,24 @@ namespace PTZCameraTester.Tests
             ClearLimits();
             
 
-            // Standard Test
+            // Standard Test.  The start of the autoflip test.
             try
             {
+                //Reads from the xml and looks for this node.
                 node = _cConfig.test.SelectSingleNode("AutoFlip/Standard");
+
+                //If it find the string to be matching and enabled then it proceeds to the next step.
                 if (String.Equals(node.InnerText, "enabled", StringComparison.CurrentCultureIgnoreCase))
                 {
                     try
                     {
+                        //Pulls Trials from the xml.  Converts string to int and assign xml value.  Standard test is run based on these values.
                         XmlAttributeCollection atts = node.Attributes;
                         StandardTest(Convert.ToInt32(atts.GetNamedItem("Trials").Value), Convert.ToInt32(atts.GetNamedItem("MaxFlipDuration").Value));
                     }
                     catch
                     {
+                        //If it fails it will output the log below.
                         AddTestResult(ConForm.ParseResultIntoTemplate(ConForm.ResultTypes.Failure, "Standard AutoFlip Test",
                         "Could not start test, invalid config file values. "));
                         _counter.incF();
