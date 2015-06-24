@@ -16,6 +16,7 @@ using System.Net.Sockets;
 using System.Net;
 using PTZCameraTester.PositioningControl;
 using PTZCameraTester.Tests;
+using PTZCameraTester.PelcoConfiguration;
 
 namespace PTZCameraTester
 {
@@ -242,6 +243,12 @@ namespace PTZCameraTester
                 return;
             }  
   
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            PelcoConfigForm pelconfigform = new PelcoConfigForm(CameraIpAddress.Text);
+            pelconfigform.Show();
         }
 
         //private void LeftPTZButton_MouseDown(object sender, MouseEventArgs e)

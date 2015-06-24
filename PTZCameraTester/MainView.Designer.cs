@@ -46,7 +46,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.leftButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -212,18 +211,11 @@
             // 
             this.button6.Location = new System.Drawing.Point(554, 8);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(91, 23);
+            this.button6.Size = new System.Drawing.Size(120, 23);
             this.button6.TabIndex = 20;
-            this.button6.Text = "Discover";
+            this.button6.Text = "PelcoConfiguration";
             this.button6.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox2
-            // 
-            this.richTextBox2.Location = new System.Drawing.Point(554, 41);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(200, 342);
-            this.richTextBox2.TabIndex = 21;
-            this.richTextBox2.Text = "";
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // leftButton
             // 
@@ -239,10 +231,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(780, 468);
+            this.ClientSize = new System.Drawing.Size(773, 466);
             this.ControlBox = false;
             this.Controls.Add(this.leftButton);
-            this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -292,7 +283,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.Button leftButton;
     }
 }
