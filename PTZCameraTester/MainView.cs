@@ -16,7 +16,6 @@ using System.Net.Sockets;
 using System.Net;
 using PTZCameraTester.PositioningControl;
 using PTZCameraTester.Tests;
-using PTZCameraTester.PelcoConfiguration;
 
 namespace PTZCameraTester
 {
@@ -47,10 +46,11 @@ namespace PTZCameraTester
         public delegate void endDelegate(object sender, EventArgs e);
         public endDelegate endTestDelegate;
 
+
         public MainView()
         {
             InitializeComponent();
-            System.Net.ServicePointManager.Expect100Continue = false;
+            System.Net.ServicePointManager.Expect100Continue = false;          
 
             //When the application boots, it sets the condition of the form to endTest.  Should force it be stopped.
             endTestDelegate = new endDelegate(endTest);
@@ -209,22 +209,27 @@ namespace PTZCameraTester
 
         }
 
-        //Pan Left button
+        //Button that gets the camera information.
         private void button1_Click(object sender, EventArgs e)
         {
-            string excited = " Fuck Yeah";
-            
+            string excited = " Heck Yeah";
+     
             //Gets the addres from the text box.
             ServiceLib svlib = new ServiceLib(CameraAddress);
             string modelname = svlib.PelcoClient.GetModelNumber();
-            richTextBox1.Text = modelname + excited;
+           
  
         }
 
-        private void leftButton_Click(object sender, EventArgs e)
+
+        //Refactor PTZ Controls
+
+        private void LeftPTZButton_MouseDown(object sender, MouseEventArgs e)
         {
-                        //This is move left button.
+            //This is move left button.
             ServiceLib svlib = new ServiceLib(CameraAddress);
+            int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
+            int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
             try
             {
                 //Assigns the string variable name modelname.  This retrieved by sending PelcoAPI GetModelNumber;
@@ -232,7 +237,7 @@ namespace PTZCameraTester
                 //Inside PelcoClient you can choose different methods.  The example below uses GetModelNumber. 
                 //GetModelNumber is assigned from PelcoConfiguration Service References.
                 Velocity vel = svlib.PositionClient.GetVelocity();
-                vel.rotation.x = 10000;
+                vel.rotation.x = velpanspeed;
                 svlib.PositionClient.SetVelocity(vel);
             }
             catch
@@ -242,180 +247,167 @@ namespace PTZCameraTester
                 MessageBox.Show("Error: Cannot Communitcate with Camera.");
                 return;
             }  
-  
-        }
+        } 
 
-        private void button6_Click(object sender, EventArgs e)
+        private void LeftPTZButton_MouseUp(object sender, MouseEventArgs e)
         {
-            PelcoConfigForm pelconfigform = new PelcoConfigForm(CameraIpAddress.Text);
-            pelconfigform.Show();
+            //This is move left button.
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            try
+            {
+                //Assigns the string variable name modelname.  This retrieved by sending PelcoAPI GetModelNumber;
+                //PelcoClient is short for PelcoConfiguration API.  Probably pulled from PelcoConfiguration wsdl.
+                //Inside PelcoClient you can choose different methods.  The example below uses GetModelNumber. 
+                //GetModelNumber is assigned from PelcoConfiguration Service References.
+                Velocity vel = svlib.PositionClient.GetVelocity();
+                vel.rotation.x = 0;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                //If there is an error talking to the camera it will return a fault message.
+                //Then it will enable the start button.
+                MessageBox.Show("Error: Cannot Communitcate with Camera.");
+                return;
+            }  
         }
 
-        //private void LeftPTZButton_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    //This is move left button.
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
-        //    int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
-        //    try
-        //    {
-        //        //Assigns the string variable name modelname.  This retrieved by sending PelcoAPI GetModelNumber;
-        //        //PelcoClient is short for PelcoConfiguration API.  Probably pulled from PelcoConfiguration wsdl.
-        //        //Inside PelcoClient you can choose different methods.  The example below uses GetModelNumber. 
-        //        //GetModelNumber is assigned from PelcoConfiguration Service References.
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.x = velpanspeed;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        //If there is an error talking to the camera it will return a fault message.
-        //        //Then it will enable the start button.
-        //        MessageBox.Show("Error: Cannot Communitcate with Camera.");
-        //        return;
-        //    }
-        //}
-        //private void LeftPTZButton_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    //This is move left button.
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    try
-        //    {
-        //        //Assigns the string variable name modelname.  This retrieved by sending PelcoAPI GetModelNumber;
-        //        //PelcoClient is short for PelcoConfiguration API.  Probably pulled from PelcoConfiguration wsdl.
-        //        //Inside PelcoClient you can choose different methods.  The example below uses GetModelNumber. 
-        //        //GetModelNumber is assigned from PelcoConfiguration Service References.
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.x = 0;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        //If there is an error talking to the camera it will return a fault message.
-        //        //Then it will enable the start button.
-        //        MessageBox.Show("Error: Cannot Communitcate with Camera.");
-        //        return;
-        //    }
-        //}
+        private void rightPTZButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            //This button moves the camera right.
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
+            int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
+            try
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();
+                vel.rotation.x = -velpanspeed;
+                svlib.PositionClient.SetVelocity(vel);
+                   
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communicate with Camera.");
+                return;
+            }
+        }
 
-        //private void rightPTZButton_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    //This button moves the camera right.
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
-        //    int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.x = -velpanspeed;
-        //        svlib.PositionClient.SetVelocity(vel);
+        private void rightPTZButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            try
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();
+                vel.rotation.x = 0;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communitcate with Camera.");
+                return;
+            }
+        }
 
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communicate with Camera.");
-        //        return;
-        //    }
-        //}
+        private void upPTZButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
+            int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
+            try 
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();                
+                vel.rotation.y = -veltiltspeed;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communicate with Camera.");
+                return;
+            }
+        }
 
-        //private void rightPTZButton_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.x = 0;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communitcate with Camera.");
-        //        return;
-        //    }
-        //}
+        private void upPTZButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            try
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();              
 
-        //private void upPTZButton_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
-        //    int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.y = -veltiltspeed;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communicate with Camera.");
-        //        return;
-        //    }
-        //}
+                vel.rotation.y = 0;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communicate with Camera.");
+                return;
+            }
+        }
 
-        //private void upPTZButton_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
+        private void downPTZButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
+            int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
+            if (veltiltspeed == null)
+            {
+                veltiltspeed = 0;
+            } 
+            if (velpanspeed == null)
+            {
+                velpanspeed = 0;
+            }
 
-        //        vel.rotation.y = 0;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communicate with Camera.");
-        //        return;
-        //    }
-        //}
+            try
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();
 
-        //private void downPTZButton_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
-        //    int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
-        //    if (veltiltspeed == null)
-        //    {
-        //        veltiltspeed = 0;
-        //    }
-        //    if (velpanspeed == null)
-        //    {
-        //        velpanspeed = 0;
-        //    }
+                //Gets the input from the textbox and converts to int.  
+                
+                //Replaces y with the value from the textbox.
+                vel.rotation.y = veltiltspeed;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communicate with Camera.");
+                return;
+            }
+        }
 
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
+        private void downPTZButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            try
+            {
+                Velocity vel = svlib.PositionClient.GetVelocity();
+                vel.rotation.y = 0;
+                svlib.PositionClient.SetVelocity(vel);
+            }
+            catch
+            {
+                MessageBox.Show("Error: Cannot Communicate with Camera.");
+                return;
+            }
+        }
 
-        //        //Gets the input from the textbox and converts to int.  
+        private void label1_Click(object sender, EventArgs e)
+        {
 
-        //        //Replaces y with the value from the textbox.
-        //        vel.rotation.y = veltiltspeed;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communicate with Camera.");
-        //        return;
-        //    }
-        //}
+        }
 
-        //private void downPTZButton_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    ServiceLib svlib = new ServiceLib(CameraAddress);
-        //    try
-        //    {
-        //        Velocity vel = svlib.PositionClient.GetVelocity();
-        //        vel.rotation.y = 0;
-        //        svlib.PositionClient.SetVelocity(vel);
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Error: Cannot Communicate with Camera.");
-        //        return;
-        //    }
-        //}
-    
+        private void CameraInfobutton_Click(object sender, EventArgs e)
+        {
+            CameraInfo camerainfo = new CameraInfo(CameraIpAddress.Text);
+            camerainfo.Show();
+        }
+
+        private void alarmarraybutton_Click(object sender, EventArgs e)
+        {
+            AlarmArrayForm alarmform = new AlarmArrayForm(CameraIpAddress.Text);
+            alarmform.Show();
+        }
+
+
     }
 }
 

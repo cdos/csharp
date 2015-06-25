@@ -40,13 +40,16 @@
             this.EditConfigButton = new System.Windows.Forms.Button();
             this.logLocationButton = new System.Windows.Forms.Button();
             this.changelogButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.leftButton = new System.Windows.Forms.Button();
+            this.LeftPTZButton = new System.Windows.Forms.Button();
+            this.upPTZButton = new System.Windows.Forms.Button();
+            this.righPTZtButton = new System.Windows.Forms.Button();
+            this.downPTZButton = new System.Windows.Forms.Button();
+            this.speedlabel = new System.Windows.Forms.Label();
+            this.textboxtiltspeed = new System.Windows.Forms.TextBox();
+            this.textboxpanspeed = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.CameraInfobutton = new System.Windows.Forms.Button();
+            this.alarmarraybutton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AboutButton
@@ -86,9 +89,9 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(12, 64);
+            this.StartButton.Location = new System.Drawing.Point(415, 64);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(507, 40);
+            this.StartButton.Size = new System.Drawing.Size(92, 29);
             this.StartButton.TabIndex = 4;
             this.StartButton.Text = "START";
             this.StartButton.UseVisualStyleBackColor = true;
@@ -114,7 +117,7 @@
             // progressBar
             // 
             this.progressBar.Enabled = false;
-            this.progressBar.Location = new System.Drawing.Point(15, 113);
+            this.progressBar.Location = new System.Drawing.Point(12, 434);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(504, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -162,84 +165,118 @@
             this.changelogButton.UseVisualStyleBackColor = true;
             this.changelogButton.Click += new System.EventHandler(this.changelogButton_Click);
             // 
-            // button1
+            // LeftPTZButton
             // 
-            this.button1.Location = new System.Drawing.Point(15, 159);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 24);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "GetModel";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.LeftPTZButton.Location = new System.Drawing.Point(24, 192);
+            this.LeftPTZButton.Name = "LeftPTZButton";
+            this.LeftPTZButton.Size = new System.Drawing.Size(47, 36);
+            this.LeftPTZButton.TabIndex = 16;
+            this.LeftPTZButton.Text = "left";
+            this.LeftPTZButton.UseVisualStyleBackColor = true;
+            this.LeftPTZButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LeftPTZButton_MouseDown);
+            this.LeftPTZButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftPTZButton_MouseUp);
             // 
-            // richTextBox1
+            // upPTZButton
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(123, 159);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(271, 48);
-            this.richTextBox1.TabIndex = 15;
-            this.richTextBox1.Text = "";
+            this.upPTZButton.Location = new System.Drawing.Point(67, 151);
+            this.upPTZButton.Name = "upPTZButton";
+            this.upPTZButton.Size = new System.Drawing.Size(50, 36);
+            this.upPTZButton.TabIndex = 17;
+            this.upPTZButton.Text = "up";
+            this.upPTZButton.UseVisualStyleBackColor = true;
+            this.upPTZButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.upPTZButton_MouseDown);
+            this.upPTZButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.upPTZButton_MouseUp);
             // 
-            // button3
+            // righPTZtButton
             // 
-            this.button3.Location = new System.Drawing.Point(198, 229);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(137, 36);
-            this.button3.TabIndex = 17;
-            this.button3.Text = "up";
-            this.button3.UseVisualStyleBackColor = true;
+            this.righPTZtButton.Location = new System.Drawing.Point(112, 192);
+            this.righPTZtButton.Name = "righPTZtButton";
+            this.righPTZtButton.Size = new System.Drawing.Size(49, 36);
+            this.righPTZtButton.TabIndex = 18;
+            this.righPTZtButton.Text = "right";
+            this.righPTZtButton.UseVisualStyleBackColor = true;
+            this.righPTZtButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rightPTZButton_MouseDown);
+            this.righPTZtButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rightPTZButton_MouseUp);
             // 
-            // button4
+            // downPTZButton
             // 
-            this.button4.Location = new System.Drawing.Point(327, 286);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(137, 36);
-            this.button4.TabIndex = 18;
-            this.button4.Text = "right";
-            this.button4.UseVisualStyleBackColor = true;
+            this.downPTZButton.Location = new System.Drawing.Point(66, 235);
+            this.downPTZButton.Name = "downPTZButton";
+            this.downPTZButton.Size = new System.Drawing.Size(51, 34);
+            this.downPTZButton.TabIndex = 19;
+            this.downPTZButton.Text = "down";
+            this.downPTZButton.UseVisualStyleBackColor = true;
+            this.downPTZButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.downPTZButton_MouseDown);
+            this.downPTZButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.downPTZButton_MouseUp);
             // 
-            // button5
+            // speedlabel
             // 
-            this.button5.Location = new System.Drawing.Point(198, 339);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(137, 36);
-            this.button5.TabIndex = 19;
-            this.button5.Text = "down";
-            this.button5.UseVisualStyleBackColor = true;
+            this.speedlabel.AutoSize = true;
+            this.speedlabel.Location = new System.Drawing.Point(21, 289);
+            this.speedlabel.Name = "speedlabel";
+            this.speedlabel.Size = new System.Drawing.Size(55, 13);
+            this.speedlabel.TabIndex = 22;
+            this.speedlabel.Text = "Tilt Speed";
             // 
-            // button6
+            // textboxtiltspeed
             // 
-            this.button6.Location = new System.Drawing.Point(554, 8);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(120, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "PelcoConfiguration";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.textboxtiltspeed.Location = new System.Drawing.Point(24, 305);
+            this.textboxtiltspeed.Name = "textboxtiltspeed";
+            this.textboxtiltspeed.Size = new System.Drawing.Size(100, 20);
+            this.textboxtiltspeed.TabIndex = 23;
             // 
-            // leftButton
+            // textboxpanspeed
             // 
-            this.leftButton.Location = new System.Drawing.Point(56, 286);
-            this.leftButton.Name = "leftButton";
-            this.leftButton.Size = new System.Drawing.Size(137, 36);
-            this.leftButton.TabIndex = 22;
-            this.leftButton.Text = "left";
-            this.leftButton.UseVisualStyleBackColor = true;
-            this.leftButton.Click += new System.EventHandler(this.leftButton_Click);
+            this.textboxpanspeed.Location = new System.Drawing.Point(24, 353);
+            this.textboxpanspeed.Name = "textboxpanspeed";
+            this.textboxpanspeed.Size = new System.Drawing.Size(100, 20);
+            this.textboxpanspeed.TabIndex = 25;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 337);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Pan Speed";
+            // 
+            // CameraInfobutton
+            // 
+            this.CameraInfobutton.Location = new System.Drawing.Point(77, 64);
+            this.CameraInfobutton.Name = "CameraInfobutton";
+            this.CameraInfobutton.Size = new System.Drawing.Size(140, 51);
+            this.CameraInfobutton.TabIndex = 26;
+            this.CameraInfobutton.Text = "Pelco Configuration Test";
+            this.CameraInfobutton.UseVisualStyleBackColor = true;
+            this.CameraInfobutton.Click += new System.EventHandler(this.CameraInfobutton_Click);
+            // 
+            // alarmarraybutton
+            // 
+            this.alarmarraybutton.Location = new System.Drawing.Point(223, 64);
+            this.alarmarraybutton.Name = "alarmarraybutton";
+            this.alarmarraybutton.Size = new System.Drawing.Size(140, 51);
+            this.alarmarraybutton.TabIndex = 27;
+            this.alarmarraybutton.Text = "AlarmArray Test";
+            this.alarmarraybutton.UseVisualStyleBackColor = true;
+            this.alarmarraybutton.Click += new System.EventHandler(this.alarmarraybutton_Click);
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(773, 466);
+            this.ClientSize = new System.Drawing.Size(577, 489);
             this.ControlBox = false;
-            this.Controls.Add(this.leftButton);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.alarmarraybutton);
+            this.Controls.Add(this.CameraInfobutton);
+            this.Controls.Add(this.textboxpanspeed);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textboxtiltspeed);
+            this.Controls.Add(this.speedlabel);
+            this.Controls.Add(this.downPTZButton);
+            this.Controls.Add(this.righPTZtButton);
+            this.Controls.Add(this.upPTZButton);
+            this.Controls.Add(this.LeftPTZButton);
             this.Controls.Add(this.changelogButton);
             this.Controls.Add(this.logLocationButton);
             this.Controls.Add(this.EditConfigButton);
@@ -277,12 +314,15 @@
         private System.Windows.Forms.Button EditConfigButton;
         private System.Windows.Forms.Button logLocationButton;
         private System.Windows.Forms.Button changelogButton;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button leftButton;
+        private System.Windows.Forms.Button LeftPTZButton;
+        private System.Windows.Forms.Button upPTZButton;
+        private System.Windows.Forms.Button righPTZtButton;
+        private System.Windows.Forms.Button downPTZButton;
+        private System.Windows.Forms.Label speedlabel;
+        private System.Windows.Forms.TextBox textboxtiltspeed;
+        private System.Windows.Forms.TextBox textboxpanspeed;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button CameraInfobutton;
+        private System.Windows.Forms.Button alarmarraybutton;
     }
 }

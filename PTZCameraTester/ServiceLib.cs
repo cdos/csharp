@@ -13,6 +13,7 @@ using PTZCameraTester.PositioningControl;
 using PTZCameraTester.PelcoConfiguration;
 using PTZCameraTester.PresetControl;
 using PTZCameraTester.CameraConfiguration;
+using PTZCameraTester.AlarmArrayConfiguration;
 
 
 namespace PTZCameraTester
@@ -135,6 +136,22 @@ namespace PTZCameraTester
             get
             {
                 return GetClient<CameraConfigurationPortTypeClient>(CameraConfigurationAddress);
+            }
+        }
+
+        public AlarmArrayConfigurationPortTypeClient AlarmClient
+        {
+            get
+            {
+                return GetClient<AlarmArrayConfigurationPortTypeClient>(AlarmArrayConfigurationAddress);
+            }
+        }
+
+        protected string AlarmArrayConfigurationAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/AlarmArrayConfiguration-1";
             }
         }
 
