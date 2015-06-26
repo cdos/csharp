@@ -248,7 +248,7 @@
             this.Controls.Add(this.Field_CameraIPAddress);
             this.Controls.Add(this.CameraIpAddress);
             this.Name = "AlarmArrayForm";
-            this.Text = "AlarmArrayForm";
+            this.Text = " ";
             this.ResumeLayout(false);
             this.PerformLayout();
 
