@@ -57,7 +57,7 @@ namespace PTZCameraTester
                 string supervised = Convert.ToString(alarmconfig.supervised);
                 string dwelltime = Convert.ToString(alarmconfig.dwellTime);
                 string physicalInput = Convert.ToString(alarmconfig.physicalInput);
-                
+
                 getconfigtxtbox.Text = string.Format(
                     "<severity>" + severity + "</severity>)\n" +
                     "<polarity>" + polarity + "</polarity>\n" +
@@ -66,6 +66,47 @@ namespace PTZCameraTester
                     "<dwellTime>" + dwelltime + "</dwellTime>\n" +
                     "<physicalInput>" + physicalInput + "</physicalInput>"
                     );
+
+                //populate text box with getconfiguration values
+                severitytxtbox.Text = severity;
+                polaritytxtbox.Text = polarity;
+                enabledtxtbox.Text = enabled;
+                supervisedtxtbox.Text = supervised;
+                dwelltimetxtbox.Text = dwelltime;
+                physicalinputtxtbox.Text = physicalInput;
+
+            }
+            catch
+            {
+                catchNoCommunicateWithCamera();
+                return;
+            }
+
+            try
+            {
+                AlarmStates alarmstates = svlib.AlarmClient.GetAlarmStates();
+                string offset = Convert.ToString(alarmstates.offset);
+                string length = Convert.ToString(alarmstates.length);
+                string changed = alarmstates.changed;
+                string state1 = alarmstates.state1;
+                string state2 = alarmstates.state2;
+                string enabled = alarmstates.enabled;
+
+                getalarmstatestxtbox.Text = string.Format(
+                    "<offset>" + offset + "</offset>\n" +
+                    "<length>" + length + "</length>\n" +
+                    "<changed>" + changed + "</changed>\n" +
+                    "<state1>" + state1 + "</state1>\n" +
+                    "<state2>" + state2 + "</state2>\n" +
+                    "<enabled>" + enabled + "</enabled>\n"
+                    );
+
+                offsettxtbox.Text = offset;
+                lengthtxtbox.Text = length;
+                changedtxtbox.Text = changed;
+                state1txtbox.Text = state1;
+                state2txtbox.Text = state1;
+                stateenabledtxtbox.Text = enabled;
             }
             catch
             {
@@ -106,6 +147,13 @@ namespace PTZCameraTester
                     "<dwellTime>" + dwelltime + "</dwellTime>\n" +
                     "<physicalInput>" + physicalInput + "</physicalInput>"
                     );
+
+                severitytxtbox.Text = severity;
+                polaritytxtbox.Text = polarity;
+                enabledtxtbox.Text = enabled;
+                supervisedtxtbox.Text = supervised;
+                dwelltimetxtbox.Text = dwelltime;
+                physicalinputtxtbox.Text = physicalInput;
             }
             catch
             {
@@ -127,14 +175,14 @@ namespace PTZCameraTester
             catch
             {
                 catchNoCommunicateWithCamera();
-                return; 
+                return;
             }
         }
 
         private void getalarmstatesbutton_Click(object sender, EventArgs e)
         {
             ServiceLib svlib = new ServiceLib(CameraAddress);
-            
+
             try
             {
                 AlarmStates alarmstates = svlib.AlarmClient.GetAlarmStates();
@@ -151,8 +199,15 @@ namespace PTZCameraTester
                     "<changed>" + changed + "</changed>\n" +
                     "<state1>" + state1 + "</state1>\n" +
                     "<state2>" + state2 + "</state2>\n" +
-                    "<enabled>" + enabled + "</enabled>\n" 
+                    "<enabled>" + enabled + "</enabled>\n"
                     );
+
+                offsettxtbox.Text = offset;
+                lengthtxtbox.Text = length;
+                changedtxtbox.Text = changed;
+                state1txtbox.Text = state1;
+                state2txtbox.Text = state1;
+                stateenabledtxtbox.Text = enabled;
             }
             catch
             {
@@ -171,12 +226,13 @@ namespace PTZCameraTester
                 AlarmConfig alarmconfig = svlib.AlarmClient.GetConfiguration(alarmid);
 
                 //Should read from contents of text box.
-                alarmconfig.severity = 1;
-                alarmconfig.polarity = 0;
-                alarmconfig.enabled = 1;
-                alarmconfig.supervised = 0;
-                alarmconfig.dwellTime = 5;
-                alarmconfig.physicalInput = 0;
+                //var lines = getconfigtxtbox.Text.Split("\n");
+                alarmconfig.severity = Convert.ToInt16(severitytxtbox.Text);
+                alarmconfig.polarity = Convert.ToInt16(polaritytxtbox.Text);
+                alarmconfig.enabled = Convert.ToInt16(enabledtxtbox.Text);
+                alarmconfig.supervised = Convert.ToInt16(supervisedtxtbox.Text);
+                alarmconfig.dwellTime = Convert.ToInt16(dwelltimetxtbox.Text);
+                alarmconfig.physicalInput = Convert.ToInt16(physicalinputtxtbox.Text);
 
                 svlib.AlarmClient.SetConfiguration(alarmid, alarmconfig);
 
@@ -190,7 +246,33 @@ namespace PTZCameraTester
             }
         }
 
+        private void setalarmstatebutton_Click(object sender, EventArgs e)
+        {
+            ServiceLib svlib = new ServiceLib(CameraAddress);
+            int alarmid;
+            try
+            {
+                alarmid = Convert.ToInt16(alarmidtxtbox.Text);
+                AlarmStates alarmstates = svlib.AlarmClient.GetAlarmStates();
 
-  
+                //Need to see how to send a zero for the whole object.
+                alarmstates.objId = Convert.ToInt16(setalarmstatetxtbox.Text);            
+
+                svlib.AlarmClient.SetAlarmState(alarmid, alarmstates.objId);
+
+                getalarmstatestxtbox.Text = "Sending Set Alarm State " + setalarmstatetxtbox.Text;
+
+            }
+
+            catch
+            {
+                catchNoCommunicateWithCamera();
+                return;
+            }
+
+        }
+
+
+
     }
 }

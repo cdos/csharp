@@ -50,7 +50,7 @@ namespace PTZCameraTester
         public MainView()
         {
             InitializeComponent();
-            System.Net.ServicePointManager.Expect100Continue = false;          
+            System.Net.ServicePointManager.Expect100Continue = false;
 
             //When the application boots, it sets the condition of the form to endTest.  Should force it be stopped.
             endTestDelegate = new endDelegate(endTest);
@@ -85,7 +85,7 @@ namespace PTZCameraTester
             About = new AboutBox();
             About.Show();
         }
-        
+
         //When the Start Button clicked.
         private void StartButton_Click(object sender, EventArgs e)
         {
@@ -132,7 +132,7 @@ namespace PTZCameraTester
         }
 
         //This functions opens a Form call Testviews and also tells it to stop.
-        private void endTest(object sender, EventArgs e) 
+        private void endTest(object sender, EventArgs e)
         {
             StartButton.Enabled = true;
             progressBar.Style = ProgressBarStyle.Blocks;
@@ -149,10 +149,10 @@ namespace PTZCameraTester
                 TestView test = new TestView(CameraAddress, path);
                 //Takes configuration and assing to variable.
                 test.Setup();
-                
+
                 //Displays the TestView form.
                 test.Show();
-                
+
                 //Starts the TestView thread.
                 test.Run();
             }
@@ -163,7 +163,7 @@ namespace PTZCameraTester
 
         //Controls the action of the close button.
         private void CloseButton_Click(object sender, EventArgs e)
-        {   
+        {
             //Checks if start button is on.  If not then it returns a message that its running.  Allows you to exit the application.
             if (StartButton.Enabled == false)
             {
@@ -178,11 +178,11 @@ namespace PTZCameraTester
         //Controls the action of the close button.
         private void EditConfigButton_Click(object sender, EventArgs e)
         {
-           //define path from default folder.
-           string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            //define path from default folder.
+            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 
-           //A .net framework library that reads in file.  Takes in the path and looks for xml folder.
-           Process.Start(path + "\\XML");
+            //A .net framework library that reads in file.  Takes in the path and looks for xml folder.
+            Process.Start(path + "\\XML");
         }
 
         //Controls the action of the logLocationButton.  This is where you will be storing your logging information.
@@ -213,12 +213,12 @@ namespace PTZCameraTester
         private void button1_Click(object sender, EventArgs e)
         {
             string excited = " Heck Yeah";
-     
+
             //Gets the addres from the text box.
             ServiceLib svlib = new ServiceLib(CameraAddress);
             string modelname = svlib.PelcoClient.GetModelNumber();
-           
- 
+
+
         }
 
 
@@ -246,8 +246,8 @@ namespace PTZCameraTester
                 //Then it will enable the start button.
                 MessageBox.Show("Error: Cannot Communitcate with Camera.");
                 return;
-            }  
-        } 
+            }
+        }
 
         private void LeftPTZButton_MouseUp(object sender, MouseEventArgs e)
         {
@@ -269,7 +269,7 @@ namespace PTZCameraTester
                 //Then it will enable the start button.
                 MessageBox.Show("Error: Cannot Communitcate with Camera.");
                 return;
-            }  
+            }
         }
 
         private void rightPTZButton_MouseDown(object sender, MouseEventArgs e)
@@ -283,7 +283,7 @@ namespace PTZCameraTester
                 Velocity vel = svlib.PositionClient.GetVelocity();
                 vel.rotation.x = -velpanspeed;
                 svlib.PositionClient.SetVelocity(vel);
-                   
+
             }
             catch
             {
@@ -313,9 +313,9 @@ namespace PTZCameraTester
             ServiceLib svlib = new ServiceLib(CameraAddress);
             int velpanspeed = Convert.ToInt32(textboxpanspeed.Text);
             int veltiltspeed = Convert.ToInt32(textboxtiltspeed.Text);
-            try 
+            try
             {
-                Velocity vel = svlib.PositionClient.GetVelocity();                
+                Velocity vel = svlib.PositionClient.GetVelocity();
                 vel.rotation.y = -veltiltspeed;
                 svlib.PositionClient.SetVelocity(vel);
             }
@@ -331,7 +331,7 @@ namespace PTZCameraTester
             ServiceLib svlib = new ServiceLib(CameraAddress);
             try
             {
-                Velocity vel = svlib.PositionClient.GetVelocity();              
+                Velocity vel = svlib.PositionClient.GetVelocity();
 
                 vel.rotation.y = 0;
                 svlib.PositionClient.SetVelocity(vel);
@@ -351,7 +351,7 @@ namespace PTZCameraTester
             if (veltiltspeed == null)
             {
                 veltiltspeed = 0;
-            } 
+            }
             if (velpanspeed == null)
             {
                 velpanspeed = 0;
@@ -362,7 +362,7 @@ namespace PTZCameraTester
                 Velocity vel = svlib.PositionClient.GetVelocity();
 
                 //Gets the input from the textbox and converts to int.  
-                
+
                 //Replaces y with the value from the textbox.
                 vel.rotation.y = veltiltspeed;
                 svlib.PositionClient.SetVelocity(vel);
@@ -405,6 +405,12 @@ namespace PTZCameraTester
         {
             AlarmArrayForm alarmform = new AlarmArrayForm(CameraIpAddress.Text);
             alarmform.Show();
+        }
+
+        private void positioningbutton_Click(object sender, EventArgs e)
+        {
+            PositioningForm positioningform = new PositioningForm(CameraIpAddress.Text);
+            positioningform.Show();
         }
 
 

@@ -50,9 +50,10 @@ namespace PTZCameraTester
 
             //Service to run the PelcoConfiguration Client
             ServiceLib svlib = new ServiceLib(CameraAddress);
-            
+
             //Single item response from pelco configuration method;
-            try {
+            try
+            {
                 string modelname1 = svlib.PelcoClient.GetModelName();
                 modelname = modelname1;
                 ModelNametxtbox.Text = modelname;
@@ -63,7 +64,8 @@ namespace PTZCameraTester
                 return;
             }
 
-            try {
+            try
+            {
                 string modelnumber1 = svlib.PelcoClient.GetModelNumber();
                 modelnumber = modelnumber1;
                 ModelNumbertxtbox.Text = modelnumber;
@@ -74,7 +76,8 @@ namespace PTZCameraTester
                 return;
             }
 
-            try {
+            try
+            {
                 string getlocation1 = svlib.PelcoClient.GetLocation();
                 getlocation = getlocation1;
                 getlocationtxtbox.Text = getlocation;
@@ -85,7 +88,8 @@ namespace PTZCameraTester
                 return;
             }
 
-            try {
+            try
+            {
                 string isregistered1 = Convert.ToString(svlib.PelcoClient.IsRegistered());
                 isregistered = isregistered1;
                 isRegisteredtxtbox.Text = isregistered;
@@ -94,8 +98,8 @@ namespace PTZCameraTester
             {
                 catchNoCommunicateWithCamera();
                 return;
-            }          
-                     
+            }
+
             //Structure that defines PelcoConfig items.
             try
             {
@@ -120,12 +124,12 @@ namespace PTZCameraTester
                 catchNoCommunicateWithCamera();
                 return;
             }
-            
+
         }
 
-         //Velocity vel = svlib.PositionClient.GetVelocity();
-         //       vel.rotation.y = 0;
-         //       svlib.PositionClient.SetVelocity(vel);
+        //Velocity vel = svlib.PositionClient.GetVelocity();
+        //       vel.rotation.y = 0;
+        //       svlib.PositionClient.SetVelocity(vel);
 
 
         private void label1_Click(object sender, EventArgs e)
@@ -135,13 +139,13 @@ namespace PTZCameraTester
 
         private void CameraIpAddress_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             //Sends a ResetConfguration
-            ServiceLib svlib = new ServiceLib(CameraAddress);            
+            ServiceLib svlib = new ServiceLib(CameraAddress);
             svlib.PelcoClient.ResetConfiguration();
 
             //Would like to read http status and output into the rich text box.
@@ -157,7 +161,7 @@ namespace PTZCameraTester
                 svlib.PelcoClient.ResetSecurity(modelname);
                 getconfigtxtbox.Text = "Sending Reset Security";
             }
-            catch 
+            catch
             {
                 catchNoCommunicateWithCamera();
                 return;
@@ -211,7 +215,7 @@ namespace PTZCameraTester
             catch
             {
                 catchNoCommunicateWithCamera();
-                return;            
+                return;
             }
 
 
@@ -231,13 +235,13 @@ namespace PTZCameraTester
                 ServiceLib svlib = new ServiceLib(CameraAddress);
                 string modelname = svlib.PelcoClient.GetModelNumber();
                 svlib.PelcoClient.Restart(modelname);
-                getconfigtxtbox.Text = "Sending Restart";                
+                getconfigtxtbox.Text = "Sending Restart";
             }
             catch
             {
                 catchNoCommunicateWithCamera();
                 return;
-            }            
+            }
         }
     }
 }

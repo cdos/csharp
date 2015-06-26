@@ -50,6 +50,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.CameraInfobutton = new System.Windows.Forms.Button();
             this.alarmarraybutton = new System.Windows.Forms.Button();
+            this.positioningbutton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AboutButton
@@ -224,6 +225,7 @@
             this.textboxtiltspeed.Name = "textboxtiltspeed";
             this.textboxtiltspeed.Size = new System.Drawing.Size(100, 20);
             this.textboxtiltspeed.TabIndex = 23;
+            this.textboxtiltspeed.Text = "0";
             // 
             // textboxpanspeed
             // 
@@ -231,6 +233,7 @@
             this.textboxpanspeed.Name = "textboxpanspeed";
             this.textboxpanspeed.Size = new System.Drawing.Size(100, 20);
             this.textboxpanspeed.TabIndex = 25;
+            this.textboxpanspeed.Text = "0";
             // 
             // label1
             // 
@@ -243,7 +246,7 @@
             // 
             // CameraInfobutton
             // 
-            this.CameraInfobutton.Location = new System.Drawing.Point(77, 64);
+            this.CameraInfobutton.Location = new System.Drawing.Point(237, 73);
             this.CameraInfobutton.Name = "CameraInfobutton";
             this.CameraInfobutton.Size = new System.Drawing.Size(140, 51);
             this.CameraInfobutton.TabIndex = 26;
@@ -253,7 +256,7 @@
             // 
             // alarmarraybutton
             // 
-            this.alarmarraybutton.Location = new System.Drawing.Point(223, 64);
+            this.alarmarraybutton.Location = new System.Drawing.Point(237, 136);
             this.alarmarraybutton.Name = "alarmarraybutton";
             this.alarmarraybutton.Size = new System.Drawing.Size(140, 51);
             this.alarmarraybutton.TabIndex = 27;
@@ -261,12 +264,23 @@
             this.alarmarraybutton.UseVisualStyleBackColor = true;
             this.alarmarraybutton.Click += new System.EventHandler(this.alarmarraybutton_Click);
             // 
+            // positioningbutton
+            // 
+            this.positioningbutton.Location = new System.Drawing.Point(237, 203);
+            this.positioningbutton.Name = "positioningbutton";
+            this.positioningbutton.Size = new System.Drawing.Size(140, 51);
+            this.positioningbutton.TabIndex = 28;
+            this.positioningbutton.Text = "Positioning Test";
+            this.positioningbutton.UseVisualStyleBackColor = true;
+            this.positioningbutton.Click += new System.EventHandler(this.positioningbutton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(577, 489);
             this.ControlBox = false;
+            this.Controls.Add(this.positioningbutton);
             this.Controls.Add(this.alarmarraybutton);
             this.Controls.Add(this.CameraInfobutton);
             this.Controls.Add(this.textboxpanspeed);
@@ -324,5 +338,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button CameraInfobutton;
         private System.Windows.Forms.Button alarmarraybutton;
+        private System.Windows.Forms.Button positioningbutton;
     }
 }
