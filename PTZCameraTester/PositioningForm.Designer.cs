@@ -201,7 +201,7 @@
             // 
             // setpositionbutton
             // 
-            this.setpositionbutton.Location = new System.Drawing.Point(147, 160);
+            this.setpositionbutton.Location = new System.Drawing.Point(147, 158);
             this.setpositionbutton.Name = "setpositionbutton";
             this.setpositionbutton.Size = new System.Drawing.Size(102, 24);
             this.setpositionbutton.TabIndex = 95;
@@ -284,6 +284,7 @@
             this.LeftPTZButton.TabIndex = 96;
             this.LeftPTZButton.Text = "Left";
             this.LeftPTZButton.UseVisualStyleBackColor = true;
+            this.LeftPTZButton.Click += new System.EventHandler(this.LeftPTZButton_Click);
             this.LeftPTZButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LeftPTZButton_MouseDown);
             this.LeftPTZButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftPTZButton_MouseUp);
             // 

@@ -14,6 +14,13 @@ using PTZCameraTester.PelcoConfiguration;
 using PTZCameraTester.PresetControl;
 using PTZCameraTester.CameraConfiguration;
 using PTZCameraTester.AlarmArrayConfiguration;
+using PTZCameraTester.AudioOutput;
+using PTZCameraTester.MotionDetection;
+using PTZCameraTester.RelayArrayConfiguration;
+using PTZCameraTester.StreamConfiguration;
+using PTZCameraTester.VideoOutput;
+using PTZCameraTester.WindowsBlankingConfiguration;
+using PTZCameraTester.ScriptControl;
 
 
 namespace PTZCameraTester
@@ -146,6 +153,122 @@ namespace PTZCameraTester
                 return GetClient<AlarmArrayConfigurationPortTypeClient>(AlarmArrayConfigurationAddress);
             }
         }
+
+        public AudioOutputPortTypeClient AudioOutClient
+        {
+           get
+           {
+                return GetClient<AudioOutputPortTypeClient>(AudioOutputAddress);   
+           }
+        }
+
+        public MotionDetectionPortTypeClient MotionClient
+        {
+            get
+            {
+                return GetClient<MotionDetectionPortTypeClient>(MotionDetectionAddress);
+            }
+        }
+
+        public RelayArrayConfigurationPortTypeClient RelayClient
+        {
+            get
+            {
+                return GetClient<RelayArrayConfigurationPortTypeClient>(RelayArrayAddress);    
+            }
+        }
+
+        public StreamConfigurationPortTypeClient StreamConfigClient
+        {
+            get
+            {
+                return GetClient<StreamConfigurationPortTypeClient>(StreamConfigurationAddress); 
+            }
+        }
+
+        public VideoOutputPortTypeClient VideoOutClient
+        {
+            get
+            {
+                return GetClient<VideoOutputPortTypeClient>(VideoOutputAddress);
+            }
+        }
+
+        public WindowBlankingConfigurationPortTypeClient WindowBlankClient
+        {
+            get
+            {
+                return GetClient<WindowBlankingConfigurationPortTypeClient>(WindowBlankingAddress);
+            }
+        }
+
+        public ScriptControlPortTypeClient ScriptClient
+        {
+            get
+            {
+                return GetClient<ScriptControlPortTypeClient>(ScriptControlAddress);
+            }
+        }
+
+        protected string ScriptControlAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/ScriptControl-1";
+            }
+        }
+
+        protected string WindowBlankingAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/WindowBlankingConfiguration-1";
+            }
+        }
+
+        protected string VideoOutputAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/VideoOutput-1";
+            }
+        }
+
+        protected string StreamConfigurationAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/StreamConfiguration-1";    
+            }
+        }
+
+        protected string RelayArrayAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/RelayArrayConfiguration-1";
+            }
+        }
+
+
+
+        protected string MotionDetectionAddress
+        {
+            get
+            {
+                return _cameraAddress + "/control/MotionDetection-1";
+            }
+        }
+        
+
+        protected string AudioOutputAddress
+        {
+            get 
+            {
+                return _cameraAddress + "/control/AudioOutput-1";
+            }
+        }
+
 
         protected string AlarmArrayConfigurationAddress
         {

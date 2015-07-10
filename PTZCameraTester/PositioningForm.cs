@@ -528,8 +528,10 @@ namespace PTZCameraTester
             }
         }
 
+        private void LeftPTZButton_Click(object sender, EventArgs e)
+        {
 
-
+        }
 
     }
 }

@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:ScriptControl:1" name="ScriptControl" targetNamespace="urn:schemas-pelco-com:service:ScriptControl:1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		$Id: ScriptControlV1.wsdl 474 2010-12-22 19:25:11Z $
+	</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:ScriptControl:1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="ScriptList">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of scripts as well as related statistics regarding
+						that list. This is typically the result of a query.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="scripts" type="tns:Scripts" />
+          <xsd:element minOccurs="0" name="queryId">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								A unique identifier for the query related to these
+								results. This is in UUID format.
+							</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                  <xsd:attribute name="timeout" type="xsd:int">
+                    <xsd:annotation>
+                      <xsd:documentation xml:lang="en">
+												The saved result set's duration
+												of existence in seconds. If a 
+												new request for that specific 
+												result set is not made (using 
+												the queryid) then the result set 
+												will be deleted (from query 
+												cache if querying from a 
+												traditional database).
+											</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                </xsd:extension>
+              </xsd:simpleContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nextEntry" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								An index bookmarking the next entry that signifies
+								the next page of results.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxEntries" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of results to return.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxPresets" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of presets, saved device
+								states, supported by the device.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxPatterns" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of patterns, a group of 
+								commands run over a time frame that can be 
+								saved and played back, supported by the device.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="totalEntries" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The total number of entries that the device can
+								support.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="resultURI" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The URL from which the search results may be 
+								downloaded. This may be used in conjuntion with 
+								entry paging to improve performance. 
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Scripts">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of scripts.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="script" type="tns:Script" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Script">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						Contains data related to a script, pattern, or preset.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script's name. It has a 40 max character length.
+								e.g. scriptname1.xml
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="description" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								Information regarding the script in question. 
+								It has a 250 max character length.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script"s unique identifier.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="owner" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script's owner.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="pids" type="tns:Pids" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Pids">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of process IDs.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="pid" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								An identifier for a process running a script.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScriptQuery">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						Defines a query to return a list of scripts.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script's name. It has a 40 max character length.
+								e.g. scriptname1.xml
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="description" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								Information regarding the script in question. 
+								It has a 250 max character length.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script"s unique identifier.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="owner" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script's owner.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="executing" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								Set to 1 (true) for scripts that are currently 
+								running. Set to 0 (false) otherwise.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="queryId" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								A unique identifier for the query related to these
+								results. This is in UUID format.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nextEntry" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The index that marks where the next page of 
+								results begins, for results that span more than
+								one page.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxEntries" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of results to return 
+								(total returned result set).
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScriptActionList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="actions" type="tns:ScriptActions" />
+          <xsd:element minOccurs="0" name="queryId" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								A unique identifier for the query related to these
+								results. This is in UUID format.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nextEntry" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The index that marks where the next page of 
+								results begins, for results that span more than
+								one page.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxEntries" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of results to return 
+								(total returned result set).
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxPresets" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of presets, saved device
+								states, supported by the device.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="maxPatterns" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The maximum number of patterns, a group of 
+								commands run over a time frame that can be 
+								saved and played back, supported by the device.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScriptActions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of script actions.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="scriptActions" type="tns:ScriptAction" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScriptAction">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						Defines a particular action (i.e. method) of a script, including its 
+						parameters and unique identifier.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script action"s name. It has a 40 max 
+								character length.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The script action"s unique identifier.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="arguments" type="tns:Arguments" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Arguments">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A list of arguments (i.e. parameters).
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="argument" type="tns:Argument" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Argument">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A script's argument (i.e. parameter).
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The name of the argument.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The unique identifier of the argument.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="value" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+								The value of the argument. It has a 250 character
+								limit.
+							</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="BeginScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the BeginScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the preset or pattern to begin 'recording'.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="BeginScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a BeginScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="EndScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the EndScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the preset or pattern to end 'recording'.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EndScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a EndScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="CancelScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the CancelScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to cancel 'recording'.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CancelScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a CancelScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="DeleteScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the DeleteScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to delete.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a DeleteScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="QueryScripts">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the QueryScripts action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptQuery" type="tns:ScriptQuery" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryScriptsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a QueryScripts request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptList" type="tns:ScriptList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ExecuteScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the ExecuteScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to run.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ExecuteScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a ExecuteScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pid" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									A process ID related to the currently running script.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="HaltScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the HaltScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to stop running.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="pid" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									A process ID related to the currently running script.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="HaltScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a HaltScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="UploadScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the UploadScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to create.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="description" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									A short description of the script being created.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="scriptURL" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The script's location on the network. The
+									script does not actually get uploaded. The
+									device hosting this service will download
+									the script, given a location.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="timeOut" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The amount of time allowed for the device,
+									hosting this service, for attempting to begin
+									the script's download. This time is in seconds.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="overWrite" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									If set to 1, this will overwrite a pre-existing
+									script with the same name. If set to 0, it
+									will not overwrite a pre-existing script with
+									the same name.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UploadScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a UploadScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The newly created script's unique identifier.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DownloadScript">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the DownloadScript action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The name of the script to download.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DownloadScriptResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a DownloadScript request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptURL" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The script's URL, assuming it will be downloaded
+									from the device.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="timeOut" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The amount of time allowed attempting to begin
+									the script's download from the device.
+									This time is in seconds.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetScriptOwner">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the SetScriptOwner action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The unique identifier for the user set to own
+									the script.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="userId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+									The unique identifier for the user set to own
+									the script.
+								</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetScriptOwnerResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a SetScriptOwner request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="QueryActions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A request to the QueryActions action.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptActionList" type="tns:ScriptActionList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryActionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+						A response to a QueryActions request.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="scriptActionList" type="tns:ScriptActionList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="BeginScript">
+    <wsdl:part name="parameters" element="tns:BeginScript" />
+  </wsdl:message>
+  <wsdl:message name="BeginScriptResponse">
+    <wsdl:part name="parameters" element="tns:BeginScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="EndScript">
+    <wsdl:part name="parameters" element="tns:EndScript" />
+  </wsdl:message>
+  <wsdl:message name="EndScriptResponse">
+    <wsdl:part name="parameters" element="tns:EndScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelScript">
+    <wsdl:part name="parameters" element="tns:CancelScript" />
+  </wsdl:message>
+  <wsdl:message name="CancelScriptResponse">
+    <wsdl:part name="parameters" element="tns:CancelScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteScript">
+    <wsdl:part name="parameters" element="tns:DeleteScript" />
+  </wsdl:message>
+  <wsdl:message name="DeleteScriptResponse">
+    <wsdl:part name="parameters" element="tns:DeleteScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryScripts">
+    <wsdl:part name="parameters" element="tns:QueryScripts" />
+  </wsdl:message>
+  <wsdl:message name="QueryScriptsResponse">
+    <wsdl:part name="parameters" element="tns:QueryScriptsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExecuteScript">
+    <wsdl:part name="parameters" element="tns:ExecuteScript" />
+  </wsdl:message>
+  <wsdl:message name="ExecuteScriptResponse">
+    <wsdl:part name="parameters" element="tns:ExecuteScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="HaltScript">
+    <wsdl:part name="parameters" element="tns:HaltScript" />
+  </wsdl:message>
+  <wsdl:message name="HaltScriptResponse">
+    <wsdl:part name="parameters" element="tns:HaltScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="UploadScript">
+    <wsdl:part name="parameters" element="tns:UploadScript" />
+  </wsdl:message>
+  <wsdl:message name="UploadScriptResponse">
+    <wsdl:part name="parameters" element="tns:UploadScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="DownloadScript">
+    <wsdl:part name="parameters" element="tns:DownloadScript" />
+  </wsdl:message>
+  <wsdl:message name="DownloadScriptResponse">
+    <wsdl:part name="parameters" element="tns:DownloadScriptResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetScriptOwner">
+    <wsdl:part name="parameters" element="tns:SetScriptOwner" />
+  </wsdl:message>
+  <wsdl:message name="SetScriptOwnerResponse">
+    <wsdl:part name="parameters" element="tns:SetScriptOwnerResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryActions">
+    <wsdl:part name="parameters" element="tns:QueryActions" />
+  </wsdl:message>
+  <wsdl:message name="QueryActionsResponse">
+    <wsdl:part name="parameters" element="tns:QueryActionsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ScriptControlPortType">
+    <wsdl:operation name="BeginScript">
+      <wsdl:documentation>
+				Causes the service instance to begin "recording" or "programming" 
+				of the script indicated by scriptName.
+				
+				<div class="notice">
+                    Only D-Protocol devices behave properly with BeginScript.
+                    
+                    Currently there is a known issue with EXCOAXITRON:
+                    If the preset name does not end in a number that starts with 1
+                    OR
+                    if other presets already exist and the 
+                    the preset name does not end in a consecutive number
+                    continuing from the last preset number, then the new
+                    preset will fail (for example, if the last preset
+                    name ended with 3, then the next preset name must end with 4).
+
+                    Also, the BeginScript action only applies to devices that
+                    support recording and programming. For example, dome
+                    positioning systems have a feature called pattern recording, which allows
+                    the user to record a specific set of movement
+                    commands into a movement pattern (this is also known as a script). The BeginScript
+		            action starts the recording process.
+				</div></wsdl:documentation>
+      <wsdl:input message="tns:BeginScript" />
+      <wsdl:output message="tns:BeginScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="EndScript">
+      <wsdl:documentation>
+				Causes the service instance to end the "recording" or 
+				"programming" of a specific script and save it using a given scriptName.
+			</wsdl:documentation>
+      <wsdl:input message="tns:EndScript" />
+      <wsdl:output message="tns:EndScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelScript">
+      <wsdl:documentation>
+				Causes the service instance to cancel the "recording" or 
+				"programming" of the script indicated by scriptName. Nothing is saved.
+			</wsdl:documentation>
+      <wsdl:input message="tns:CancelScript" />
+      <wsdl:output message="tns:CancelScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteScript">
+      <wsdl:documentation>
+				Causes the service instance to delete from its list of scripts the script indicated by scriptName.
+			</wsdl:documentation>
+      <wsdl:input message="tns:DeleteScript" />
+      <wsdl:output message="tns:DeleteScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryScripts">
+      <wsdl:documentation>
+				Retrieves a list of names of locally stored scripts from the service instance. 
+			</wsdl:documentation>
+      <wsdl:input message="tns:QueryScripts" />
+      <wsdl:output message="tns:QueryScriptsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteScript">
+      <wsdl:documentation>
+				Causes the locally stored script indicated by scriptName to be executed.
+			</wsdl:documentation>
+      <wsdl:input message="tns:ExecuteScript" />
+      <wsdl:output message="tns:ExecuteScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="HaltScript">
+      <wsdl:documentation>
+				Causes an instance of a script indicated by pid to 
+				be stopped, if currently running. 
+			</wsdl:documentation>
+      <wsdl:input message="tns:HaltScript" />
+      <wsdl:output message="tns:HaltScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadScript">
+      <wsdl:documentation>
+				Indicates that the script located at scriptURL should be 
+				retrieved and stored for later execution under the name scriptName. 
+			</wsdl:documentation>
+      <wsdl:input message="tns:UploadScript" />
+      <wsdl:output message="tns:UploadScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadScript">
+      <wsdl:documentation>
+				Makes a script available for retrieval at scriptURL location for timeOut number of seconds.
+			</wsdl:documentation>
+      <wsdl:input message="tns:DownloadScript" />
+      <wsdl:output message="tns:DownloadScriptResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetScriptOwner">
+      <wsdl:documentation>
+				Associates a script with an owner identified by userId.
+			</wsdl:documentation>
+      <wsdl:input message="tns:SetScriptOwner" />
+      <wsdl:output message="tns:SetScriptOwnerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryActions">
+      <wsdl:documentation>
+				Retrieves a list of script signatures (their names and parameters).
+			</wsdl:documentation>
+      <wsdl:input message="tns:QueryActions" />
+      <wsdl:output message="tns:QueryActionsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScriptControl" type="tns:ScriptControlPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#BeginScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EndScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#EndScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#CancelScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#DeleteScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryScripts">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#QueryScripts" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#ExecuteScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HaltScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#HaltScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#UploadScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadScript">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#DownloadScript" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetScriptOwner">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#SetScriptOwner" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryActions">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:ScriptControl:1#QueryActions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScriptControl">
+    <wsdl:documentation>
+			This service allows clients to control and manage scripts, presets, and patterns.
+		</wsdl:documentation>
+    <wsdl:port name="ScriptControl" binding="tns:ScriptControl">
+      <soap:address location="http://localhost:49152/control/ScriptControl-1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1" targetNamespace="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>$Id: $</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1">
+      <xsd:complexType name="RgbaColor">
+        <xsd:all>
+          <xsd:element name="r" type="xsd:unsignedByte" />
+          <xsd:element name="g" type="xsd:unsignedByte" />
+          <xsd:element name="b" type="xsd:unsignedByte" />
+          <xsd:element minOccurs="0" name="a" type="xsd:unsignedByte" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenCoordinate">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+										The screen coordinate represents a location on the screen. The range of
+										each of these values is [-1,1]. So the coordinate (0,0) is the exact
+										center of the screen, (1,1) is the top right corner, and (-1,-1) is the
+										bottom left corner
+								</xsd:documentation>
+        </xsd:annotation>
+        <xsd:all>
+          <xsd:element name="x" type="xsd:double" />
+          <xsd:element name="y" type="xsd:double" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenRectangle">
+        <xsd:all>
+          <xsd:element name="topLeft" type="tns:ScreenCoordinate" />
+          <xsd:element name="bottomRight" type="tns:ScreenCoordinate" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenRectangleRegion">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="color" type="tns:RgbaColor" />
+          <xsd:element name="rectangle" type="tns:ScreenRectangle" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenRectangleRegionList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="region" type="tns:ScreenRectangleRegion" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="SetEnabled">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetEnabledResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="CanEnable">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="CanEnableResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="canEnable" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IsEnabled">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="IsEnabledResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetSpeedCeilingEnabled">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetSpeedCeilingEnabledResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="IsSpeedCeilingEnabled">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="IsSpeedCeilingEnabledResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaximumScreenCoverage">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMaximumScreenCoverageResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="percentage" type="xsd:double" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteRegion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="regionName" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteRegionResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetScreenRectangleRegionList">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetScreenRectangleRegionListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="regionList" type="tns:ScreenRectangleRegionList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateOrAddScreenRectangleRegion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="region" type="tns:ScreenRectangleRegion" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateOrAddScreenRectangleRegionResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GotoRegion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="regionName" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GotoRegionResponse">
+        <xsd:complexType />
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SetEnabled">
+    <wsdl:part name="parameters" element="tns:SetEnabled" />
+  </wsdl:message>
+  <wsdl:message name="SetEnabledResponse">
+    <wsdl:part name="parameters" element="tns:SetEnabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="CanEnable">
+    <wsdl:part name="parameters" element="tns:CanEnable" />
+  </wsdl:message>
+  <wsdl:message name="CanEnableResponse">
+    <wsdl:part name="parameters" element="tns:CanEnableResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsEnabled">
+    <wsdl:part name="parameters" element="tns:IsEnabled" />
+  </wsdl:message>
+  <wsdl:message name="IsEnabledResponse">
+    <wsdl:part name="parameters" element="tns:IsEnabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSpeedCeilingEnabled">
+    <wsdl:part name="parameters" element="tns:SetSpeedCeilingEnabled" />
+  </wsdl:message>
+  <wsdl:message name="SetSpeedCeilingEnabledResponse">
+    <wsdl:part name="parameters" element="tns:SetSpeedCeilingEnabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsSpeedCeilingEnabled">
+    <wsdl:part name="parameters" element="tns:IsSpeedCeilingEnabled" />
+  </wsdl:message>
+  <wsdl:message name="IsSpeedCeilingEnabledResponse">
+    <wsdl:part name="parameters" element="tns:IsSpeedCeilingEnabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaximumScreenCoverage">
+    <wsdl:part name="parameters" element="tns:GetMaximumScreenCoverage" />
+  </wsdl:message>
+  <wsdl:message name="GetMaximumScreenCoverageResponse">
+    <wsdl:part name="parameters" element="tns:GetMaximumScreenCoverageResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteRegion">
+    <wsdl:part name="parameters" element="tns:DeleteRegion" />
+  </wsdl:message>
+  <wsdl:message name="DeleteRegionResponse">
+    <wsdl:part name="parameters" element="tns:DeleteRegionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetScreenRectangleRegionList">
+    <wsdl:part name="parameters" element="tns:GetScreenRectangleRegionList" />
+  </wsdl:message>
+  <wsdl:message name="GetScreenRectangleRegionListResponse">
+    <wsdl:part name="parameters" element="tns:GetScreenRectangleRegionListResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrAddScreenRectangleRegion">
+    <wsdl:part name="parameters" element="tns:UpdateOrAddScreenRectangleRegion" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrAddScreenRectangleRegionResponse">
+    <wsdl:part name="parameters" element="tns:UpdateOrAddScreenRectangleRegionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GotoRegion">
+    <wsdl:part name="parameters" element="tns:GotoRegion" />
+  </wsdl:message>
+  <wsdl:message name="GotoRegionResponse">
+    <wsdl:part name="parameters" element="tns:GotoRegionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WindowBlankingConfigurationPortType">
+    <wsdl:operation name="SetEnabled">
+      <wsdl:input message="tns:SetEnabled" />
+      <wsdl:output message="tns:SetEnabledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CanEnable">
+      <wsdl:input message="tns:CanEnable" />
+      <wsdl:output message="tns:CanEnableResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="IsEnabled">
+      <wsdl:input message="tns:IsEnabled" />
+      <wsdl:output message="tns:IsEnabledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSpeedCeilingEnabled">
+      <wsdl:input message="tns:SetSpeedCeilingEnabled" />
+      <wsdl:output message="tns:SetSpeedCeilingEnabledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="IsSpeedCeilingEnabled">
+      <wsdl:input message="tns:IsSpeedCeilingEnabled" />
+      <wsdl:output message="tns:IsSpeedCeilingEnabledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaximumScreenCoverage">
+      <wsdl:input message="tns:GetMaximumScreenCoverage" />
+      <wsdl:output message="tns:GetMaximumScreenCoverageResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRegion">
+      <wsdl:input message="tns:DeleteRegion" />
+      <wsdl:output message="tns:DeleteRegionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScreenRectangleRegionList">
+      <wsdl:input message="tns:GetScreenRectangleRegionList" />
+      <wsdl:output message="tns:GetScreenRectangleRegionListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrAddScreenRectangleRegion">
+      <wsdl:input message="tns:UpdateOrAddScreenRectangleRegion" />
+      <wsdl:output message="tns:UpdateOrAddScreenRectangleRegionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GotoRegion">
+      <wsdl:input message="tns:GotoRegion" />
+      <wsdl:output message="tns:GotoRegionResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WindowBlankingConfiguration" type="tns:WindowBlankingConfigurationPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#SetEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CanEnable">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#CanEnable" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#IsEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSpeedCeilingEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#SetSpeedCeilingEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsSpeedCeilingEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#IsSpeedCeilingEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaximumScreenCoverage">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#GetMaximumScreenCoverage" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRegion">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#DeleteRegion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScreenRectangleRegionList">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#GetScreenRectangleRegionList" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrAddScreenRectangleRegion">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#UpdateOrAddScreenRectangleRegion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GotoRegion">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:WindowBlankingConfiguration:1#GotoRegion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WindowBlankingConfiguration">
+    <wsdl:port name="WindowBlankingConfiguration" binding="tns:WindowBlankingConfiguration">
+      <soap:address location="http://localhost:49152/control/WindowBlankingConfiguration-1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

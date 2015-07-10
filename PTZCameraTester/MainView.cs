@@ -413,6 +413,18 @@ namespace PTZCameraTester
             positioningform.Show();
         }
 
+        private void lensbutton_Click(object sender, EventArgs e)
+        {
+            LensControlForm lenscontrolform = new LensControlForm(CameraIpAddress.Text);
+            lenscontrolform.Show();
+        }
+
+        private void scriptcontrolbutton_Click(object sender, EventArgs e)
+        {
+            ScriptControlForm scriptcontrolform = new ScriptControlForm(CameraIpAddress.Text);
+            scriptcontrolform.Show();
+        }
+
 
     }
 }

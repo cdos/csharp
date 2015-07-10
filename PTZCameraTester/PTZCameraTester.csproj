@@ -82,12 +82,14 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -122,6 +124,12 @@
       <DependentUpon>CameraInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleFormating.cs" />
+    <Compile Include="LensControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LensControlForm.Designer.cs">
+      <DependentUpon>LensControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,7 +145,48 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptControlForm.Designer.cs">
+      <DependentUpon>ScriptControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Service References\AlarmArrayConfiguration\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AudioOutput\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\MotionDetection\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\RelayArrayConfiguration\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ScriptControl\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\StreamConfiguration\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\VideoOutput\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WindowsBlankingConfiguration\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -163,6 +212,9 @@
     <EmbeddedResource Include="CameraInfo.resx">
       <DependentUpon>CameraInfo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LensControlForm.resx">
+      <DependentUpon>LensControlForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
@@ -173,6 +225,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptControlForm.resx">
+      <DependentUpon>ScriptControlForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectTests.resx">
       <DependentUpon>SelectTests.cs</DependentUpon>
@@ -199,6 +254,20 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AlarmArrayConfiguration\PTZCameraTester.AlarmArrayConfiguration.AlarmStates.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AudioOutput\AudioOutputV1.wsdl" />
+    <None Include="Service References\AudioOutput\PTZCameraTester.AudioOutput.StreamCatalog.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AudioOutput\PTZCameraTester.AudioOutput.StreamParameters.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MotionDetection\MotionDetection.wsdl" />
+    <None Include="Service References\MotionDetection\PTZCameraTester.MotionDetection.MDConfig.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MotionDetection\PTZCameraTester.MotionDetection.Region.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\PositioningControl\Pelco.xsd" />
@@ -251,6 +320,44 @@
     <Compile Include="Tests\AutoFlipTest.cs" />
     <Compile Include="Tests\StartTest.cs" />
     <Compile Include="Tests\TestBase.cs" />
+    <None Include="Service References\RelayArrayConfiguration\PTZCameraTester.RelayArrayConfiguration.RelayConfig.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RelayArrayConfiguration\PTZCameraTester.RelayArrayConfiguration.RelayStates.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RelayArrayConfiguration\RelayArrayConfiguration.wsdl" />
+    <None Include="Service References\ScriptControl\PTZCameraTester.ScriptControl.ScriptActionList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScriptControl\PTZCameraTester.ScriptControl.ScriptList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScriptControl\ScriptControl.wsdl" />
+    <None Include="Service References\StreamConfiguration\PTZCameraTester.StreamConfiguration.ConfigurationInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\StreamConfiguration\PTZCameraTester.StreamConfiguration.Preset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\StreamConfiguration\PTZCameraTester.StreamConfiguration.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\StreamConfiguration\PTZCameraTester.StreamConfiguration.StreamIDSettings.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\StreamConfiguration\StreamConfigurationV1.wsdl" />
+    <None Include="Service References\VideoOutput\PTZCameraTester.VideoOutput.StreamCatalog.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VideoOutput\PTZCameraTester.VideoOutput.StreamParameters.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VideoOutput\VideoOutputV1.wsdl" />
+    <None Include="Service References\WindowsBlankingConfiguration\PTZCameraTester.WindowsBlankingConfiguration.ScreenRectangleRegion.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WindowsBlankingConfiguration\WindowBlankingConfigurationV1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -289,12 +396,19 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\AlarmArrayConfiguration\" />
+    <WCFMetadataStorage Include="Service References\AudioOutput\" />
     <WCFMetadataStorage Include="Service References\CameraConfiguration\" />
     <WCFMetadataStorage Include="Service References\ImagingConfiguration\" />
     <WCFMetadataStorage Include="Service References\LensControl\" />
+    <WCFMetadataStorage Include="Service References\MotionDetection\" />
     <WCFMetadataStorage Include="Service References\PelcoConfiguration\" />
     <WCFMetadataStorage Include="Service References\PositioningControl\" />
     <WCFMetadataStorage Include="Service References\PresetControl\" />
+    <WCFMetadataStorage Include="Service References\RelayArrayConfiguration\" />
+    <WCFMetadataStorage Include="Service References\ScriptControl\" />
+    <WCFMetadataStorage Include="Service References\StreamConfiguration\" />
+    <WCFMetadataStorage Include="Service References\VideoOutput\" />
+    <WCFMetadataStorage Include="Service References\WindowsBlankingConfiguration\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\PositioningControl\configuration91.svcinfo" />
@@ -417,6 +531,48 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\ScriptControl\configuration91.svcinfo" />
+    <None Include="Service References\ScriptControl\configuration.svcinfo" />
+    <None Include="Service References\ScriptControl\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\StreamConfiguration\configuration91.svcinfo" />
+    <None Include="Service References\StreamConfiguration\configuration.svcinfo" />
+    <None Include="Service References\StreamConfiguration\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\VideoOutput\configuration91.svcinfo" />
+    <None Include="Service References\VideoOutput\configuration.svcinfo" />
+    <None Include="Service References\VideoOutput\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\MotionDetection\configuration91.svcinfo" />
+    <None Include="Service References\MotionDetection\configuration.svcinfo" />
+    <None Include="Service References\MotionDetection\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\RelayArrayConfiguration\configuration91.svcinfo" />
+    <None Include="Service References\RelayArrayConfiguration\configuration.svcinfo" />
+    <None Include="Service References\RelayArrayConfiguration\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WindowsBlankingConfiguration\configuration91.svcinfo" />
+    <None Include="Service References\WindowsBlankingConfiguration\configuration.svcinfo" />
+    <None Include="Service References\WindowsBlankingConfiguration\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AudioOutput\configuration91.svcinfo" />
+    <None Include="Service References\AudioOutput\configuration.svcinfo" />
+    <None Include="Service References\AudioOutput\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="static\TestList.txt" />
     <Content Include="XML\D5118.xml">
       <SubType>Designer</SubType>
@@ -492,6 +648,9 @@
       <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:schemas-pelco-com:service:MotionDetection:1" name="MotionDetection" targetNamespace="urn:schemas-pelco-com:service:MotionDetection:1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		$Id: MotionDetectionV1.wsdl 562 2011-03-09 01:32:29Z  $
+	</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:schemas-pelco-com:service:MotionDetection:1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="MDConfig">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <p>Current configuration state of motion detection.</p>
+            <div class="notice">The number of rows and columns of 16x16 pixel cell blocks is dependent on the maximum image size, which is currently at 1920x1080. Therefore you can have a maximum of 68x120 16x16 cell blocks. (68*120 = 8160 bits in bitmask. 8160/8 = 1020 bytes in bitmask.)</div>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="rows" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The number of macro block rows in the motion detection grid. Currently the maximum number is 68.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="columns" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The number of macro block columns in the motion detection grid. Currently the maximum number is 120.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maxSensitivity" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The maximum acceptable sensitivity value for a motion detection region. The maximum value is 100.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maxRegions" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>The maximum number of definable motion detection regions. This will vary by Pelco device.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="alarmEnabled" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Set to 1 (true) to send an alarm when motion is detected, or 0 (false) otherwise.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MDRegionList">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">A list of Region data type instances.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="region" type="tns:Region">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">A Region data type.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Region">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <p>Describes a motion detection region within a frame. A motion detection region is essentially a grid of 16x16 macro blocks.</p>
+            <div class="notice">
+							In current Pelco IP-based devices with multiple regions that overlap the same areas, higher indexed regions will force lower indexed regions to cancel enabled blocks that are part of the overlapping area. This does not occur in Pelco legacy products.
+						</div>
+            <p>
+							Each MotionDetection supported device can have a fixed maximum number of motion detection regions configured. Depending on requirements, each of these regions can have:
+							<ul><li>a custom size: a variable number of rows and columns of 16 x 16 macro blocks</li><li>their own level of motion sensitivity. Regions do not merely trigger for any motion detected as this could lead to false positives. The amount of motion detected must exceed the user configured motion sensitivity</li><li>their own 'threshold' level, which measures the number of cell blocks within a region that have changed</li></ul></p>
+            <p>
+							Current Pelco IP-based devices (Sarix, Spectra HD, and so on) will accept a region whose bounds are smaller than the total grid size, with a bitmask relative to the region's size. However it will interlay convert the newly created region to encompass the entire grid, as well as its bitmask. Legacy products on the other hand will always have sizes relative to the region size.
+						</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>User defined name of the region. 250 character maximum.</p>
+                <div class="notice">
+									Current Pelco IP-based devices (Sarix, Spectra HD, and so on) require the following region name format: RegionX, where X is the number of the region. This does not affect Pelco legacy devices.
+								</div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="unbounded" name="coordinate" type="tns:coordinate">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>A list of coordinate data types.</p>
+                <div class="notice">
+									The MotionDetection service currently calculates coordinates in an unexpected way. Specifically it fails to account for two rows. For example: (0,0) through (5,5) is technically a 6 x 6 area. However this is calculated as a 5 x 5 area. This is important to consider when determining the bitmask length.
+								</div>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="sensitivity" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>
+									Indicates the sensitivity level of each cell within the region.
+									<ul><li>This value must be contained within the range 0 &lt;= sensitivity &lt;= MaxSensitivity.</li><li>The higher the sensitivity value, the greater the sensitivity of each cell contained within the region.</li></ul></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="threshold" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The number of cells within the region that must be triggered before an motion detection event (e.g. an alarm) is generated.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mask" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                <p>
+									This is the attribute used to determine how many of a region's cell blocks have detected changes or motion.
+									<ul><li>the size of this field indicates the number of cell blocks this region contains</li><li>A "1" value indicates motion detection / changes, while a "0" value indicates otherwise. For example: 0010101000 - demonstrates that a region has 10 cell blocks, with 3 blocks that detect motion.</li><li>This is a Pelco base64 encoded value (little endian). So, if there are 8 bits in the mask that are 0000001 (in row major) form, this is translated into the number 64 for base-64 encoding and not 1. So the example above of 0010101000 is represented as VAAA= in Pelco base64 and not KgAA=</li></ul><div class="notice">
+										Manually changing this field, will not trigger alarms or events. 
+										
+										Pelco’s base64 implementation is similar to standard base64, with the exception that Pelco’s version always has an additional equal sign (=) appended to the result. Moreover current Pelco IP-based devices (Sarix, Spectra HD, and so on) are able to accept standard Base64. However they only return non-standard Pelco Base64. It is a recommended best practice to always use Pelco Base64.
+									</div></p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="alarmEnabled" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Set to "1" (true) to send an alarm when motion is detected, or "0" (false) otherwise</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="coordinate">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Indicates one part of a Region's area. This corresponds to a 16x16 macro block in the frame.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="row" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">y coordinate</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="column" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">x coordinate</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="position" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">The name of the position. 250 character maximum.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:complexType>
+      <xsd:element name="GetMDRegions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the GetMDRegions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMDRegionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the GetMDRegions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="regionList" type="tns:MDRegionList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A MDRegionList data type.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetMDRegions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en" />
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="regionList" type="tns:MDRegionList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en" />
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetMDRegionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the SetMDRegions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ClearMDRegions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the ClearMDRegions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ClearMDRegionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the ClearMDRegions action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetAlarmState">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the GetAlarmState action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetAlarmStateResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the GetAlarmState action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="alarmState" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  <p>
+										A collection of all defined motion regions. Must be one of the following:
+										<ul><li>true (1) if any region is active</li><li>false (0) if all regions are inactive</li></ul></p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetMDConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the SetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="mdConfig" type="tns:MDConfig">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A MDConfig data type.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetMDConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the SetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMDConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the GetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetMDConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the GetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="mdConfig" type="tns:MDConfig">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">A MDConfig data type.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResetMDConfiguration">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a request to the ResetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="ResetMDConfigurationResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Represents a response from the ResetMDConfiguration action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetGridSize">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a request to the GetGridSize action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetGridSizeResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a response from the GetGridSize action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="rows" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">the number of rows contained in all motion detection regions</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="columns" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">the number of columns contained in all motion detection regions</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxSensitivity">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a request to the GetMaxSensitivity action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxSensitivityResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a response from the GetMaxSensitivity action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="maxSensitivity" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">the maximum sensitivity motion detection level that a device can handle.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxRegions">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a request to the GetMaxRegions action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMaxRegionsResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a response from the GetMaxRegions action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="maxRegions" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">the maximum number of motion detection regions that a device can manage.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetEnabled">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a request to the GetEnabled action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetEnabledResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a response from the GetEnabled action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">shows whether the device has motion detection enabled or not.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetEnabled">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a request to the SetEnabled action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="enabled" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">represents the device's state of motion detection</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetEnabledResponse">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            <div class="caution">DEPRECATED as of Endura 1.2</div>
+            <p>Represents a response from the SetEnabled action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="asyncId" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">This parameter does not apply to 3rd parties. Please disregard it.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GetMDRegions">
+    <wsdl:part name="parameters" element="tns:GetMDRegions" />
+  </wsdl:message>
+  <wsdl:message name="GetMDRegionsResponse">
+    <wsdl:part name="parameters" element="tns:GetMDRegionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetMDRegions">
+    <wsdl:part name="parameters" element="tns:SetMDRegions" />
+  </wsdl:message>
+  <wsdl:message name="SetMDRegionsResponse">
+    <wsdl:part name="parameters" element="tns:SetMDRegionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearMDRegions">
+    <wsdl:part name="parameters" element="tns:ClearMDRegions" />
+  </wsdl:message>
+  <wsdl:message name="ClearMDRegionsResponse">
+    <wsdl:part name="parameters" element="tns:ClearMDRegionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAlarmState">
+    <wsdl:part name="parameters" element="tns:GetAlarmState" />
+  </wsdl:message>
+  <wsdl:message name="GetAlarmStateResponse">
+    <wsdl:part name="parameters" element="tns:GetAlarmStateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetMDConfiguration">
+    <wsdl:part name="parameters" element="tns:SetMDConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="SetMDConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:SetMDConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDConfiguration">
+    <wsdl:part name="parameters" element="tns:GetMDConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="GetMDConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:GetMDConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetMDConfiguration">
+    <wsdl:part name="parameters" element="tns:ResetMDConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="ResetMDConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:ResetMDConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGridSize">
+    <wsdl:part name="parameters" element="tns:GetGridSize" />
+  </wsdl:message>
+  <wsdl:message name="GetGridSizeResponse">
+    <wsdl:part name="parameters" element="tns:GetGridSizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxSensitivity">
+    <wsdl:part name="parameters" element="tns:GetMaxSensitivity" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxSensitivityResponse">
+    <wsdl:part name="parameters" element="tns:GetMaxSensitivityResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxRegions">
+    <wsdl:part name="parameters" element="tns:GetMaxRegions" />
+  </wsdl:message>
+  <wsdl:message name="GetMaxRegionsResponse">
+    <wsdl:part name="parameters" element="tns:GetMaxRegionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEnabled">
+    <wsdl:part name="parameters" element="tns:GetEnabled" />
+  </wsdl:message>
+  <wsdl:message name="GetEnabledResponse">
+    <wsdl:part name="parameters" element="tns:GetEnabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetEnabled">
+    <wsdl:part name="parameters" element="tns:SetEnabled" />
+  </wsdl:message>
+  <wsdl:message name="SetEnabledResponse">
+    <wsdl:part name="parameters" element="tns:SetEnabledResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MotionDetectionPortType">
+    <wsdl:operation name="GetMDRegions">
+      <wsdl:documentation>
+				Returns the regions of the motion detection grid in which motion is being detected and reported. In current Pelco IP-based devices, this action returns the bitmask for the entire available grid. However in Pelco legacy products this action will only return the bitmask of the given region that was passed into the SetMDRegion call.
+			</wsdl:documentation>
+      <wsdl:input message="tns:GetMDRegions" />
+      <wsdl:output message="tns:GetMDRegionsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMDRegions">
+      <wsdl:documentation>
+				Updates the regions of the motion detection grid in which motion should be detected and reported. Creating a region outside the grid will yield a SOAP fault.
+			</wsdl:documentation>
+      <wsdl:input message="tns:SetMDRegions" />
+      <wsdl:output message="tns:SetMDRegionsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearMDRegions">
+      <wsdl:documentation>Clears all detection regions currently associated with the motion detection grid.</wsdl:documentation>
+      <wsdl:input message="tns:ClearMDRegions" />
+      <wsdl:output message="tns:ClearMDRegionsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAlarmState">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This action is now deprecated. It is not recommended for production usage. The recommended method is now using the Event Arbiter Library to subscribe to this service's events and alarms.</div>
+        <p>Returns 1 (true) if any defined motion region is active, otherwise it returns 0 (false).</p>
+        <div class="notice">After calling this action, please wait several seconds before calling this action again to prevent overwhelming your Pelco device.</div>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetAlarmState" />
+      <wsdl:output message="tns:GetAlarmStateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMDConfiguration">
+      <wsdl:documentation>Updates the current motion detection configuration.</wsdl:documentation>
+      <wsdl:input message="tns:SetMDConfiguration" />
+      <wsdl:output message="tns:SetMDConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDConfiguration">
+      <wsdl:documentation>Returns the current motion detection configuration.</wsdl:documentation>
+      <wsdl:input message="tns:GetMDConfiguration" />
+      <wsdl:output message="tns:GetMDConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetMDConfiguration">
+      <wsdl:documentation>Resets the device's motion detection configuration.</wsdl:documentation>
+      <wsdl:input message="tns:ResetMDConfiguration" />
+      <wsdl:output message="tns:ResetMDConfigurationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGridSize">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div>
+        <p>Returns the size of a specific motion detection grid. While both current Pelco IP-based devices and Pelco legacy devices provide this action for MotionDetection, Pelco legacy devices do not always return the correct grid size.</p>
+        <div class="notice">The MotionDetection service currently calculates coordinates in an unexpected way. Specifically it fails to account for two rows. For example: (0,0) through (5,5) is technically a 6 x 6 area. However this is calculated as a 5 x 5 area. This is important to consider when determining the bitmask length.</div>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetGridSize" />
+      <wsdl:output message="tns:GetGridSizeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxSensitivity">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div>
+        <p>Returns the maximum motion sensitivity setting the device can handle.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetMaxSensitivity" />
+      <wsdl:output message="tns:GetMaxSensitivityResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxRegions">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div>
+        <p>Returns the maximum number of motion detectable regions that the device can accommodate.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetMaxRegions" />
+      <wsdl:output message="tns:GetMaxRegionsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEnabled">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div>
+        <p>Returns the status of motion detection.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:GetEnabled" />
+      <wsdl:output message="tns:GetEnabledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetEnabled">
+      <wsdl:documentation>
+        <div class="caution">DEPRECATED: This has been deprecated starting with Endura 1.2</div>
+        <p>Updates the device's current motion detection state (enabled or disabled).</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:SetEnabled" />
+      <wsdl:output message="tns:SetEnabledResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MotionDetection" type="tns:MotionDetectionPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetMDRegions">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetMDRegions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMDRegions">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#SetMDRegions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearMDRegions">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#ClearMDRegions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAlarmState">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetAlarmState" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMDConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#SetMDConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetMDConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetMDConfiguration">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#ResetMDConfiguration" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGridSize">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetGridSize" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxSensitivity">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetMaxSensitivity" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxRegions">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetMaxRegions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#GetEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetEnabled">
+      <soap:operation soapAction="urn:schemas-pelco-com:service:MotionDetection:1#SetEnabled" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MotionDetection">
+    <wsdl:documentation>
+			This service allows clients to query and modify the service provider's current motion detection configuration, as well as providing a Pelco device's current motion detection status.
+		</wsdl:documentation>
+    <wsdl:port name="MotionDetection" binding="tns:MotionDetection">
+      <soap:address location="http://localhost:49152/control/MotionDetection-1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

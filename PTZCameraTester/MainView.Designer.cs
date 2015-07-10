@@ -51,6 +51,8 @@
             this.CameraInfobutton = new System.Windows.Forms.Button();
             this.alarmarraybutton = new System.Windows.Forms.Button();
             this.positioningbutton = new System.Windows.Forms.Button();
+            this.lensbutton = new System.Windows.Forms.Button();
+            this.scriptcontrolbutton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AboutButton
@@ -90,7 +92,7 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(415, 64);
+            this.StartButton.Location = new System.Drawing.Point(418, 64);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(92, 29);
             this.StartButton.TabIndex = 4;
@@ -118,9 +120,9 @@
             // progressBar
             // 
             this.progressBar.Enabled = false;
-            this.progressBar.Location = new System.Drawing.Point(12, 434);
+            this.progressBar.Location = new System.Drawing.Point(15, 64);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(504, 23);
+            this.progressBar.Size = new System.Drawing.Size(365, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 9;
             // 
@@ -168,7 +170,7 @@
             // 
             // LeftPTZButton
             // 
-            this.LeftPTZButton.Location = new System.Drawing.Point(24, 192);
+            this.LeftPTZButton.Location = new System.Drawing.Point(370, 428);
             this.LeftPTZButton.Name = "LeftPTZButton";
             this.LeftPTZButton.Size = new System.Drawing.Size(47, 36);
             this.LeftPTZButton.TabIndex = 16;
@@ -179,7 +181,7 @@
             // 
             // upPTZButton
             // 
-            this.upPTZButton.Location = new System.Drawing.Point(67, 151);
+            this.upPTZButton.Location = new System.Drawing.Point(413, 387);
             this.upPTZButton.Name = "upPTZButton";
             this.upPTZButton.Size = new System.Drawing.Size(50, 36);
             this.upPTZButton.TabIndex = 17;
@@ -190,7 +192,7 @@
             // 
             // righPTZtButton
             // 
-            this.righPTZtButton.Location = new System.Drawing.Point(112, 192);
+            this.righPTZtButton.Location = new System.Drawing.Point(458, 428);
             this.righPTZtButton.Name = "righPTZtButton";
             this.righPTZtButton.Size = new System.Drawing.Size(49, 36);
             this.righPTZtButton.TabIndex = 18;
@@ -201,7 +203,7 @@
             // 
             // downPTZButton
             // 
-            this.downPTZButton.Location = new System.Drawing.Point(66, 235);
+            this.downPTZButton.Location = new System.Drawing.Point(412, 471);
             this.downPTZButton.Name = "downPTZButton";
             this.downPTZButton.Size = new System.Drawing.Size(51, 34);
             this.downPTZButton.TabIndex = 19;
@@ -213,7 +215,7 @@
             // speedlabel
             // 
             this.speedlabel.AutoSize = true;
-            this.speedlabel.Location = new System.Drawing.Point(21, 289);
+            this.speedlabel.Location = new System.Drawing.Point(252, 412);
             this.speedlabel.Name = "speedlabel";
             this.speedlabel.Size = new System.Drawing.Size(55, 13);
             this.speedlabel.TabIndex = 22;
@@ -221,7 +223,7 @@
             // 
             // textboxtiltspeed
             // 
-            this.textboxtiltspeed.Location = new System.Drawing.Point(24, 305);
+            this.textboxtiltspeed.Location = new System.Drawing.Point(255, 428);
             this.textboxtiltspeed.Name = "textboxtiltspeed";
             this.textboxtiltspeed.Size = new System.Drawing.Size(100, 20);
             this.textboxtiltspeed.TabIndex = 23;
@@ -229,7 +231,7 @@
             // 
             // textboxpanspeed
             // 
-            this.textboxpanspeed.Location = new System.Drawing.Point(24, 353);
+            this.textboxpanspeed.Location = new System.Drawing.Point(255, 476);
             this.textboxpanspeed.Name = "textboxpanspeed";
             this.textboxpanspeed.Size = new System.Drawing.Size(100, 20);
             this.textboxpanspeed.TabIndex = 25;
@@ -238,7 +240,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 337);
+            this.label1.Location = new System.Drawing.Point(252, 460);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 24;
@@ -246,7 +248,7 @@
             // 
             // CameraInfobutton
             // 
-            this.CameraInfobutton.Location = new System.Drawing.Point(237, 73);
+            this.CameraInfobutton.Location = new System.Drawing.Point(15, 111);
             this.CameraInfobutton.Name = "CameraInfobutton";
             this.CameraInfobutton.Size = new System.Drawing.Size(140, 51);
             this.CameraInfobutton.TabIndex = 26;
@@ -256,7 +258,7 @@
             // 
             // alarmarraybutton
             // 
-            this.alarmarraybutton.Location = new System.Drawing.Point(237, 136);
+            this.alarmarraybutton.Location = new System.Drawing.Point(161, 111);
             this.alarmarraybutton.Name = "alarmarraybutton";
             this.alarmarraybutton.Size = new System.Drawing.Size(140, 51);
             this.alarmarraybutton.TabIndex = 27;
@@ -266,7 +268,7 @@
             // 
             // positioningbutton
             // 
-            this.positioningbutton.Location = new System.Drawing.Point(237, 203);
+            this.positioningbutton.Location = new System.Drawing.Point(15, 168);
             this.positioningbutton.Name = "positioningbutton";
             this.positioningbutton.Size = new System.Drawing.Size(140, 51);
             this.positioningbutton.TabIndex = 28;
@@ -274,12 +276,34 @@
             this.positioningbutton.UseVisualStyleBackColor = true;
             this.positioningbutton.Click += new System.EventHandler(this.positioningbutton_Click);
             // 
+            // lensbutton
+            // 
+            this.lensbutton.Location = new System.Drawing.Point(161, 168);
+            this.lensbutton.Name = "lensbutton";
+            this.lensbutton.Size = new System.Drawing.Size(140, 51);
+            this.lensbutton.TabIndex = 29;
+            this.lensbutton.Text = "Lens Test";
+            this.lensbutton.UseVisualStyleBackColor = true;
+            this.lensbutton.Click += new System.EventHandler(this.lensbutton_Click);
+            // 
+            // scriptcontrolbutton
+            // 
+            this.scriptcontrolbutton.Location = new System.Drawing.Point(307, 168);
+            this.scriptcontrolbutton.Name = "scriptcontrolbutton";
+            this.scriptcontrolbutton.Size = new System.Drawing.Size(140, 51);
+            this.scriptcontrolbutton.TabIndex = 30;
+            this.scriptcontrolbutton.Text = "Script Control";
+            this.scriptcontrolbutton.UseVisualStyleBackColor = true;
+            this.scriptcontrolbutton.Click += new System.EventHandler(this.scriptcontrolbutton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 489);
+            this.ClientSize = new System.Drawing.Size(556, 559);
             this.ControlBox = false;
+            this.Controls.Add(this.scriptcontrolbutton);
+            this.Controls.Add(this.lensbutton);
             this.Controls.Add(this.positioningbutton);
             this.Controls.Add(this.alarmarraybutton);
             this.Controls.Add(this.CameraInfobutton);
@@ -339,5 +363,7 @@
         private System.Windows.Forms.Button CameraInfobutton;
         private System.Windows.Forms.Button alarmarraybutton;
         private System.Windows.Forms.Button positioningbutton;
+        private System.Windows.Forms.Button lensbutton;
+        private System.Windows.Forms.Button scriptcontrolbutton;
     }
 }
